@@ -384,3 +384,15 @@ Check of Round 7 fixes:
 3. **Ease the first frames of the morph.** Start the rect spring at b59.0 with the default preset, or raise its response to 0.4 s. **Verify:** flood-fill the pill rect over f884–f899 in both formats. The area change is ≤ 20 % per frame, and the final rect still matches f0 (1641×274 in 16:9, 858×313 in 9:16, within ±2 px).
 
 **Verdict:** SHIP
+
+---
+
+## Final delivery
+- `renders/16x9.mp4` 1920×1080 and `renders/9x16.mp4` 1080×1920: 30.0 s, 60 fps, adaptive 180° motion blur, H.264
+  yuv420p CRF 16, AAC 320k. Mix −14.0 LUFS integrated, −1.4 dBTP true peak. No voiceover (client: add later).
+- Final scores (Round 8 critic, SHIP): Hook 8 · Readability 8 · Motion 8 · Variety 8 · Brand 8 · Sound sync 8 ·
+  Composition 8 · Polish 8. `review.py final`: loop seam 0.1, no near-blank frames; per-cue sync median 0 ms (outliers are
+  onset-detector effects of motion blur in dense moments; the timing code is identical to the frame-verified drafts).
+- Knowingly left imperfect (the critic's optional round-9 notes): two 9:16 outro frames show only the morphing pill
+  (29.60–29.63 s); one-frame exit fragments of the ring / tags / URL at 29.33–29.43 s; the pill's growth peaks at
+  +24–26 % area per 30 fps frame (half that at 60 fps).
