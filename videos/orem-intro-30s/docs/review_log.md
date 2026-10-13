@@ -405,3 +405,15 @@ Check of Round 7 fixes:
   Tempo only on phrases that had to fit (1.05–1.2). No overlaps; last word ends 29.49 s, before the loop hand-off.
 - Mix: music −3 dB, SFX −7 dB, VO +1 dB, music side-chain-ducked under the voice: −14.0 LUFS integrated, −1.5 dBTP.
 - Picture unchanged; the new mix was muxed into both finals (`render.mjs --mux --all`).
+
+## Ending changed (client request, after the voiceover)
+Client: "the ending must be a beat with logo pop up on white screen… it restarts the first frame right after the voice
+says .com". The loop hand-off (CTA morph into the opening frame) is removed.
+- End card now runs b52–58. At **b58 (29.0 s)** a hard cut on the beat to a pure white slate: the Orem mark pops
+  (snappy scale-up with a quarter turn), "Orem" rises through its mask, the petrol dot lands at b58.4, and the group
+  holds on a slow push to the last frame. Mark + wordmark are centred on the frame from ink measurements (centre within
+  1.5 px; ring centre = wordmark ink centre ± 2 px).
+- Score: new `outro` section at b58 (final chord, rings out) and an accent on the slate; beat grid re-measured
+  (max shift 9 ms). SFX: whoosh into the cut + thump on the logo + pop on the dot; the marker tap / nudge moved earlier.
+- Voiceover: the tagline and CTA lines re-placed so "getorem.com" ends at 28.98 s, just before the logo beat; no overlaps.
+- Mix −14.0 LUFS, −1.4 dBTP. `render --verify` 12/12 in both formats.

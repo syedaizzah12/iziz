@@ -3,8 +3,8 @@
   "id": "p1",
   "text": "Does AI recommend your brand?",
   "at": 0.3,
-  "t0": 0.15,
-  "t1": 2.26
+  "t0": 0.158,
+  "t1": 2.268
  },
  {
   "id": "p2",
@@ -67,27 +67,27 @@
   "text": "See the sources AI trusts.",
   "at": 44.15,
   "t0": 22.075,
-  "t1": 23.935
+  "t1": 23.855
  },
  {
   "id": "p9",
   "text": "Statistically honest AI-search visibility.",
-  "at": 47.9,
-  "t0": 23.95,
-  "t1": 26.271
+  "at": 47.72,
+  "t0": 23.86,
+  "t1": 26.077
  },
  {
   "id": "p10a",
   "text": "Start with a twenty-five dollar credit.",
-  "at": 52.6,
-  "t0": 26.3,
-  "t1": 28.078
+  "at": 52.17,
+  "t0": 26.077,
+  "t1": 27.68
  },
  {
   "id": "p10b",
   "text": "getorem.com",
-  "at": 56.2,
-  "t0": 28.092,
-  "t1": 29.488
+  "at": 55.42,
+  "t0": 27.701,
+  "t1": 28.978
  }
 ]

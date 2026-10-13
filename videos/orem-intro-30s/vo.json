@@ -4,7 +4,7 @@
     "id": "536d3a5e000945adb7038665781a4aca",
     "name": "Ethan (Fish Audio official)"
   },
-  "note": "One phrase per shot, placed on the measured beat grid. Tempo only on phrases that must fit (0.85–1.2). Ends before b58.6 so the outro stays clear.",
+  "note": "One phrase per shot, placed on the measured beat grid. Tempo only on phrases that must fit (0.85–1.2). '.com' ends before the b58 logo slate.",
   "phrases": [
     {
       "id": "p1",
@@ -93,7 +93,7 @@
       "from": 2.52,
       "to": 4.38,
       "at": 44.15,
-      "tempo": 1.0,
+      "tempo": 1.05,
       "text": "See the sources AI trusts."
     },
     {
@@ -101,8 +101,8 @@
       "take": "l9",
       "from": 0.03,
       "to": 2.64,
-      "at": 47.9,
-      "tempo": 1.12,
+      "at": 47.72,
+      "tempo": 1.18,
       "text": "Statistically honest AI-search visibility."
     },
     {
@@ -110,8 +110,8 @@
       "take": "l10",
       "from": 0.03,
       "to": 1.95,
-      "at": 52.6,
-      "tempo": 1.08,
+      "at": 52.17,
+      "tempo": 1.2,
       "text": "Start with a twenty-five dollar credit."
     },
     {
@@ -119,8 +119,8 @@
       "take": "l10",
       "from": 2.6,
       "to": 4.13,
-      "at": 56.2,
-      "tempo": 1.1,
+      "at": 55.42,
+      "tempo": 1.2,
       "text": "getorem.com"
     }
   ]

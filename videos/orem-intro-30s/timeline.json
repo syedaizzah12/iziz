@@ -50,10 +50,15 @@
       {
         "at": "logo",
         "kind": "drop"
+      },
+      {
+        "at": "slate",
+        "kind": "outro"
       }
     ],
     "accents": [
-      "logo"
+      "logo",
+      "slate"
     ]
   },
   "voiceover": {
@@ -90,7 +95,8 @@
     "gap": 51.5,
     "logo": 52,
     "cta": 52.5,
-    "done": 60
+    "done": 60,
+    "slate": 58
   },
   "sfx": [
     {
@@ -318,16 +324,16 @@
       "what": "logo dot pulse"
     },
     {
-      "at": 57.5,
+      "at": 57.25,
       "type": "tick",
       "gain": 0.4,
       "what": "CTA nudge"
     },
     {
-      "at": 58.5,
+      "at": 56.75,
       "type": "tick",
       "gain": 0.3,
-      "what": "marker tap (before the outro)"
+      "what": "marker tap"
     },
     {
       "at": 50.5,
@@ -348,10 +354,22 @@
       "what": "best prompt outlined"
     },
     {
-      "at": 59.05,
+      "at": "slate",
       "type": "whoosh",
-      "gain": 0.4,
-      "what": "CTA morphs into the opening prompt pill (loop)"
+      "gain": 0.45,
+      "what": "cut to the white end slate (builds into the cut)"
+    },
+    {
+      "at": "slate",
+      "type": "thump",
+      "gain": 0.9,
+      "what": "logo pops on white"
+    },
+    {
+      "at": 58.4,
+      "type": "pop",
+      "gain": 0.45,
+      "what": "logo dot"
     }
   ],
   "mix": {

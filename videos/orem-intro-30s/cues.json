@@ -12,7 +12,7 @@
    "beat": 0,
    "mark": "hook",
    "snapped_to_hit": true,
-   "snap_ms": 0,
+   "snap_ms": -8.4,
    "what": "headline word 1 + prompt on frame 0"
   },
   {
@@ -24,7 +24,7 @@
    "beat": 0.5,
    "mark": null,
    "snapped_to_hit": true,
-   "snap_ms": -4.83,
+   "snap_ms": -13.14,
    "what": "prompt word"
   },
   {
@@ -36,7 +36,7 @@
    "beat": 1,
    "mark": "hook_w2",
    "snapped_to_hit": true,
-   "snap_ms": 0,
+   "snap_ms": -8.21,
    "what": "headline 'recommend'"
   },
   {
@@ -48,7 +48,7 @@
    "beat": 1,
    "mark": null,
    "snapped_to_hit": true,
-   "snap_ms": 0,
+   "snap_ms": -8.21,
    "what": "prompt word"
   },
   {
@@ -60,7 +60,7 @@
    "beat": 1.5,
    "mark": null,
    "snapped_to_hit": true,
-   "snap_ms": -3.66,
+   "snap_ms": -7.76,
    "what": "prompt word"
   },
   {
@@ -448,7 +448,7 @@
    "what": "cut to the verdict table"
   },
   {
-   "t": 16.49828,
+   "t": 16.49789,
    "type": "click",
    "gain": 0.45,
    "pitch": 0.961,
@@ -460,7 +460,7 @@
    "what": "verdict 1"
   },
   {
-   "t": 16.74921,
+   "t": 16.74902,
    "type": "click",
    "gain": 0.45,
    "pitch": 0.998,
@@ -484,7 +484,7 @@
    "what": "verdict 3"
   },
   {
-   "t": 17.24893,
+   "t": 17.2487,
    "type": "click",
    "gain": 0.45,
    "pitch": 1.048,
@@ -508,7 +508,7 @@
    "what": "Real gain row lifts out"
   },
   {
-   "t": 18.49714,
+   "t": 18.4966,
    "type": "pop",
    "gain": 0.5,
    "pitch": 1.046,
@@ -580,7 +580,7 @@
    "what": "underline under 'honest'"
   },
   {
-   "t": 25.25014,
+   "t": 25.24612,
    "type": "tick",
    "gain": 0.35,
    "pitch": 0.963,
@@ -592,7 +592,7 @@
    "what": "camera punch on the tagline"
   },
   {
-   "t": 26.00025,
+   "t": 26.00029,
    "type": "riser",
    "gain": 0.5,
    "pitch": 0.997,
@@ -600,11 +600,11 @@
    "beat": 52,
    "mark": "logo",
    "snapped_to_hit": true,
-   "snap_ms": 0,
+   "snap_ms": 8.52,
    "what": "riser through the gap, peaks on the logo"
   },
   {
-   "t": 26.00025,
+   "t": 26.00029,
    "type": "thump",
    "gain": 0.9,
    "pitch": 0.94,
@@ -612,11 +612,11 @@
    "beat": 52,
    "mark": "logo",
    "snapped_to_hit": true,
-   "snap_ms": 0,
+   "snap_ms": 8.52,
    "what": "logo lands"
   },
   {
-   "t": 26.25015,
+   "t": 26.24161,
    "type": "pop",
    "gain": 0.65,
    "pitch": 1.039,
@@ -636,7 +636,7 @@
    "beat": 53,
    "mark": null,
    "snapped_to_hit": true,
-   "snap_ms": 0,
+   "snap_ms": 8.61,
    "what": "interval card on the end card"
   },
   {
@@ -648,7 +648,7 @@
    "beat": 55,
    "mark": null,
    "snapped_to_hit": true,
-   "snap_ms": 8.12,
+   "snap_ms": 9.32,
    "what": "URL underline"
   },
   {
@@ -660,44 +660,68 @@
    "beat": 56.5,
    "mark": null,
    "snapped_to_hit": true,
-   "snap_ms": 3.66,
+   "snap_ms": 4.91,
    "what": "logo dot pulse"
   },
   {
-   "t": 28.7464,
-   "type": "tick",
-   "gain": 0.4,
-   "pitch": 0.967,
-   "pan": -0.089,
-   "beat": 57.5,
-   "mark": null,
-   "snapped_to_hit": true,
-   "snap_ms": 5.11,
-   "what": "CTA nudge"
-  },
-  {
-   "t": 29.24523,
+   "t": 28.36524,
    "type": "tick",
    "gain": 0.3,
    "pitch": 1.025,
    "pan": 0.178,
-   "beat": 58.5,
+   "beat": 56.75,
    "mark": null,
-   "snapped_to_hit": true,
-   "snap_ms": 4.24,
-   "what": "marker tap (before the outro)"
+   "snapped_to_hit": false,
+   "snap_ms": 0,
+   "what": "marker tap"
   },
   {
-   "t": 29.50015,
-   "type": "whoosh",
+   "t": 28.61508,
+   "type": "tick",
    "gain": 0.4,
+   "pitch": 0.967,
+   "pan": -0.089,
+   "beat": 57.25,
+   "mark": null,
+   "snapped_to_hit": false,
+   "snap_ms": 0,
+   "what": "CTA nudge"
+  },
+  {
+   "t": 29.00008,
+   "type": "whoosh",
+   "gain": 0.45,
    "pitch": 1.015,
    "pan": 0.053,
-   "beat": 59.05,
-   "mark": null,
+   "beat": 58,
+   "mark": "slate",
    "snapped_to_hit": true,
-   "snap_ms": -15.69,
-   "what": "CTA morphs into the opening prompt pill (loop)"
+   "snap_ms": 10.24,
+   "what": "cut to the white end slate (builds into the cut)"
+  },
+  {
+   "t": 29.00008,
+   "type": "thump",
+   "gain": 0.9,
+   "pitch": 0.964,
+   "pan": -0.136,
+   "beat": 58,
+   "mark": "slate",
+   "snapped_to_hit": true,
+   "snap_ms": 10.24,
+   "what": "logo pops on white"
+  },
+  {
+   "t": 29.18971,
+   "type": "pop",
+   "gain": 0.45,
+   "pitch": 0.978,
+   "pan": -0.169,
+   "beat": 58.4,
+   "mark": null,
+   "snapped_to_hit": false,
+   "snap_ms": 0,
+   "what": "logo dot"
   }
  ]
 }
