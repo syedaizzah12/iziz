@@ -400,6 +400,18 @@
    "what": "row 4 interval"
   },
   {
+   "t": 13.00015,
+   "type": "pop",
+   "gain": 0.35,
+   "pitch": 1.052,
+   "pan": -0.226,
+   "beat": 26,
+   "mark": null,
+   "snapped_to_hit": true,
+   "snap_ms": 0,
+   "what": "camera punch onto prompt rows"
+  },
+  {
    "t": 14.00013,
    "type": "pop",
    "gain": 0.55,
@@ -410,6 +422,18 @@
    "snapped_to_hit": true,
    "snap_ms": 0,
    "what": "caption swap"
+  },
+  {
+   "t": 15.00015,
+   "type": "pop",
+   "gain": 0.45,
+   "pitch": 1.006,
+   "pan": -0.185,
+   "beat": 30,
+   "mark": null,
+   "snapped_to_hit": true,
+   "snap_ms": 0,
+   "what": "best prompt outlined"
   },
   {
    "t": 16.00015,
@@ -554,6 +578,18 @@
    "snapped_to_hit": true,
    "snap_ms": -3.73,
    "what": "underline under 'honest'"
+  },
+  {
+   "t": 25.25014,
+   "type": "tick",
+   "gain": 0.35,
+   "pitch": 0.963,
+   "pan": 0.051,
+   "beat": 50.5,
+   "mark": null,
+   "snapped_to_hit": false,
+   "snap_ms": 0,
+   "what": "camera punch on the tagline"
   },
   {
    "t": 26.00025,

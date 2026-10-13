@@ -49,9 +49,9 @@
     P.band = box(P.card, `left:${P.tx + P.tw * 0.24}px;top:${P.ty}px;width:${P.tw * 0.17}px;height:${P.th}px;border-radius:${P.th / 2}px;background:var(--accent-bar);transform-origin:${(100 * 9) / 17}% 50%`);
     P.mark = box(P.card, `left:${P.tx + P.tw * 0.33 - 4}px;top:${P.ty - 12}px;width:8px;height:${P.th + 24}px;border-radius:4px;background:var(--ink);transform-origin:50% 50%`);
     const ly = P.ty + P.th + 28, lf = `font:500 ${o.lf || 32}px UI;color:var(--fog)`;
-    box(P.card, `left:${P.tx}px;top:${ly}px;${lf}`, '0%');
+    if (o.ends !== false) box(P.card, `left:${P.tx}px;top:${ly}px;${lf}`, '0%');
     P.l1 = box(P.card, `left:${P.tx + P.tw * 0.33}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-50%)">likely <i>24%–41%</i></span>');
-    box(P.card, `left:${P.tx + P.tw}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-100%)">100%</span>');
+    if (o.ends !== false) box(P.card, `left:${P.tx + P.tw}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-100%)">100%</span>');
     reg(P.card); reg(P.band, { o: 0 }); reg(P.mark, { o: 0 }); reg(P.l1, { o: 0 }); reg(P.val);
     return P;
   }
@@ -60,22 +60,31 @@
   // Frame 0: the headline's first words AND the buyer's prompt (already typing). b4–6: the engines it's asked on.
   const PROMPT = ['Which', 'AI', 'visibility', 'tools', 'report', 'confidence', 'intervals?'];
   const ENGINES = ['ChatGPT', 'Perplexity', 'Gemini', 'Claude', 'AI Overviews'];   // getorem.com meta description
+  // the opening frame's elements (headline + buyer-prompt pill). Built by the hook, and again by the end card so the
+  // film's last frame hands back to frame 0 (a seamless loop).
+  function openingFrame(root) {
+    const O = {};
+    const size = pick(170, 170, 150), y0 = pick(118, 118, 384);
+    O.head = TALL
+      ? lines(root, ['Does AI', 'recommend', 'your brand?'], { x: PAD, y: y0, size, accent: { 2: [0, 1] } })
+      : lines(root, ['Does AI recommend', 'your brand?'], { x: PAD, y: y0, size, accent: { 1: [0, 1] } });
+    O.py = y0 + (TALL ? 3 : 2) * size * 1.12 + pick(52, 52, 64); O.pillH = pick(275, 275, 315);
+    O.pill = box(root, `left:${PAD}px;top:${O.py}px;box-sizing:border-box;width:${pick(1640, 1640, 860)}px;height:${O.pillH}px;overflow:hidden;padding:36px ${pick(50, 50, 44)}px;
+      background:var(--card);border:1px solid var(--line);border-radius:36px;box-shadow:0 30px 70px -30px rgba(20,27,33,.30);white-space:normal`);
+    box(O.pill, `position:relative;font:600 ${pick(24, 24, 28)}px UI;letter-spacing:.14em;color:var(--fog);margin-bottom:14px`, 'A BUYER ASKS AI', '');
+    const q = box(O.pill, `position:relative;font:500 ${pick(64, 64, 52)}px/1.25 UI;color:var(--ink);letter-spacing:-.01em`, '', '');
+    O.words = PROMPT.map((w, i) => reg(el('span', {}, q, w + (i < PROMPT.length - 1 ? ' ' : '')), { o: 0 }));
+    O.caret = el('span', { style: `display:inline-block;width:5px;height:1.05em;background:var(--accent);vertical-align:-0.15em;margin-left:2px` }, q);
+    reg(O.pill); reg(O.caret, { o: 0 });
+    return O;
+  }
   scene({
     name: 'hook', from: 'hook', to: 'moved',
     build(root, S) {
-      const size = pick(190, 190, 150), y0 = pick(140, 140, 394);
-      S.head = TALL
-        ? lines(root, ['Does AI', 'recommend', 'your brand?'], { x: PAD, y: y0, size, accent: { 2: [0, 1] } })
-        : lines(root, ['Does AI recommend', 'your brand?'], { x: PAD, y: y0, size, accent: { 1: [0, 1] } });
-      const py = y0 + (TALL ? 3 : 2) * size * 1.12 + pick(56, 56, 70);
-      S.pill = box(root, `left:${PAD}px;top:${py}px;box-sizing:border-box;width:${pick(1640, 1640, 860)}px;height:${pick(185, 185, 250)}px;overflow:hidden;padding:36px ${pick(50, 50, 44)}px;
-        background:var(--card);border:1px solid var(--line);border-radius:36px;box-shadow:0 30px 70px -30px rgba(20,27,33,.30);white-space:normal`);
-      box(S.pill, `position:relative;font:600 ${pick(24, 24, 28)}px UI;letter-spacing:.14em;color:var(--fog);margin-bottom:14px`, 'A BUYER ASKS AI', '');
-      const q = box(S.pill, `position:relative;font:500 ${pick(52, 52, 50)}px/1.25 UI;color:var(--ink);letter-spacing:-.01em`, '', '');
-      S.words = PROMPT.map((w, i) => reg(el('span', {}, q, w + (i < PROMPT.length - 1 ? ' ' : '')), { o: 0 }));
-      S.caret = el('span', { style: `display:inline-block;width:5px;height:1.05em;background:var(--accent);vertical-align:-0.15em;margin-left:2px` }, q);
-      reg(S.pill); reg(S.caret, { o: 0 });
-      const cy = py + pick(185, 185, 250) + 34, cf = pick(40, 40, 32);
+      Object.assign(S, openingFrame(root));
+      const { py, pillH } = S;
+      const cy = py + pillH + 34, cf = pick(44, 44, 34);
+      root.style.transformOrigin = `${pick(700, 700, PAD)}px ${py}px`;
       S.row = box(root, `left:${PAD}px;top:${cy}px;width:${pick(1640, 1640, 860)}px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;white-space:normal`);
       S.lab = reg(el('span', { style: `font:600 ${cf * 0.66}px UI;letter-spacing:.14em;color:var(--fog);margin-right:6px` }, S.row, 'ASKED ON'), { o: 0 });
       S.chips = ENGINES.map((e) => reg(el('span', { style: `display:inline-flex;align-items:center;gap:${cf * 0.35}px;padding:${cf * 0.36}px ${cf * 0.6}px;border-radius:${cf}px;background:var(--card);border:1px solid var(--line);font:500 ${cf}px UI;color:var(--ink);transform-origin:50% 50%` },
@@ -91,7 +100,8 @@
       put(S.pill, { y: 30 * (1 - sp(t, -0.6, 'default')) });
       put(S.lab, { o: b >= 4 - 0.02 ? 1 : 0 });
       S.chips.forEach((c, i) => { const p = pop(t, 4 + i * 0.5); put(c, { o: snapIn(p), s: 0.7 + 0.3 * p, y: 18 * (1 - p) }); });
-      pushHold(t, S, 'hook', 'moved', 0.03);
+      // camera punches onto the prompt as 'your brand?' lands (b2)
+      put(S.root, { s: 1 + pick(0.15, 0.15, 0.06) * sp(t, 'hook_w3', 'default') + 0.02 * ease.inOut(seg(t, 'hook', 'moved')) });
     },
   });
 
@@ -110,7 +120,7 @@
         color:var(--accent);font:700 ${pick(58, 58, 60)}px UI;letter-spacing:-.01em;transform-origin:0 50%`, '+4 pts');
       reg(S.label); reg(S.num); reg(S.pill, { o: 0 });
       // mini weekly chart (the real nine weeks), current week highlighted
-      const cx = x, cyy = y + pick(640, 640, 600), cw = pick(820, 820, 860), ch = 150, slot = cw / 9;
+      const cx = x, cyy = y + pick(640, 640, 610), cw = pick(820, 820, 860), ch = pick(150, 150, 210), slot = cw / 9;
       S.mini = WEEKS.map((v, i) => {
         const h = ch * v / 40, bx = cx + slot * i + (slot - slot * 0.62) / 2;
         const bar = box(S.stack, `left:${bx}px;top:${cyy + ch - h}px;width:${slot * 0.62}px;height:${h}px;border-radius:8px 8px 0 0;background:var(--line2);transform-origin:50% 100%`);
@@ -240,9 +250,13 @@
         reg(pv, { o: 0 }); reg(rg, { o: 0 });
         return { pv, rg, ...ciTrack(r, 230, 80, 610, 18, v, lo, hi, bandCol(eng)) };
       });
+      // b30: the best prompt (75% on Perplexity) gets a petrol outline
+      S.best = box(C1, 'left:34px;top:208px;width:972px;height:136px;border:4px solid var(--accent);border-radius:24px;box-sizing:border-box;transform-origin:50% 50%');
+      reg(S.best, { o: 0 });
       reg(S.card, { o: 0 });
     },
     run(t, b, S) {
+      const pbst = pop(t, 30); put(S.best, { o: snapIn(pbst), s: 1.05 - 0.05 * pbst });
       // rises from +25% of frame height at a 14° X-tilt behind the outgoing shot (b23.7), settles to a 3° lean
       const pc = sp(t, 23.7, 'default');
       const y = 0.25 * H * (1 - pc) - 18 * seg(t, 'card', 'verdict'), tilt = 3 + 11 * (1 - pc), s = S.k * (0.95 + 0.05 * pc);
@@ -253,8 +267,13 @@
         put(R.bd, { o: snapIn(pb), sx: pb });
         put(R.pv, { o: snapIn(pm) }); put(R.rg, { o: snapIn(pm) });
       });
-      cap(t, S.c1, 'card', 'card_line'); cap(t, S.c2, 'card_line');
-      pushHold(t, S, 'card', 'verdict', 0.03);
+      cap(t, S.c1, 24.1, 'card_line'); cap(t, S.c2, 'card_line');   // c1 starts after the cut: never over the outgoing caption
+      if (TALL) pushHold(t, S, 'card', 'verdict', 0.03);
+      else {
+        // camera: 1.6× onto prompt rows 1–2 (aim 1360, 500: the caption leaves the frame entirely) at b26, back for b28
+        const sc = trk(t, [[0, 1], [26, 1.6, 'default'], [27.2, 1, 'default']]), k = (sc - 1) / 0.6;
+        put(S.root, { s: sc, x: -k * 1.6 * (1360 - 960), y: -k * 1.6 * (500 - 540) });
+      }
     },
   });
 
@@ -343,7 +362,7 @@
   // ================================================================== 6a. TREND  b40–44   (6b covers it from ~b43.5)
   // 16:9 mirrors the earlier shots: card left, caption right. Bars use the petrol ramp.
   const RAMP = ['var(--accent)', 'var(--accent-2)'];
-  const frame = () => ({ k: pick(1, 1, TW / 1020), x: pick(PAD, PAD, TX), y: pick(210, 210, 700) });
+  const frame = () => ({ k: pick(1, 1, TW / 1020), x: pick(PAD, PAD, TX), y: pick(210, 210, 760) });
   const CX2 = 1240;   // 16:9 right caption column (left-aligned)
   scene({
     name: 'trend', from: 'trend', to: 'sources', post: 0.6,
@@ -394,7 +413,7 @@
   scene({
     name: 'sources', from: 'sources', to: 'tag', pre: 0.75,
     build(root, S) {
-      S.c1 = lines(root, ['See the sources', 'AI trusts.'], { x: pick(CX2, CX2, PAD), y: pick(620, 620, 1340), size: 84, accent: { 1: [1] } });
+      S.c1 = lines(root, ['See the sources', 'AI trusts.'], { x: pick(CX2, CX2, PAD), y: pick(620, 620, 330), size: 84, accent: { 1: [1] } });
       const A = frame();
       S.k = A.k;
       S.card = box(root, `left:${A.x}px;top:${A.y}px;width:1020px;height:660px;background:var(--row);transform-origin:0 0`, '', 'card');
@@ -424,7 +443,12 @@
       put(S.meN, { css: { color: h > 0.5 ? 'var(--accent)' : 'var(--ink)' } });
       put(S.meC, { css: { color: h > 0.5 ? 'var(--accent)' : 'var(--ink)' } });
       cap(t, S.c1, 'sources');
-      pushHold(t, S, 'sources', 'tag', 0.03);
+      if (TALL) pushHold(t, S, 'sources', 'tag', 0.03);
+      else {
+        // camera: 1.5× onto the getorem.com row (aim 590, 781: the caption leaves the frame entirely) as it highlights at b46
+        const k = sp(t, 45.9, 'default'), sc = 1 + 0.5 * k;
+        put(S.root, { s: sc, x: -k * 1.5 * (590 - 960), y: -k * 1.5 * (781 - 540) });
+      }
     },
   });
 
@@ -441,66 +465,79 @@
     run(t, b, S) {
       if (TALL) S.l.forEach((L, i) => rise(t, L, 48 + i * 0.25, null, { stagger: 0, preset: 'heavy' }));
       else { rise(t, S.l[0], 48, null, { stagger: 0.08, preset: 'heavy' }); rise(t, S.l[1], 48.5, null, { stagger: 0.08, preset: 'heavy' }); }
-      put(S.root, { s: 1 + 0.07 * ease.inOut(seg(t, 'tag', 'logo')) });
+      put(S.root, { s: 1 + 0.05 * ease.inOut(seg(t, 'tag', 'logo')) + 0.06 * sp(t, 50.5, 'heavy') });
     },
     // the underline is measured from "honest"'s own layout box (inside its line's mask), never a fixed offset
     after(t, b, S) { underlineUnder(S.u, S.word, S.size, sp(t, 49.5, 'snappy')); },
   });
 
   // ================================================================== 8. END CARD  b52–60
+  // The CTA is the largest UI text on the card. Last 0.3 s: the card collapses and frame 0 (headline + prompt pill)
+  // re-forms in place, so the reel loops seamlessly.
   scene({
     name: 'end', from: 'logo', to: 'done',
     build(root, S) {
       S.push = box(root, `width:${W}px;height:${H}px;transform-origin:${W / 2}px ${H / 2}px`); reg(S.push);
-      const ms = 110, ws = 130, mx = PAD, top = pick(250, 250, 430);
-      const my = top + (ws - ms) / 2 + 4;
+      const ms = pick(80, 80, 70), ws = pick(90, 90, 76), mx = PAD, top = pick(270, 270, 440);
+      const my = top + (ws - ms) / 2 + 2;
       // the real mark from the site header: ink ring + petrol dot (assets/brand/logo_0.svg)
       S.ring = box(S.push, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
         `<svg width="${ms}" height="${ms}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#141b21" stroke-width="2.1"/></svg>`);
       S.dot = box(S.push, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
         `<svg width="${ms}" height="${ms}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.9" fill="#0e5e63"/></svg>`);
       reg(S.ring, { o: 0 }); reg(S.dot, { o: 0 });
-      const wx = mx + ms + 32;
+      const wx = mx + ms + pick(26, 26, 22);
       S.word = line(S.push, 'Orem', { x: wx, y: top - ws * 0.08, size: ws });
-      S.tags = box(S.push, `left:${wx + 4}px;top:${top + ws * 1.06}px;font:600 30px UI;letter-spacing:.24em;color:var(--fog);transform-origin:0 50%`, 'GEO · AEO · AIEO');
+      S.tags = box(S.push, `left:${wx + 3}px;top:${top + ws * 1.06}px;font:600 ${pick(26, 26, 24)}px UI;letter-spacing:.24em;color:var(--fog);transform-origin:0 50%`, 'GEO · AEO · AIEO');
       reg(S.tags, { o: 0 });
-      const by = top + pick(260, 260, 250), bf = pick(76, 76, 64);
-      S.btn = box(S.push, `left:${mx}px;top:${by}px;padding:${bf * 0.46}px ${bf * 0.8}px;border-radius:${bf * 1.2}px;background:var(--ink);color:#fff;font:600 ${bf}px UI;letter-spacing:-.015em;transform-origin:20% 50%`,
-        TALL ? 'Start with $25 credit' : 'Start with $25 credit&nbsp;<span class="arw" style="display:inline-block">→</span>');
-      S.arw = S.btn.querySelector('.arw');
-      reg(S.btn, { o: 0 }); if (S.arw) reg(S.arw);
-      const uy = by + bf * 1.2 + bf * 0.92 + 30;
+      const by = top + pick(190, 190, 160), bf = pick(88, 88, 66);
+      S.btn = box(S.push, `left:${mx}px;top:${by}px;padding:${bf * 0.42}px ${bf * 0.72}px;border-radius:${bf * 1.2}px;background:var(--ink);color:#fff;font:600 ${bf}px UI;letter-spacing:-.015em;transform-origin:20% 50%`,
+        'Start with $25 credit');
+      reg(S.btn, { o: 0 });
+      const uy = by + bf * 1.2 + bf * 0.84 + 30;
       S.url = box(S.push, `left:${mx + 6}px;top:${uy}px;font:500 64px UI;color:var(--ink-2);transform-origin:0 50%`, '<span class="u">getorem.com</span>');
       S.uspan = S.url.querySelector('.u');
       reg(S.url, { o: 0 });
       S.sweep = box(S.url, 'height:7px;border-radius:4px;background:var(--accent)'); reg(S.sweep, { o: 0 });
-      // the product's idea one more time: an interval card (right of the CTA in 16:9, under it in 9:16)
-      S.P = TALL ? ciCard(S.push, TX, 1010, TW, 380, { ip: 40, fs: 44, trackFromBottom: 140, lf: 30 })
-                 : ciCard(S.push, 1260, 300, 560, 380, { ip: 40, fs: 38, trackFromBottom: 140, lf: 26 });
+      // the product's idea one more time: an interval card (right of the CTA in 16:9, under it in 9:16), label ≥ 40 px
+      S.P = TALL ? ciCard(S.push, TX, 940, TW, 420, { ip: 44, fs: 46, trackFromBottom: 170, lf: 40 })
+                 : ciCard(S.push, 1330, 300, 520, 430, { ip: 36, fs: 42, trackFromBottom: 170, lf: 40, ends: false });
       reg(S.P.card, { o: 0 });
+      // frame 0, rebuilt for the loop hand-off
+      S.O = openingFrame(root);
+      reg(S.O.pill, { o: 0 });
     },
     run(t, b, S) {
       put(S.push, { s: 1 + 0.03 * ease.inOut(seg(t, 'logo', 'done')) });
-      const out = sp(t, 59.35, 'snappy');      // last 0.3 s: card, URL and tags collapse; lockup + CTA hand over to frame 0
+      const out = sp(t, 59.3, 'snappy'), gone = out > 0.9 ? 0 : 1;      // collapse to nothing (hidden before it's a speck)
       const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo');
-      put(S.ring, { o: snapIn(pr), s: 0.55 + 0.45 * pr, r: -40 * (1 - pr) });
+      put(S.ring, { o: snapIn(pr) * gone, s: (0.55 + 0.45 * pr) * (1 - out), r: -40 * (1 - pr) });
       const pulse = sp(t, 56.5, 'snappy') - sp(t, 56.9, 'default');
-      put(S.dot, { o: snapIn(pd), s: pd * (1 + 0.35 * pulse) });
-      rise(t, S.word, 51.75, null, { stagger: 0.05, preset: CAP });
+      put(S.dot, { o: snapIn(pd) * gone, s: pd * (1 + 0.6 * pulse) * (1 - out) });
+      rise(t, S.word, 51.75, 59.3, { stagger: 0.05, preset: CAP });
       const ptag = pop(t, 52.25);
-      put(S.tags, { o: snapIn(ptag) * (out < 0.97 ? 1 : 0), y: 16 * (1 - ptag), s: 1 - out });
+      put(S.tags, { o: snapIn(ptag) * gone, y: 16 * (1 - ptag), s: 1 - out });
       const pb = pop(t, 'cta');
       const nudge = sp(t, 58, 'snappy') - sp(t, 58.35, 'default');
-      put(S.btn, { o: snapIn(pb), y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.035 * nudge) });
-      if (S.arw) put(S.arw, { x: 14 * nudge });
+      put(S.btn, { o: snapIn(pb) * gone, y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.06 * nudge) * (1 - out) });
       const pu = pop(t, 52.75);
-      put(S.url, { o: snapIn(pu) * (out < 0.97 ? 1 : 0), y: 30 * (1 - pu), s: 1 - out });
+      put(S.url, { o: snapIn(pu) * gone, y: 30 * (1 - pu), s: 1 - out });
       const P = S.P, pc = pop(t, 53, 'default');
-      put(P.card, { o: snapIn(pc) * (out < 0.97 ? 1 : 0), y: 70 * (1 - pc), s: (0.94 + 0.06 * pc) * (1 - out) });
+      put(P.card, { o: snapIn(pc) * gone, y: 70 * (1 - pc), s: (0.94 + 0.06 * pc) * (1 - out) });
       const pbnd = pop(t, 53.5, 'default'); put(P.band, { o: snapIn(pbnd), sx: pbnd });
-      const pm = pop(t, 53.25) * (1 + 0.4 * (sp(t, 59, 'snappy') - sp(t, 59.25, 'default')));
+      const pm = pop(t, 53.25) * (1 + 0.5 * (sp(t, 59, 'snappy') - sp(t, 59.25, 'default')));
       put(P.mark, { o: snapIn(pm), sy: pm });
       const pl = pop(t, 54); put(P.l1, { o: snapIn(pl), y: 16 * (1 - pl) });
+      // frame 0 re-forms: same springs, same elapsed times as at t = 0 (headline released 0.3 beat before, pill 0.6)
+      const end = C.DUR - 1 / C.FPS, b0 = C.beatAt(end) + 0.0;      // the beat the last frame falls on
+      const O = S.O;
+      O.head.slice(1).forEach((L) => rise(t, L, 999));          // the later headline lines stay below their masks
+      if (TALL) cap(t, [O.head[0]], b0 - 0.3);
+      else rise(t, O.head[0], [b0 - 0.3, b0 - 0.3, 999], null, { preset: CAP });
+      const pp = sp(t, b0 - 0.6, 'default');
+      put(O.pill, { o: t >= bt(b0 - 0.6) ? 1 : 0, y: 30 * (1 - pp) });
+      O.words.forEach((w, i) => put(w, { o: i === 0 ? 1 : 0, css: { display: i === 0 ? 'inline' : 'none' } }));
+      put(O.caret, { o: t >= bt(b0 - 0.6) ? 1 : 0 });
     },
     after(t, b, S) {
       const p = sp(t, 55, 'snappy');

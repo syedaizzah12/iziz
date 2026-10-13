@@ -324,6 +324,24 @@
       "type": "tick",
       "gain": 0.3,
       "what": "marker tap"
+    },
+    {
+      "at": 50.5,
+      "type": "tick",
+      "gain": 0.35,
+      "what": "camera punch on the tagline"
+    },
+    {
+      "at": 26,
+      "type": "pop",
+      "gain": 0.35,
+      "what": "camera punch onto prompt rows"
+    },
+    {
+      "at": 30,
+      "type": "pop",
+      "gain": 0.45,
+      "what": "best prompt outlined"
     }
   ],
   "mix": {
