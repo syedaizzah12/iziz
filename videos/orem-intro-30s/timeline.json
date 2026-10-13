@@ -314,16 +314,16 @@
       "what": "logo dot pulse"
     },
     {
-      "at": 58,
+      "at": 57.5,
       "type": "tick",
       "gain": 0.4,
       "what": "CTA nudge"
     },
     {
-      "at": 59,
+      "at": 58.5,
       "type": "tick",
       "gain": 0.3,
-      "what": "marker tap"
+      "what": "marker tap (before the outro)"
     },
     {
       "at": 50.5,
@@ -342,6 +342,12 @@
       "type": "pop",
       "gain": 0.45,
       "what": "best prompt outlined"
+    },
+    {
+      "at": 59.3,
+      "type": "whoosh",
+      "gain": 0.4,
+      "what": "CTA morphs into the opening prompt pill (loop)"
     }
   ],
   "mix": {

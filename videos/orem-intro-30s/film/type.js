@@ -33,7 +33,7 @@
       let y = below * (1 - C.spHit(t, bin, preset));
       if (outAt != null) y += above * C.sp(t, C.beatOf(outAt) + i * stagger * 0.5 - exit * 0.5, 'snappy');
       // exit: hide once the glyph box has passed the mask top (descenders included), so no specks are left behind
-      C.put(w, { y, hide: y >= below * 0.999 || y <= -L.size * 0.9 });
+      C.put(w, { y, hide: y > L.size * 0.8 || y <= -L.size * 0.9 });   // enter: shown once a full glyph row clears the mask bottom
     });
   }
 
