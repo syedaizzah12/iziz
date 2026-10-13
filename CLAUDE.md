@@ -46,6 +46,7 @@ Defaults when the user gives only a URL: 15 seconds, 16:9 and 9:16, synthesized 
 
 Cloud containers start fresh, so check the toolchain first:
 - Node 22, ffmpeg and Chromium are preinstalled. Playwright 1.56 is installed globally at /opt/node22/lib/node_modules. If `playwright` does not resolve from a project, link the skill to it: `ln -sfn /opt/node22/lib/node_modules .claude/skills/motion-reel/node_modules`. Do not run `playwright install`.
+- The SessionStart hook (.claude/hooks/setup-motion-reel.sh) does the Playwright link above and the Python install below. If it failed, do them by hand.
 - Python audio libraries: `python3 -m pip install -r requirements.txt` if `python3 -c "import scipy, soundfile, librosa"` fails.
 - Voiceover needs the Fish Audio connector. If it is not connected, make the reel without voiceover and say so.
 
