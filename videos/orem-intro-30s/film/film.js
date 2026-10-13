@@ -135,7 +135,7 @@
       });
       S.sel = box(S.stack, `top:${cyy + ch + 14}px;height:8px;border-radius:4px;background:var(--accent)`); reg(S.sel, { o: 0 });
       S.slot = slot;
-      const qx = pick(1060, 1060, PAD), qy = pick(380, 380, 1150), qs = pick(120, 120, 140);
+      const qx = pick(1060, 1060, PAD), qy = pick(380, 380, 1210), qs = pick(120, 120, 132);
       S.q1 = line(root, 'Real change?', { x: qx, y: qy, size: qs });
       S.q2 = line(root, 'Or just noise?', { x: qx, y: qy + qs * 1.25, size: qs, accent: [2] });
     },
@@ -143,7 +143,7 @@
       const pl = spHit(t, 'moved', 'heavy');
       put(S.label, { y: 40 * (1 - pl) }); put(S.num, { y: 90 * (1 - pl), s: 0.92 + 0.08 * pl });
       // 9:16: the stack slides up to make room for the questions
-      if (TALL) put(S.stack, { y: -260 * sp(t, 9.6, 'default') });
+      if (TALL) put(S.stack, { y: -200 * sp(t, 9.6, 'default') });
       // which week is current
       const sweepK = b >= 12.5 ? clamp(Math.floor((b - 12.5) / 0.5 + 1e-6), 0, 6) : null;
       const idx = sweepK != null ? sweepK : (b >= beatOf('moved_up') ? 6 : 5);
@@ -274,10 +274,10 @@
         put(R.pv, { o: snapIn(pm) }); put(R.rg, { o: snapIn(pm) });
       });
       // c1 starts after the cut (never over the outgoing caption) and lifts out ON the punch beat, before the camera moves
-      cap(t, S.c1, 24.1, 26.1); cap(t, S.c2, 'card_line');
+      cap(t, S.c1, 24.1, TALL ? 'card_line' : 26.1); cap(t, S.c2, 'card_line');
       // camera: punch onto prompt rows 1–2 at b26, back by b27.3 for the b28 caption
       const k = clamp(trk(t, [[0, 0], [26, 1, 'default'], [27.2, 0, 'default']]), -0.05, 1.05);
-      if (TALL) camTo(S, k, 1.3, [94, 943], [96, 960]);      // left-aligned so the questions stay inside x 60–950
+      if (TALL) pushHold(t, S, 'card', 'verdict', 0.03);    // 9:16 keeps the whole card (values included) in frame
       else camTo(S, k, 1.6, [1360, 500], [960, 540]);
     },
   });
@@ -447,9 +447,9 @@
       put(S.me, { css: { background: `color-mix(in srgb, var(--accent-soft) ${Math.round(100 * clamp(h))}%, var(--card))` }, s: 1 + 0.025 * h });
       put(S.meN, { css: { color: h > 0.5 ? 'var(--accent)' : 'var(--ink)' } });
       put(S.meC, { css: { color: h > 0.5 ? 'var(--accent)' : 'var(--ink)' } });
-      cap(t, S.c1, 'sources', 46.0);                      // lifts out on the punch beat
+      cap(t, S.c1, 'sources', TALL ? null : 46.0);        // 16:9: lifts out on the punch beat
       const k = sp(t, 45.95, 'default');                  // punch onto the getorem.com row as it highlights (b46)
-      if (TALL) camTo(S, k, 1.3, [88, 1258], [96, 1040]);
+      if (TALL) pushHold(t, S, 'sources', 'tag', 0.03);
       else camTo(S, k, 1.5, [590, 781], [960, 540]);
     },
   });
@@ -478,7 +478,7 @@
   // the lockup, tags, URL and interval card lift out through their own masks, the CTA pill itself morphs (rect, fill,
   // radius) into the opening's prompt pill while its label lifts out and "A BUYER ASKS AI / Which |" rises in, and
   // "Does AI" rises into its frame-0 slot. Every outro spring lands by the last frame, which then equals frame 0.
-  const MORPH = { response: 0.24, damping: 0.92 };
+  const MORPH = { response: 0.3, damping: 0.95 };
   scene({
     name: 'end', from: 'logo', to: 'done',
     build(root, S) {
@@ -501,7 +501,7 @@
         'Start with $25 credit');
       reg(S.btn, { o: 0 });
       const uy = by + bf * 1.2 + bf * 0.84 + 30;
-      S.url = box(root, `left:${mx + 6}px;top:${uy}px;font:500 64px UI;color:var(--ink-2)`, '<span class="u">getorem.com</span>');
+      S.url = box(root, `left:${mx + 6}px;top:${uy}px;padding-bottom:26px;font:500 64px UI;color:var(--ink-2)`, '<span class="u">getorem.com</span>');
       S.uspan = S.url.querySelector('.u');
       reg(S.url, { o: 0 });
       S.sweep = box(S.url, 'height:7px;border-radius:4px;background:var(--accent)'); reg(S.sweep, { o: 0 });
@@ -516,33 +516,34 @@
     },
     run(t, b, S) {
       // a masked lift-out for boxes: slides up while clipped at its own top edge (same grammar as the type masks)
-      const liftOut = (e, p, h) => ({ y: -h * p, clip: `inset(${(100 * clamp(p)).toFixed(2)}% 0 0 0)`, hide: p >= 0.96 });   // no last-frame sliver
-      const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo'), lo = sp(t, 59.0, 'snappy');
+      const liftOut = (e, p, h) => (p > 0.001 ? { y: -h * p, clip: `inset(${(100 * clamp(p)).toFixed(2)}% 0 -40px 0)`, hide: p >= 0.85 } : {});   // clip only while lifting; hide before a sliver
+      const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo'), lo = sp(t, 58.75, 'snappy');
       put(S.ring, { o: snapIn(pr), s: 0.55 + 0.45 * pr, r: -40 * (1 - pr), ...liftOut(S.ring, lo, S.ms) });
       const pulse = sp(t, 56.5, 'snappy') - sp(t, 56.9, 'default');
       put(S.dot, { o: snapIn(pd), s: pd * (1 + 0.6 * pulse), ...liftOut(S.dot, lo, S.ms) });
-      rise(t, S.word, 51.75, 59.1, { stagger: 0.05, preset: CAP });
-      const ptag = pop(t, 52.25), to = sp(t, 59.05, 'snappy');
+      rise(t, S.word, 51.75, 58.85, { stagger: 0.05, preset: CAP });
+      const ptag = pop(t, 52.25), to = sp(t, 58.8, 'snappy');
       put(S.tags, { o: snapIn(ptag), ...liftOut(S.tags, to, 34), y: 16 * (1 - ptag) - 34 * to });
       const pb = pop(t, 'cta');
       const nudge = sp(t, 57.5, 'snappy') - sp(t, 57.85, 'default');
-      put(S.btn, { o: snapIn(pb) * (b < 59.3 ? 1 : 0), y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.06 * nudge) });
-      const pu = pop(t, 52.75), uo = sp(t, 59.1, 'snappy');
-      put(S.url, { o: snapIn(pu), ...liftOut(S.url, uo, 90), y: 30 * (1 - pu) - 90 * uo });
-      const P = S.P, pc = pop(t, 53, 'default'), co = sp(t, 59.15, 'snappy');
+      put(S.btn, { o: snapIn(pb) * (b < 59.05 ? 1 : 0), y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.06 * nudge) });
+      const pu = pop(t, 52.75), uo = sp(t, 58.85, 'snappy');
+      put(S.url, { o: snapIn(pu), ...liftOut(S.url, uo, 116), y: 30 * (1 - pu) - 116 * uo });
+      const P = S.P, pc = pop(t, 53, 'default'), co = sp(t, 58.95, 'snappy');
       put(P.card, { o: snapIn(pc), ...liftOut(P.card, co, 430), y: 70 * (1 - pc) - 430 * co, s: 0.94 + 0.06 * pc });
       const pbnd = pop(t, 53.5, 'default'); put(P.band, { o: snapIn(pbnd), sx: pbnd });
       const pm = pop(t, 53.25) * (1 + 0.5 * (sp(t, 58.5, 'snappy') - sp(t, 58.75, 'default')));
       put(P.mark, { o: snapIn(pm), sy: pm });
       const pl = pop(t, 54); put(P.l1, { o: snapIn(pl), y: 16 * (1 - pl) });
-      // frame 0 re-forms: "Does AI" rises with the same spring and lead as at t = 0 (released 0.6 beat before the end)
-      const O = S.O, bEnd = C.beatAt(C.DUR - 1 / C.FPS);
+      // frame 0 re-forms. "Does AI" follows the wordmark's exit (b59.15) and has fully landed by the last frame,
+      // exactly as at t = 0 (released 0.6 beat early there); the later headline lines stay below their masks.
+      const O = S.O;
       O.head.slice(1).forEach((L) => rise(t, L, 999));
-      if (TALL) cap(t, [O.head[0]], bEnd - 0.6);
-      else rise(t, O.head[0], [bEnd - 0.6, bEnd - 0.6, 999], null, { preset: CAP });
-      // the pill's contents: CTA label lifts out, the prompt rises in (they never share a frame)
-      const tOut = sp(t, 59.35, 'snappy'), tIn = sp(t, 59.55, CAP);
-      put(S.ctaTxt, { o: b >= 59.3 && tOut < 0.995 ? 1 : 0, y: -S.bf * 1.5 * tOut });
+      if (TALL) cap(t, [O.head[0]], 59.15);                 // after the lockup has cleared: never over it
+      else rise(t, O.head[0], [59.15, 59.15, 999], null, { preset: CAP });
+      // the pill's contents: the CTA label lifts out (b59.1, gone before the fill lightens), then the prompt rises in (b59.55)
+      const tOut = sp(t, 59.1, 'snappy'), tIn = sp(t, 59.55, CAP);
+      put(S.ctaTxt, { o: b >= 59.05 && tOut < 0.9 ? 1 : 0, y: -S.bf * 1.5 * tOut });
       const showIn = b >= 59.55;
       put(O.lab, { o: showIn ? 1 : 0, y: S.O.pillH * (1 - tIn) });
       put(O.q, { o: showIn ? 1 : 0, y: S.O.pillH * (1 - tIn) });
@@ -553,8 +554,8 @@
       const p = sp(t, 55, 'snappy');
       put(S.sweep, { o: p > 0.01 ? 1 : 0, css: { left: S.uspan.offsetLeft + 'px', top: (S.uspan.offsetTop + S.uspan.offsetHeight + 6) + 'px', width: (S.uspan.offsetWidth * p) + 'px' } });
       // the morph: from b59.3 the CTA's own rect/fill/radius spring to the prompt pill's (layout read here, in after())
-      if (b >= 59.3) {
-        const m = sp(t, 59.3, MORPH), O = S.O, B = S.btn;
+      if (b >= 59.05) {
+        const m = sp(t, 59.2, MORPH), fill = sp(t, 59.32, { response: 0.2, damping: 0.95 }), O = S.O, B = S.btn;
         const from = { x: B.offsetLeft, y: B.offsetTop, w: B.offsetWidth, h: B.offsetHeight, r: B.offsetHeight / 2 };
         const yF = 30 * (1 - Motion.step(bt(C.beatAt(C.DUR - 1 / C.FPS)) - bt(C.beatAt(C.DUR - 1 / C.FPS) - 0.6), 'default'));
         const to = { x: PAD, y: O.py + yF, w: pick(1640, 1640, 860), h: O.pillH, r: 36 };
@@ -562,8 +563,8 @@
         put(O.pill, { o: 1, css: {
           left: L(from.x, to.x).toFixed(2) + 'px', top: L(from.y, to.y).toFixed(2) + 'px',
           width: L(from.w, to.w).toFixed(2) + 'px', height: L(from.h, to.h).toFixed(2) + 'px', borderRadius: L(from.r, to.r).toFixed(2) + 'px',
-          background: `color-mix(in srgb, #141b21 ${Math.round(100 * (1 - clamp(m)))}%, #ffffff)`,
-          boxShadow: `0 30px 70px -30px rgba(20,27,33,${(0.30 * clamp(m)).toFixed(3)})` } });
+          background: `color-mix(in srgb, #141b21 ${Math.round(100 * (1 - clamp(fill)))}%, #ffffff)`,
+          boxShadow: `0 30px 70px -30px rgba(20,27,33,${(0.30 * clamp(fill)).toFixed(3)})` } });
       }
     },
   });

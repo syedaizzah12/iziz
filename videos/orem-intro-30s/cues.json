@@ -688,12 +688,12 @@
    "what": "marker tap (before the outro)"
   },
   {
-   "t": 29.64076,
+   "t": 29.59079,
    "type": "whoosh",
    "gain": 0.4,
    "pitch": 1.015,
    "pan": 0.053,
-   "beat": 59.3,
+   "beat": 59.2,
    "mark": null,
    "snapped_to_hit": false,
    "snap_ms": 0,
