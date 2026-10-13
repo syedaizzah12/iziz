@@ -70,9 +70,9 @@
     "band": 20,
     "card": 24,
     "row1": 24,
-    "row2": 24.25,
-    "row3": 24.5,
-    "row4": 24.75,
+    "row2": 24.5,
+    "row3": 25,
+    "row4": 25.5,
     "card_line": 28,
     "verdict": 32,
     "v1": 33,
@@ -85,7 +85,7 @@
     "tag": 48,
     "gap": 51.5,
     "logo": 52,
-    "cta": 56,
+    "cta": 53,
     "done": 60
   },
   "sfx": [
@@ -93,13 +93,13 @@
       "at": "hook",
       "type": "pop",
       "gain": 0.75,
-      "what": "headline word 1 on frame 0"
+      "what": "headline word 1 + prompt on frame 0"
     },
     {
       "at": "hook_w2",
       "type": "pop",
       "gain": 0.5,
-      "what": "headline word 2"
+      "what": "headline 'recommend'"
     },
     {
       "at": "hook_w3",
@@ -108,18 +108,20 @@
       "what": "headline 'your brand?'"
     },
     {
-      "at": "ask",
-      "type": "pop",
-      "gain": 0.6,
-      "what": "buyer prompt pill appears"
-    },
-    {
-      "at": 4.5,
-      "to": 6.0,
-      "every": 0.25,
+      "at": 0.5,
+      "to": 3.0,
+      "every": 0.5,
       "type": "tick",
       "gain": 0.3,
-      "what": "prompt types"
+      "what": "prompt word"
+    },
+    {
+      "at": "ask",
+      "to": 6,
+      "every": 0.5,
+      "type": "pop",
+      "gain": 0.4,
+      "what": "engine chip"
     },
     {
       "at": "moved",
@@ -152,11 +154,11 @@
       "what": "push into the 0–100% track"
     },
     {
-      "at": 16,
-      "to": 19.25,
-      "every": 0.25,
+      "at": 16.5,
+      "to": 19.5,
+      "every": 0.5,
       "type": "tick",
-      "gain": 0.28,
+      "gain": 0.3,
       "what": "samples landing"
     },
     {
@@ -235,7 +237,13 @@
       "at": "gain",
       "type": "thump",
       "gain": 0.7,
-      "what": "Real gain highlighted"
+      "what": "Real gain row lifts out"
+    },
+    {
+      "at": 37,
+      "type": "pop",
+      "gain": 0.5,
+      "what": "'No false alarms.'"
     },
     {
       "at": "trend",
@@ -262,6 +270,12 @@
       "what": "tagline lands"
     },
     {
+      "at": 49.5,
+      "type": "tick",
+      "gain": 0.35,
+      "what": "underline under 'honest'"
+    },
+    {
       "at": "logo",
       "type": "riser",
       "gain": 0.5,
@@ -280,9 +294,27 @@
       "what": "CTA"
     },
     {
-      "at": 59,
+      "at": 54,
+      "type": "pop",
+      "gain": 0.4,
+      "what": "interval card on the end card"
+    },
+    {
+      "at": 55.5,
       "type": "tick",
-      "gain": 0.45,
+      "gain": 0.3,
+      "what": "URL underline"
+    },
+    {
+      "at": 57,
+      "type": "tick",
+      "gain": 0.35,
+      "what": "logo dot pulse"
+    },
+    {
+      "at": 58.5,
+      "type": "tick",
+      "gain": 0.4,
       "what": "CTA nudge"
     }
   ],

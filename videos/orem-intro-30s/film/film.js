@@ -2,6 +2,7 @@
 // Pure function of time: no timers, no Math.random, nothing mutated in run(). Seeded noise only.
 // All copy and numbers are getorem.com's own. The dashboard cards are rebuilt element by element from the 3x captures
 // in assets/cap/ (text, values, colours and layout copied) so their bars and intervals can animate.
+// Palette: Orem's petrol (#0e5e63) and the demo's petrol → #34ad97 gradient (user-supplied demo recording).
 // 9:16 is re-blocked, not cropped: everything that must read stays inside x 60–950, y 269–1536 (platform UI zones).
 (() => {
   const { W, H, pick, put, reg, el, scene, sp, spHit, trk, seg, clamp, lerp, ease, bt, beatOf, mulberry32 } = C;
@@ -9,64 +10,90 @@
   C.fonts = ['500 100px Display', '400 40px UI', '500 40px UI', '600 40px UI', '700 40px UI'];
   const TALL = C.FMT === '9x16';
   const PAD = pick(140, 90, 90);
-  // 9:16 card frame inside the safe area
-  const TX = 60, TW = 890;
+  const TX = 60, TW = 890;                          // 9:16 card frame inside the safe area
+  // captions: a firm, fast spring (no overshoot on type): motion starts ON the beat and the line is ≥ 95 % risen
+  // ~3 frames later, so it reads on its sound. Whole lines rise together (no per-word stagger).
+  const CAP = { response: 0.2, damping: 0.95 };
 
   // ------------------------------------------------------------------ helpers
   const box = (parent, css, html = '', cls = 'abs') => el('div', { class: cls, style: css }, parent, html);
-  // several masked lines; accent: { lineIndex: [wordIndices] }
   function lines(parent, texts, o) {
     return texts.map((tx, i) => line(parent, tx, { x: o.x, y: o.y + i * o.size * (o.lh || 1.12), size: o.size,
       accent: (o.accent || {})[i], cls: o.cls, color: o.color }));
   }
-  // lines rise one after another (lineGap beats apart) and lift out together
-  function riseLines(t, Ls, inAt, outAt = null, o = {}) {
-    const gap = o.lineGap ?? 0.25;
-    Ls.forEach((L, i) => rise(t, L, Array.isArray(inAt) ? inAt[i] : beatOf(inAt) + i * gap, outAt, o));
+  // caption lines: rise as units on the beat, lift out together
+  function cap(t, Ls, inAt, outAt = null, gap = 0.06) {
+    Ls.forEach((L, i) => rise(t, L, beatOf(inAt) + i * gap, outAt, { stagger: 0, preset: CAP, exit: 0.28 }));
   }
   const pushHold = (t, S, b0, b1, amt = 0.04) => put(S.root, { s: 1 + amt * ease.inOut(seg(t, b0, b1)) });
   const snapIn = (p) => (p > 0.001 ? 1 : 0);       // opacity snaps in on the first frame of motion (never a fade)
-  // things that are visible from their first frame (pops, dots, pills) need no lead: one frame keeps them on the beat
-  const pop = (t, b, preset = 'snappy') => spHit(t, b, preset, 1 / 60);
+  const pop = (t, b, preset = 'snappy') => sp(t, b, preset);   // visible from its first frame: released ON the beat
   const pct = (v) => `${Math.round(v)}%`;
-
-  // engine glyphs: plain colour marks keyed to the real UI's engine colours (no third-party logos redrawn)
-  const ENGINE = { Perplexity: '#5e6a74', ChatGPT: '#5e6a74' };
+  const ring = (size, col = '#5e6a74') => `<span style="display:inline-block;width:${size * 0.5}px;height:${size * 0.5}px;border-radius:50%;border:${Math.max(2, size * 0.1)}px solid ${col};box-sizing:border-box;flex:none"></span>`;
   const engineTag = (parent, name, size) => box(parent,
-    `position:relative;display:inline-flex;align-items:center;gap:${size * 0.4}px;font:500 ${size}px UI;color:var(--ink-2)`,
-    `<span style="width:${size * 0.55}px;height:${size * 0.55}px;border-radius:50%;border:${size * 0.12}px solid ${ENGINE[name]};box-sizing:border-box"></span>${name}`, '');
+    `position:relative;display:inline-flex;align-items:center;gap:${size * 0.4}px;font:500 ${size}px UI;color:var(--ink-2)`, `${ring(size)}${name}`, '');
+
+  // a compact rebuild of the Perplexity interval row (sampling card, end card)
+  function ciCard(parent, x, y, w, h, o = {}) {
+    const P = {};
+    P.card = box(parent, `left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform-origin:50% 50%`, '', 'card');
+    const ip = o.ip || 56, fs = o.fs || 50;
+    const tg = box(P.card, `left:${ip}px;top:${ip}px`); engineTag(tg, 'Perplexity', fs);
+    P.val = box(P.card, `left:${w - ip - 320}px;width:320px;top:${ip - 12}px;font:700 ${fs * 1.66}px UI;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right`, o.val || '33%');
+    P.tx = ip; P.tw = w - 2 * ip; P.ty = h - (o.trackFromBottom || 160); P.th = o.th || 32;
+    box(P.card, `left:${P.tx}px;top:${P.ty}px;width:${P.tw}px;height:${P.th}px;border-radius:${P.th / 2}px;background:var(--line)`);
+    P.band = box(P.card, `left:${P.tx + P.tw * 0.24}px;top:${P.ty}px;width:${P.tw * 0.17}px;height:${P.th}px;border-radius:${P.th / 2}px;background:var(--accent-bar);transform-origin:${(100 * 9) / 17}% 50%`);
+    P.mark = box(P.card, `left:${P.tx + P.tw * 0.33 - 4}px;top:${P.ty - 12}px;width:8px;height:${P.th + 24}px;border-radius:4px;background:var(--ink);transform-origin:50% 50%`);
+    const ly = P.ty + P.th + 28, lf = `font:500 ${o.lf || 32}px UI;color:var(--fog)`;
+    box(P.card, `left:${P.tx}px;top:${ly}px;${lf}`, '0%');
+    P.l1 = box(P.card, `left:${P.tx + P.tw * 0.33}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-50%)">likely <i>24%–41%</i></span>');
+    box(P.card, `left:${P.tx + P.tw}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-100%)">100%</span>');
+    reg(P.card); reg(P.band, { o: 0 }); reg(P.mark, { o: 0 }); reg(P.l1, { o: 0 }); reg(P.val);
+    return P;
+  }
 
   // ================================================================== 1. HOOK  b0–8
+  // Frame 0: the headline's first words AND the buyer's prompt (already typing). b4–6: the engines it's asked on.
   const PROMPT = ['Which', 'AI', 'visibility', 'tools', 'report', 'confidence', 'intervals?'];
+  const ENGINES = ['ChatGPT', 'Perplexity', 'Gemini', 'Claude', 'AI Overviews'];   // getorem.com meta description
   scene({
     name: 'hook', from: 'hook', to: 'moved',
     build(root, S) {
-      const size = pick(165, 165, 150);
-      const y0 = pick(227, 227, 476);
+      const size = pick(180, 180, 150), y0 = pick(166, 166, 394);
       S.head = TALL
         ? lines(root, ['Does AI', 'recommend', 'your brand?'], { x: PAD, y: y0, size, accent: { 2: [0, 1] } })
         : lines(root, ['Does AI recommend', 'your brand?'], { x: PAD, y: y0, size, accent: { 1: [0, 1] } });
-      // buyer prompt pill (the chat-question style from Orem's "Ask about this workspace" panel)
-      const py = y0 + (TALL ? 3 : 2) * size * 1.12 + pick(90, 90, 100);
-      S.pill = box(root, `left:${PAD}px;top:${py}px;box-sizing:border-box;max-width:${pick(1640, 1640, 860)}px;padding:${pick(36, 36, 36)}px ${pick(50, 50, 44)}px;
+      const py = y0 + (TALL ? 3 : 2) * size * 1.12 + pick(60, 60, 70);
+      S.pill = box(root, `left:${PAD}px;top:${py}px;box-sizing:border-box;width:${pick(1640, 1640, 860)}px;height:${pick(185, 185, 250)}px;overflow:hidden;padding:36px ${pick(50, 50, 44)}px;
         background:var(--card);border:1px solid var(--line);border-radius:36px;box-shadow:0 30px 70px -30px rgba(20,27,33,.30);white-space:normal`);
       box(S.pill, `position:relative;font:600 ${pick(24, 24, 28)}px UI;letter-spacing:.14em;color:var(--fog);margin-bottom:14px`, 'A BUYER ASKS AI', '');
-      const q = box(S.pill, `position:relative;font:500 ${pick(56, 56, 58)}px/1.25 UI;color:var(--ink);letter-spacing:-.01em`, '', '');
-      // words stream in one per tick (the tick SFX lands on each word)
+      const q = box(S.pill, `position:relative;font:500 ${pick(52, 52, 50)}px/1.25 UI;color:var(--ink);letter-spacing:-.01em`, '', '');
       S.words = PROMPT.map((w, i) => reg(el('span', {}, q, w + (i < PROMPT.length - 1 ? ' ' : '')), { o: 0 }));
       S.caret = el('span', { style: `display:inline-block;width:5px;height:1.05em;background:var(--accent);vertical-align:-0.15em;margin-left:2px` }, q);
-      reg(S.pill, { o: 0 }); reg(S.caret, { o: 0 });
+      reg(S.pill); reg(S.caret, { o: 0 });
+      // engine chips
+      const cy = py + pick(185, 185, 250) + 36, cf = pick(34, 34, 32);
+      S.row = box(root, `left:${PAD}px;top:${cy}px;width:${pick(1640, 1640, 860)}px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;white-space:normal`);
+      S.lab = reg(el('span', { style: `font:600 ${cf * 0.7}px UI;letter-spacing:.14em;color:var(--fog);margin-right:6px` }, S.row, 'ASKED ON'), { o: 0 });
+      S.chips = ENGINES.map((e) => reg(el('span', { style: `display:inline-flex;align-items:center;gap:${cf * 0.35}px;padding:${cf * 0.38}px ${cf * 0.6}px;border-radius:${cf}px;background:var(--card);border:1px solid var(--line);font:500 ${cf}px UI;color:var(--ink);transform-origin:50% 50%` },
+        S.row, `${ring(cf, '#0e5e63')}${e}`), { o: 0 }));
     },
     run(t, b, S) {
-      if (TALL) riseLines(t, S.head, [[-0.4, -0.3], [1], [2, 2.08]]);
-      else riseLines(t, S.head, [[-0.4, -0.3, 1], [2, 2.08]]);
-      const p = pop(t, 'ask', 'snappy');
-      put(S.pill, { o: snapIn(p), y: 60 * (1 - p), s: 0.94 + 0.06 * p });
+      if (TALL) { cap(t, [S.head[0]], -0.3); cap(t, [S.head[1]], 'hook_w2'); cap(t, [S.head[2]], 'hook_w3'); }
+      else {
+        // line 1 = 'Does AI' on frame 0, 'recommend' on b1; line 2 on b2
+        rise(t, S.head[0], [-0.3, -0.3, 1], null, { preset: CAP }); cap(t, [S.head[1]], 'hook_w3');
+      }
+      // the prompt: on screen from frame 0, one word per tick (b0, then every half beat to b3)
       let n = 0;
-      S.words.forEach((w, i) => { const on = b >= 4.5 + i * 0.25 - 1 / 120; if (on) n++; put(w, { o: on ? 1 : 0, css: { display: on ? 'inline' : 'none' } }); });
+      S.words.forEach((w, i) => { const on = b >= i * 0.5 - 1e-6 || i === 0; if (on) n++; put(w, { o: on ? 1 : 0, css: { display: on ? 'inline' : 'none' } }); });
       const blink = n < PROMPT.length || Math.floor(b * 2) % 2 === 0;
-      put(S.caret, { o: b >= 4 && blink ? 1 : 0 });
-      pushHold(t, S, 'hook', 'moved');
+      put(S.caret, { o: blink && b < 3.4 ? 1 : 0, css: { display: b < 3.4 ? 'inline-block' : 'none' } });   // caret leaves when the prompt is done
+      put(S.pill, { y: 30 * (1 - sp(t, -0.6, 'default')) });
+      // engines, one per half beat
+      put(S.lab, { o: b >= 4 - 0.02 ? 1 : 0 });
+      S.chips.forEach((c, i) => { const p = pop(t, 4 + i * 0.5); put(c, { o: snapIn(p), s: 0.7 + 0.3 * p, y: 18 * (1 - p) }); });
+      pushHold(t, S, 'hook', 'moved', 0.03);
     },
   });
 
@@ -74,10 +101,11 @@
   scene({
     name: 'moved', from: 'moved', to: 'sample',
     build(root, S) {
-      const x = PAD, y = pick(230, 230, 380);
-      S.label = box(root, `left:${x + 8}px;top:${y}px;font:500 ${pick(52, 52, 54)}px UI;color:var(--ink-2)`, 'Your AI mention rate');
-      S.num = box(root, `left:${x - 12}px;top:${y + 64}px;font:700 ${pick(420, 420, 380)}px/1 UI;letter-spacing:-.05em;color:var(--ink);font-variant-numeric:tabular-nums`, '32%');
-      S.pill = box(root, `left:${x + 10}px;top:${y + pick(510, 510, 470)}px;padding:16px 34px;border-radius:44px;background:var(--accent-soft);
+      S.stack = box(root, `left:0;top:0;width:${W}px;height:${H}px`); reg(S.stack);
+      const x = PAD, y = pick(238, 238, 640);
+      S.label = box(S.stack, `left:${x + 8}px;top:${y}px;font:500 ${pick(52, 52, 54)}px UI;color:var(--ink-2)`, 'Your AI mention rate');
+      S.num = box(S.stack, `left:${x - 12}px;top:${y + 64}px;font:700 ${pick(420, 420, 380)}px/1 UI;letter-spacing:-.05em;color:var(--ink);font-variant-numeric:tabular-nums`, '32%');
+      S.pill = box(S.stack, `left:${x + 10}px;top:${y + pick(510, 510, 470)}px;padding:16px 34px;border-radius:44px;background:var(--accent-soft);
         color:var(--accent);font:700 ${pick(58, 58, 60)}px UI;letter-spacing:-.01em`, '+6 pts');
       reg(S.label); reg(S.num); reg(S.pill, { o: 0 });
       const qx = pick(1060, 1060, PAD), qy = pick(380, 380, 1080), qs = pick(120, 120, 140);
@@ -87,15 +115,17 @@
     run(t, b, S) {
       const pl = spHit(t, 'moved', 'heavy');
       put(S.label, { y: 40 * (1 - pl) }); put(S.num, { y: 90 * (1 - pl), s: 0.92 + 0.08 * pl });
+      // 9:16: the stack starts centred and slides up to make room for the questions
+      if (TALL) put(S.stack, { y: -280 * sp(t, 11.5, 'default') });
       // b10: 32 → 38 with the +6 pts pill. From b14 the number won't sit still: sprung retargets every half beat,
-      // staying inside the range the site's own weekly chart shows (32–39%). That's the noise.
-      const v = trk(t, [[0, 32], [beatOf('moved_up') - 0.15, 38, 'snappy'], [14, 35, 'snappy'], [14.5, 39, 'snappy'], [15, 34, 'snappy'], [15.5, 37, 'snappy']]);
+      // inside the range the site's own weekly chart shows (32–39%). That's the noise.
+      const v = trk(t, [[0, 32], [beatOf('moved_up'), 38, 'snappy'], [14, 35, 'snappy'], [14.5, 39, 'snappy'], [15, 34, 'snappy'], [15.5, 37, 'snappy']]);
       const d = Math.round(v) - 32;
       put(S.num, { text: pct(v) });
-      const pp = pop(t, 'moved_up', 'snappy');
+      const pp = pop(t, 'moved_up');
       put(S.pill, { o: snapIn(pp), s: 0.7 + 0.3 * pp, text: `${d >= 0 ? '+' : '−'}${Math.abs(d)} pts` });
-      rise(t, S.q1, 11.85); rise(t, S.q2, 13.85);
-      pushHold(t, S, 'moved', 'sample', 0.05);
+      cap(t, [S.q1], 'real'); cap(t, [S.q2], 'noise');
+      pushHold(t, S, 'moved', 'sample', 0.04);
     },
   });
 
@@ -113,57 +143,42 @@
         ? lines(root, ['Each rate gets a 95%', 'confidence interval.'], { x: PAD, y: cy0, size: cs, accent: { 0: [4], 1: [0, 1] } })
         : lines(root, ['Each rate gets a 95% confidence interval.'], { x: PAD, y: cy0, size: cs, accent: { 0: [4, 5, 6] } });
       const cw = pick(1640, 1640, TW), cx = pick(PAD, PAD, TX), cy = pick(400, 400, 740), ch = pick(460, 460, 500);
-      S.card = box(root, `left:${cx}px;top:${cy}px;width:${cw}px;height:${ch}px;transform-origin:50% 50%`, '', 'card');
-      const ip = pick(60, 60, 44);
-      const tg = box(S.card, `left:${ip}px;top:${ip}px`); engineTag(tg, 'Perplexity', pick(50, 50, 48));
-      S.val = box(S.card, `left:${cw - ip - 320}px;width:320px;top:${ip - 12}px;font:700 ${pick(84, 84, 80)}px UI;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;transform-origin:100% 0`, '—');
-      S.tx = ip; S.tw = cw - 2 * ip; S.ty = ch - 160; S.th = 32;
-      box(S.card, `left:${S.tx}px;top:${S.ty}px;width:${S.tw}px;height:${S.th}px;border-radius:${S.th / 2}px;background:var(--line)`);
-      S.band = box(S.card, `left:${S.tx + S.tw * LO / 100}px;top:${S.ty}px;width:${S.tw * (HI - LO) / 100}px;height:${S.th}px;border-radius:${S.th / 2}px;background:var(--accent-bar);transform-origin:${(100 * (MID - LO)) / (HI - LO)}% 50%`);
-      S.mark = box(S.card, `left:${S.tx + S.tw * MID / 100 - 4}px;top:${S.ty - 12}px;width:8px;height:${S.th + 24}px;border-radius:4px;background:var(--ink);transform-origin:50% 50%`);
-      const ly = S.ty + S.th + 28, lf = `font:500 ${pick(32, 32, 32)}px UI;color:var(--fog)`;
-      box(S.card, `left:${S.tx}px;top:${ly}px;${lf}`, '0%');
-      S.l1 = box(S.card, `left:${S.tx + S.tw * MID / 100}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-50%)">likely <i>24%–41%</i></span>');
-      box(S.card, `left:${S.tx + S.tw}px;top:${ly}px;${lf}`, '<span style="display:inline-block;transform:translateX(-100%)">100%</span>');
-      reg(S.card); reg(S.band, { o: 0 }); reg(S.mark, { o: 0 }); reg(S.l1, { o: 0 }); reg(S.val);
+      S.P = ciCard(root, cx, cy, cw, ch, { ip: pick(60, 60, 44), fs: pick(50, 50, 48), val: '—' });
+      const P = S.P;
       // samples: seeded, roughly normal around 33 with the spread of a 24–41% interval, stacked as a dot plot
-      const r = mulberry32(2024), bins = {}, ds = pick(18, 18, 15), step = pick(22, 22, 18);
+      const r = mulberry32(2024), bins = {}, ds = pick(20, 20, 17), step = pick(24, 24, 20);
       S.dots = [];
       for (let i = 0; i < 42; i++) {
-        const g = (r() + r() + r() + r() - 2) * 1.7;           // ~N(0,1)
+        const g = (r() + r() + r() + r() - 2) * 1.7;
         const v = clamp(MID + g * 4.4, 14, 54), bi = Math.round(v / 2);
         const k = (bins[bi] = (bins[bi] || 0) + 1) - 1;
-        const d = box(S.card, `left:0;top:0;width:${ds}px;height:${ds}px;border-radius:50%;background:var(--accent)`);
+        const d = box(P.card, `left:0;top:0;width:${ds}px;height:${ds}px;border-radius:50%;background:var(--accent);transform-origin:50% 50%`);
         reg(d, { o: 0 });
-        S.dots.push({ d, v, ds, x: S.tx + S.tw * (bi * 2) / 100 - ds / 2, y: S.ty - 28 - k * step, at: 16 + Math.floor(i / 3) * 0.25 });
+        S.dots.push({ d, v, ds, x: P.tx + P.tw * (bi * 2) / 100 - ds / 2, y: P.ty - 30 - k * step, at: 16.5 + Math.floor(i / 6) * 0.5 });
       }
     },
     run(t, b, S) {
-      // push-through: the card arrives from deep and settles (whoosh peaks on the landing at b16)
+      const P = S.P;
       const pin = spHit(t, 15.75, 'default');
-      put(S.card, { y: 220 * (1 - pin), s: 1.3 - 0.3 * pin });
-      riseLines(t, S.c1, 15.8, 19.4); riseLines(t, S.c2, 19.85);
-      // dots drop in batches of three per quarter beat (a tick each), then collapse into the interval at b20
+      put(P.card, { y: 220 * (1 - pin), s: 1.3 - 0.3 * pin });
+      cap(t, S.c1, 'sample', 19.6); cap(t, S.c2, 'band');
+      // dots pop in place, six per tick on the half beat, then collapse into the interval at b20
       let n = 0, sum = 0;
       const col = sp(t, 'band', 'default');
       S.dots.forEach((D) => {
-        const p = pop(t, D.at, 'snappy');
+        const p = pop(t, D.at);
         if (p > 0.001) { n++; sum += D.v; }
-        const tx = S.tx + S.tw * clamp(D.v, LO, HI) / 100 - D.ds / 2;
-        put(D.d, {
-          o: snapIn(p) * (b < 21.25 ? 1 : 0),
-          x: lerp(D.x, tx, col), y: lerp(D.y, S.ty + S.th / 2 - D.ds / 2, col), s: lerp(p, 0.4, col),   // pop in place: one clear onset per tick
-        });
+        const tx = P.tx + P.tw * clamp(D.v, LO, HI) / 100 - D.ds / 2;
+        put(D.d, { o: snapIn(p) * (b < 21.25 ? 1 : 0), x: lerp(D.x, tx, col), y: lerp(D.y, P.ty + P.th / 2 - D.ds / 2, col), s: lerp(p, 0.4, col) });
       });
-      put(S.val, { text: b < beatOf('band') ? (n ? pct(sum / n) : '—') : '33%' });
+      put(P.val, { text: b < beatOf('band') ? (n ? pct(sum / n) : '—') : '33%', s: 1 + 0.08 * Math.exp(-Math.max(0, t - bt('band')) * 6) * (b >= 20 ? 1 : 0) });
       const pb = pop(t, 'band', 'default');
-      put(S.band, { o: snapIn(pb), sx: pb });
-      const pm = pop(t, 19.75, 'snappy');
-      put(S.mark, { o: snapIn(pm), sy: pm });
-      const pl = pop(t, 20.25, 'snappy');
-      put(S.l1, { o: snapIn(pl), y: 20 * (1 - pl) });
-      put(S.val, { s: 1 + 0.08 * Math.exp(-Math.max(0, t - bt('band')) * 6) * snapIn(pb) });
-      pushHold(t, S, 'sample', 'card', 0.03);
+      put(P.band, { o: snapIn(pb), sx: pb });
+      const pm = pop(t, 19.75);
+      put(P.mark, { o: snapIn(pm), sy: pm });
+      const pl = pop(t, 20.5);
+      put(P.l1, { o: snapIn(pl), y: 20 * (1 - pl) });
+      pushHold(t, S, 'sample', 'card', 0.02);
     },
   });
 
@@ -175,7 +190,7 @@
     ['What is answer engine optimization (AEO)?', 'ChatGPT', 42, 17, 67],
     ['Is my brand cited in Perplexity answers?', 'Perplexity', 42, 17, 67],
   ];
-  const bandCol = (engine) => (engine === 'Perplexity' ? 'var(--accent-bar)' : '#363d44');   // petrol gradient as in Orem's demo
+  const bandCol = (engine) => (engine === 'Perplexity' ? 'var(--accent-bar)' : '#363d44');
   function ciTrack(parent, x, y, w, h, v, lo, hi, col) {
     box(parent, `left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:${h / 2}px;background:#dfe4e2`);
     const bd = box(parent, `left:${x + w * lo / 100}px;top:${y}px;width:${w * (hi - lo) / 100}px;height:${h}px;border-radius:${h / 2}px;background:${col};transform-origin:${(100 * (v - lo)) / (hi - lo)}% 50%`);
@@ -186,11 +201,10 @@
   scene({
     name: 'card', from: 'card', to: 'verdict',
     build(root, S) {
-      const cs = pick(80, 80, 80);
-      S.c1 = TALL ? lines(root, ['An error bar on', 'every number.'], { x: PAD, y: 320, size: cs, accent: { 1: [0] } })
-                  : lines(root, ['An error bar', 'on every number.'], { x: PAD, y: 440, size: cs, accent: { 1: [1] } });
+      S.c1 = TALL ? lines(root, ['An error bar on', 'every number.'], { x: PAD, y: 320, size: 80, accent: { 1: [0] } })
+                  : lines(root, ['An error bar', 'on every number.'], { x: PAD, y: 440, size: 80, accent: { 1: [1] } });
       S.c2 = TALL ? lines(root, ['Every rate comes with', 'an interval and a verdict.'], { x: PAD, y: 320, size: 74, accent: { 1: [4] } })
-                  : lines(root, ['Every rate comes', 'with an interval', 'and a verdict.'], { x: PAD, y: 392, size: cs, accent: { 2: [2] } });
+                  : lines(root, ['Every rate comes', 'with an interval', 'and a verdict.'], { x: PAD, y: 400, size: 80, accent: { 2: [2] } });
       S.k = pick(0.95, 0.95, TW / 1040);
       const cx = pick(840, 840, TX), cy = pick(165, 165, 640);
       S.card = box(root, `left:${cx}px;top:${cy}px;width:1040px;height:790px;transform-origin:${TALL ? '0 0' : '50% 0'}`, '', 'card');
@@ -213,23 +227,23 @@
       reg(S.card, { o: 0 });
     },
     run(t, b, S) {
-      const pc = spHit(t, 23.5, 'default');
+      const pc = spHit(t, 23.6, 'default');
       put(S.card, { o: snapIn(pc), y: 640 * (1 - pc) - 18 * seg(t, 'card', 'verdict'), r: 3.5 * (1 - pc), s: S.k * (0.94 + 0.06 * pc) });
       S.rows.forEach((R, i) => {
-        const at = beatOf('row1') + i * 0.25, p = pop(t, at, 'snappy');
+        const at = beatOf('row1') + i * 0.5, p = pop(t, at);
         put(R.r, { o: snapIn(p), x: 50 * (1 - p) });
-        const pm = pop(t, at + 0.25, 'snappy'), pb = sp(t, at + 0.3, 'default');
+        const pm = pop(t, at + 0.25), pb = sp(t, at + 0.3, 'default');
         put(R.mk, { o: snapIn(pm), sy: pm });
         put(R.bd, { o: snapIn(pb), sx: pb });
       });
-      riseLines(t, S.c1, 23.8, 27.5); riseLines(t, S.c2, 27.85);
+      cap(t, S.c1, 'card', 27.62); cap(t, S.c2, 'card_line');
       pushHold(t, S, 'card', 'verdict', 0.03);
     },
   });
 
   // ================================================================== 5. VERDICTS  b32–40
-  // Rebuild of the "Workspaces" table (assets/cap/cards/workspaces.png). 9:16 keeps the Workspace · engine and Verdict
-  // columns. At b36 the one "Real gain" row lifts out of the table at a size that reads on a phone.
+  // Rebuild of the "Workspaces" table (assets/cap/cards/workspaces.png). 9:16 keeps Workspace · engine + Verdict.
+  // At b36 row 3 ("Real gain") itself lifts out of the table toward camera: one continuous object, pill included.
   const ROWS = [
     ['Orem · Perplexity', '33%', '24–41%', false],
     ['Orem · ChatGPT', '30%', '22–39%', false],
@@ -239,80 +253,83 @@
   const UP = (s) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-${s * 0.14}px;margin-right:${s * 0.28}px"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="15 7 21 7 21 13"/></svg>`;
   const verdictPill = (parent, css, gain, fs) => box(parent, `${css};padding:${fs * 0.38}px ${fs * 0.8}px;border-radius:${fs * 0.55}px;font:600 ${fs}px UI;transform-origin:0 50%;${gain
     ? 'background:#d3ebdf;color:var(--gain)' : 'background:var(--noise-soft);color:var(--noise)'}`, gain ? `${UP(fs * 0.9)}Real gain` : 'Within noise');
+  // row content, shared by the table rows and the lifted row so the lift is the same object
+  const RX = TALL ? { name: 64, pill: 540 } : { name: 64, rate: 440, ci: 575, pill: 705 };
+  const RF = pick(31, 31, 38), PF = pick(28, 28, 32), RH = pick(112, 112, 124);
+  function rowContent(r, i, [name, rate, ci, gain]) {
+    const ty = (RH - RF * 1.2) / 2;
+    box(r, `left:24px;top:${ty}px;font:500 ${RF - 3}px UI;color:var(--fog)`, String(i + 1));
+    box(r, `left:${RX.name}px;top:${ty}px;font:600 ${RF}px UI;color:var(--ink);letter-spacing:-.01em`, name);
+    if (!TALL) { box(r, `left:${RX.rate}px;top:${ty}px;font:500 ${RF}px UI;color:var(--ink)`, rate); box(r, `left:${RX.ci}px;top:${ty}px;font:500 ${RF}px UI;color:var(--ink)`, ci); }
+    return verdictPill(r, `left:${RX.pill}px;top:${(RH - PF * 1.96) / 2}px`, gain, PF);
+  }
   scene({
     name: 'verdict', from: 'verdict', to: 'trend',
     build(root, S) {
-      const cs = pick(88, 88, 84);
-      S.c1 = TALL ? lines(root, ['Every change gets', 'a verdict.'], { x: PAD, y: 330, size: cs, accent: { 1: [1] } })
-                  : lines(root, ['Every change', 'gets a verdict.'], { x: PAD, y: 440, size: cs, accent: { 1: [2] } });
+      S.c1 = TALL ? lines(root, ['Every change gets', 'a verdict.'], { x: PAD, y: 330, size: 84, accent: { 1: [1] } })
+                  : lines(root, ['Every change gets a verdict.'], { x: PAD, y: 130, size: 92, accent: { 0: [4] } });
       S.c2 = TALL ? lines(root, ['No false alarms.'], { x: PAD, y: 360, size: 96, accent: { 0: [2] } })
-                  : lines(root, ['No false alarms.'], { x: PAD, y: 200, size: 88, accent: { 0: [2] } });
-      // the table
-      const cw = pick(1020, 1020, TW), cx = pick(780, 780, TX), cy = pick(215, 215, 640), ch = pick(650, 650, 700);
-      S.table = box(root, `left:${cx}px;top:${cy}px;width:${cw}px;height:${ch}px;transform-origin:50% 50%`, '', 'card');
-      const F = pick(31, 31, 38), RH = pick(112, 112, 124);
+                  : lines(root, ['No false alarms.'], { x: PAD, y: 130, size: 92, accent: { 0: [2] } });
+      const cw = pick(1020, 1020, TW), ch = pick(650, 650, 700);
+      S.T = { cw, ch, cx: pick(450, 450, TX), cy: pick(300, 300, 640) };
+      S.table = box(root, `left:${S.T.cx}px;top:${S.T.cy}px;width:${cw}px;height:${ch}px;transform-origin:50% 50%`, '', 'card');
       box(S.table, `left:44px;top:40px;font:600 ${pick(30, 30, 36)}px UI;color:var(--ink)`, 'Workspaces');
       box(S.table, `right:44px;left:auto;top:44px;font:400 ${pick(24, 24, 30)}px UI;color:var(--fog)`, 'This week');
-      const hd = `font:500 ${pick(22, 22, 28)}px UI;color:var(--fog)`;
-      const COLS = TALL ? [[84, 'Workspace · engine'], [560, 'Verdict']] : [[84, 'Workspace · engine'], [520, 'Mention rate'], [680, '95% CI'], [830, 'Verdict']];
-      COLS.forEach(([x, h]) => box(S.table, `left:${x}px;top:${pick(124, 124, 130)}px;${hd}`, h));
-      S.rows = ROWS.map(([name, rate, ci, gain], i) => {
-        const y = pick(168, 168, 184) + i * RH;
-        const r = box(S.table, `left:20px;top:${y}px;width:${cw - 40}px;height:${RH}px;border-top:1px solid var(--line)`);
-        if (gain) { S.hl = box(r, `left:4px;top:8px;width:${cw - 48}px;height:${RH - 16}px;border-radius:18px;background:var(--gain-soft);transform-origin:0 50%`); reg(S.hl, { o: 0 }); }
-        const ty = (RH - F * 1.2) / 2;
-        box(r, `left:24px;top:${ty}px;font:500 ${F - 3}px UI;color:var(--fog)`, String(i + 1));
-        box(r, `left:64px;top:${ty}px;font:600 ${F}px UI;color:var(--ink);letter-spacing:-.01em`, name);
-        if (!TALL) { box(r, `left:500px;top:${ty}px;font:500 ${F}px UI;color:var(--ink)`, rate); box(r, `left:660px;top:${ty}px;font:500 ${F}px UI;color:var(--ink)`, ci); }
-        const pill = verdictPill(r, `left:${pick(810, 810, 540)}px;top:${(RH - pick(25, 25, 32) * 1.96) / 2}px`, gain, pick(25, 25, 32));
+      const hd = `font:500 ${pick(20, 20, 28)}px UI;color:var(--fog)`, hy = pick(126, 126, 130);
+      const COLS = TALL ? [[20 + RX.name, 'Workspace · engine'], [20 + RX.pill, 'Verdict']]
+                        : [[20 + RX.name, 'Workspace · engine'], [20 + RX.rate, 'Mention rate'], [20 + RX.ci, '95% CI'], [20 + RX.pill, 'Verdict']];
+      COLS.forEach(([x, h]) => box(S.table, `left:${x}px;top:${hy}px;${hd}`, h));
+      S.rowY0 = pick(168, 168, 184);
+      S.rows = ROWS.map((R, i) => {
+        const r = box(S.table, `left:20px;top:${S.rowY0 + i * RH}px;width:${cw - 40}px;height:${RH}px;border-top:1px solid var(--line)`);
+        let hl = null;
+        if (R[3]) { hl = box(r, `left:4px;top:8px;width:${cw - 48}px;height:${RH - 16}px;border-radius:18px;background:var(--gain-soft);transform-origin:0 50%`); reg(hl, { o: 0 }); }
+        const pill = rowContent(r, i, R);
         reg(r, { o: 0 }); reg(pill, { o: 0 });
-        return { r, pill };
+        return { r, pill, hl };
       });
       reg(S.table);
-      // the lifted row
-      const lw = pick(1700, 1700, TW), lx = pick(110, 110, TX), ly = pick(430, 430, 860), lh = pick(300, 300, 470);
-      S.lift = box(root, `left:${lx}px;top:${ly}px;width:${lw}px;height:${lh}px;transform-origin:50% 50%;box-shadow:0 2px 6px rgba(20,27,33,.05),0 50px 110px -30px rgba(20,27,33,.38)`, '', 'card');
-      const lab = `font:500 ${pick(28, 28, 30)}px UI;color:var(--fog)`;
-      if (TALL) {
-        box(S.lift, `left:52px;top:48px;${lab}`, 'Workspace · engine');
-        box(S.lift, `left:52px;top:94px;font:600 64px UI;color:var(--ink);letter-spacing:-.02em`, 'Brightleaf · ChatGPT');
-        box(S.lift, `left:52px;top:190px;font:500 56px UI;color:var(--ink)`, '29% <span style="color:var(--fog)">·</span> 21–38%');
-        S.lp = verdictPill(S.lift, 'left:52px;top:300px', true, 64);
-      } else {
-        [[64, 'Workspace · engine'], [720, 'Mention rate'], [940, '95% CI'], [1180, 'Verdict']].forEach(([x, h]) => box(S.lift, `left:${x}px;top:56px;${lab}`, h));
-        const vy = 128, vf = 'font:600 60px UI;color:var(--ink);letter-spacing:-.02em';
-        box(S.lift, `left:64px;top:${vy}px;${vf}`, 'Brightleaf · ChatGPT');
-        box(S.lift, `left:720px;top:${vy}px;${vf}`, '29%');
-        box(S.lift, `left:940px;top:${vy}px;${vf}`, '21–38%');
-        S.lp = verdictPill(S.lift, `left:1180px;top:${vy - 12}px`, true, 60);
-      }
-      reg(S.lift, { o: 0 }); reg(S.lp, { o: 0 });
+      // the lifted row: same content and geometry as row 3, placed over it from its first frame
+      S.lw = cw - 40;
+      S.lift = box(root, `left:0;top:0;width:${S.lw}px;height:${RH}px;border-radius:18px;transform-origin:0 0;background:var(--gain-soft)`);
+      rowContent(S.lift, 2, ROWS[2]);
+      reg(S.lift, { o: 0 });
+      S.kF = pick(1.85, 1.85, 1.04);
+      // 16:9: hovers over the table's middle; 9:16: pulled out below the table (y 1400–1530, inside the safe area)
+      S.tgt = TALL ? { x: TX + (TW - S.lw * S.kF) / 2, y: 1395 } : { x: (W - S.lw * S.kF) / 2, y: 640 - RH * S.kF / 2 };
     },
     run(t, b, S) {
-      const pc = spHit(t, 31.75, 'default');
+      const T = S.T;
+      const pc = spHit(t, 31.75, 'default'), back = sp(t, 'gain', 'heavy');
+      const ty = 40 * (1 - pc) + 40 * back, ts = 0.97 + 0.03 * pc - 0.07 * back;
+      put(S.table, { y: ty, s: ts });
       S.rows.forEach((R, i) => {
-        const p = pop(t, 32 + i * 0.12, 'snappy');
-        put(R.r, { o: snapIn(p), y: 34 * (1 - p) });
-        const pv = pop(t, ['v1', 'v2', 'v3', 'v4'][i], 'snappy');
+        const p = pop(t, 32 + i * 0.12);
+        const lifted = i === 2 && b >= beatOf('gain');
+        put(R.r, { o: lifted ? 0 : snapIn(p), y: 34 * (1 - p) });
+        const pv = pop(t, ['v1', 'v2', 'v3', 'v4'][i]);
         put(R.pill, { o: snapIn(pv), s: 0.6 + 0.4 * pv });
       });
-      put(S.hl, { o: snapIn(pop(t, 35.5, 'snappy')), sx: pop(t, 35.5, 'default') });
-      // b36: the table leans back and the gain row lifts toward camera (covering it)
-      const back = sp(t, 35.8, 'heavy');
-      put(S.table, { y: 40 * (1 - pc) + 30 * back, s: 0.97 + 0.03 * pc - 0.05 * back });
-      const lf = spHit(t, 'gain', 'heavy');
-      put(S.lift, { o: snapIn(lf), y: 260 * (1 - lf), s: 0.82 + 0.18 * lf });
-      const lp = pop(t, 36.5, 'snappy');
-      put(S.lp, { o: snapIn(lp), s: 0.6 + 0.4 * lp });
-      riseLines(t, S.c1, 31.8, 35.55); riseLines(t, S.c2, 36.85);
+      const ph = pop(t, 35.5);
+      put(S.rows[2].hl, { o: snapIn(ph), sx: sp(t, 35.5, 'default') });
+      // row 3's rect on stage this frame (table transform: translate(0,ty) scale(ts) about its centre)
+      const lx = T.cx + T.cw / 2 + (20 - T.cw / 2) * ts;
+      const ly = T.cy + T.ch / 2 + (S.rowY0 + 2 * RH - T.ch / 2) * ts + ty;
+      const pl = sp(t, 'gain', 'default');
+      if (b >= beatOf('gain')) {
+        put(S.lift, { o: 1, x: lerp(lx, S.tgt.x, pl), y: lerp(ly, S.tgt.y, pl), s: lerp(ts, S.kF, pl),
+          css: { background: `color-mix(in srgb, var(--gain-soft) ${Math.round(100 * (1 - clamp(pl)))}%, var(--card))`,
+                 boxShadow: `0 ${Math.round(40 * pl)}px ${Math.round(100 * pl)}px -30px rgba(20,27,33,${(0.4 * clamp(pl)).toFixed(3)})` } });
+      }
+      cap(t, S.c1, 31.75, 36.7); cap(t, S.c2, 37);
       pushHold(t, S, 'verdict', 'trend', 0.03);
     },
   });
 
   // ================================================================== 6a. TREND  b40–44   (6b covers it from ~b43.5)
-  // Rebuild of "Brand mention rate · weekly · 95% CI". The site's multi-colour bars → ink + the one accent.
+  // Rebuild of "Brand mention rate · weekly · 95% CI". The site's multi-colour bars → the petrol ramp.
   const WEEKS = [39, 36, 33, 32, 32, 32, 36, 36, 32], ERR = [6, 6, 6, 6, 7, 6, 6, 6, 6];
-  const RAMP = ['var(--accent)', 'var(--accent-2)'];   // the demo's petrol → sea-green ramp
+  const RAMP = ['var(--accent)', 'var(--accent-2)'];
   const frame = () => ({ k: pick(1, 1, TW / 1020), x: pick(780, 780, TX), y: pick(210, 210, 700) });
   const capY = () => pick(440, 440, 330);
   scene({
@@ -349,11 +366,11 @@
       const pc = spHit(t, 39.75, 'default');
       put(S.card, { y: 40 * (1 - pc), s: S.k });
       S.bars.forEach((B, i) => {
-        const p = sp(t, 39.9 + i * 0.2, 'default'), pe = pop(t, 40.4 + i * 0.2, 'snappy');
+        const p = sp(t, 39.9 + i * 0.2, 'default'), pe = pop(t, 40.4 + i * 0.2);
         put(B.bar, { o: snapIn(p), sy: p });
         put(B.eb, { o: snapIn(pe), sy: pe });
       });
-      riseLines(t, S.c1, 39.8, 43.4);
+      cap(t, S.c1, 'trend', 43.55);
       pushHold(t, S, 'trend', 'sources', 0.03);
     },
   });
@@ -387,26 +404,32 @@
       const p = spHit(t, 'sources', 'default');
       put(S.card, { o: snapIn(p), x: (W - A.x + 80) * (1 - p), r: 2.5 * (1 - p), s: S.k });
       S.rows.forEach((R, i) => { const pf = sp(t, 44.1 + i * 0.18, 'default'); put(R.f, { o: snapIn(pf), sx: pf }); });
-      const h = pop(t, 46, 'snappy');
+      const h = pop(t, 46);
       put(S.me, { css: { background: `color-mix(in srgb, var(--accent-soft) ${Math.round(100 * clamp(h))}%, var(--card))` }, s: 1 + 0.025 * h });
       put(S.meN, { css: { color: h > 0.5 ? 'var(--accent)' : 'var(--ink)' } });
       put(S.meC, { css: { color: h > 0.5 ? 'var(--accent)' : 'var(--ink)' } });
-      riseLines(t, S.c1, 43.85);
+      cap(t, S.c1, 'sources');
       pushHold(t, S, 'sources', 'tag', 0.03);
     },
   });
 
-  // ================================================================== 7. TAGLINE  b48–52  (gap at 51.5, hard cut on the drop)
+  // ================================================================== 7. TAGLINE  b48–52  (build into the drop, gap 51.5)
   scene({
     name: 'tag', from: 'tag', to: 'logo',
     build(root, S) {
-      S.l = TALL ? lines(root, ['Statistically', 'honest', 'AI-search', 'visibility.'], { x: PAD, y: 566, size: 150, accent: { 1: [0] } })
+      S.l = TALL ? lines(root, ['Statistically', 'honest', 'AI-search', 'visibility.'], { x: PAD, y: 600, size: 160, accent: { 1: [0] } })
                  : lines(root, ['Statistically honest', 'AI-search visibility.'], { x: PAD, y: 310, size: 190, lh: 1.15, accent: { 0: [1] } });
+      // an underline sweeps under "honest" on b49.5
+      S.u = box(root, `top:${TALL ? 600 + 160 * 1.12 + 160 * 0.96 : 310 + 190 * 0.94}px;height:${pick(12, 12, 11)}px;border-radius:6px;background:var(--accent)`); reg(S.u, { o: 0 });
+      S.ux = TALL ? [PAD + 4, PAD + 440] : [935, 1700];
     },
     run(t, b, S) {
-      if (TALL) riseLines(t, S.l, [[47.7], [48.5], [49.5], [50]]);
-      else riseLines(t, S.l, [[47.7, 48.5], [49.5, 50]]);
-      pushHold(t, S, 'tag', 'logo', 0.05);
+      if (TALL) S.l.forEach((L, i) => rise(t, L, 48 + i * 0.25, null, { stagger: 0, preset: 'heavy' }));
+      else { rise(t, S.l[0], 48, null, { stagger: 0.08, preset: 'heavy' }); rise(t, S.l[1], 48.5, null, { stagger: 0.08, preset: 'heavy' }); }
+      const [a, z] = S.ux;
+      const ind = Motion.indicator(t, [[0, a, a], [bt(49.5), a, z]]);
+      put(S.u, { o: ind.size > 1 ? 1 : 0, x: ind.start, css: { width: ind.size + 'px' } });
+      put(S.root, { s: 1 + 0.07 * ease.inOut(seg(t, 'tag', 'logo')) });
     },
   });
 
@@ -414,8 +437,8 @@
   scene({
     name: 'end', from: 'logo', to: 'done',
     build(root, S) {
-      S.push = box(root, `width:${W}px;height:${H}px;transform-origin:${PAD}px ${H / 2}px`); reg(S.push);
-      const ms = pick(140, 140, 130), ws = pick(175, 175, 165), mx = PAD, top = pick(250, 250, 624);
+      S.push = box(root, `width:${W}px;height:${H}px;transform-origin:${W / 2}px ${H / 2}px`); reg(S.push);
+      const ms = pick(140, 140, 140), ws = pick(175, 175, 180), mx = PAD, top = pick(300, 300, 440);
       const my = top + (ws - ms) / 2;
       // the real mark from the site header: ink ring + petrol dot (assets/brand/logo_0.svg)
       S.ring = box(S.push, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
@@ -423,36 +446,47 @@
       S.dot = box(S.push, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
         `<svg width="${ms}" height="${ms}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.9" fill="#0e5e63"/></svg>`);
       reg(S.ring, { o: 0 }); reg(S.dot, { o: 0 });
-      const wx = mx + ms + pick(40, 40, 34);
+      const wx = mx + ms + pick(40, 40, 36);
       S.word = line(S.push, 'Orem', { x: wx, y: top - ws * 0.08, size: ws });
-      S.tags = line(S.push, 'GEO · AEO · AIEO', { x: wx + 6, y: top + ws * 1.02, size: pick(34, 34, 32), cls: 'ui' });
+      S.tags = line(S.push, 'GEO · AEO · AIEO', { x: wx + 6, y: top + ws * 1.02, size: pick(34, 34, 34), cls: 'ui' });
       S.tags.el.style.letterSpacing = '.24em'; S.tags.el.style.color = 'var(--fog)'; S.tags.el.style.fontWeight = '600';
-      const by = top + pick(330, 330, 330), bf = pick(72, 72, 64);
-      S.btn = box(S.push, `left:${mx}px;top:${by}px;padding:${bf * 0.46}px ${bf * 0.8}px;border-radius:${bf * 1.2}px;background:var(--ink);color:#fff;font:600 ${bf}px UI;letter-spacing:-.015em`,
+      const by = top + 330, bf = pick(72, 72, 64);
+      S.btn = box(S.push, `left:${mx}px;top:${by}px;padding:${bf * 0.46}px ${bf * 0.8}px;border-radius:${bf * 1.2}px;background:var(--ink);color:#fff;font:600 ${bf}px UI;letter-spacing:-.015em;transform-origin:20% 50%`,
         TALL ? 'Start with $25 credit' : 'Start with $25 credit&nbsp;<span class="arw" style="display:inline-block">→</span>');
       S.arw = S.btn.querySelector('.arw');
       reg(S.btn, { o: 0 }); if (S.arw) reg(S.arw);
-      const uy = by + bf * 1.2 + bf * 0.92 + 36, us = pick(64, 64, 64);
+      const uy = by + bf * 1.2 + bf * 0.92 + 36, us = 64;
       S.url = line(S.push, 'getorem.com', { x: mx + 6, y: uy, size: us, cls: 'ui', color: 'var(--ink-2)' });
       S.ux = mx + 8; S.uw = us * 5.6; S.uy = uy + us * 1.32;
       S.sweep = box(S.push, `top:${S.uy}px;height:7px;border-radius:4px;background:var(--accent)`); reg(S.sweep, { o: 0 });
+      // the product's idea, one more time: an interval card (right half in 16:9, under the CTA in 9:16)
+      S.P = TALL ? ciCard(S.push, TX, 1110, TW, 380, { ip: 40, fs: 44, trackFromBottom: 140, lf: 30 })
+                 : ciCard(S.push, 1060, 330, 720, 400, { ip: 48, fs: 44, trackFromBottom: 150, lf: 30 });
+      reg(S.P.card, { o: 0 });
     },
     run(t, b, S) {
-      put(S.push, { s: 1 + 0.06 * ease.inOut(seg(t, 'logo', 'done')) });
-      const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo', 'snappy');
+      put(S.push, { s: 1 + 0.04 * ease.inOut(seg(t, 'logo', 'done')) });
+      const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo');
       put(S.ring, { o: snapIn(pr), s: 0.55 + 0.45 * pr, r: -40 * (1 - pr) });
-      put(S.dot, { o: snapIn(pd), s: pd });
-      rise(t, S.word, 51.75, null, { stagger: 0.05 });
-      rise(t, S.tags, 53, null, { stagger: 0.06, preset: 'snappy' });
-      const pb = spHit(t, 'cta', 'snappy');
-      // b59: the button nudges (and its arrow pushes right) so the hold never goes static
-      const nudge = sp(t, 59, 'snappy') - sp(t, 59.35, 'default');
-      put(S.btn, { o: snapIn(pb), y: 60 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.035 * nudge) });
+      // b57: the petrol dot pulses once
+      const pulse = sp(t, 57, 'snappy') - sp(t, 57.4, 'default');
+      put(S.dot, { o: snapIn(pd), s: pd * (1 + 0.35 * pulse) });
+      rise(t, S.word, 51.75, null, { stagger: 0.05, preset: CAP });
+      rise(t, S.tags, 52.5, null, { stagger: 0.04, preset: CAP });
+      const pb = pop(t, 'cta');
+      const nudge = sp(t, 58.5, 'snappy') - sp(t, 58.85, 'default');
+      put(S.btn, { o: snapIn(pb), y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.035 * nudge) });
       if (S.arw) put(S.arw, { x: 14 * nudge });
-      rise(t, S.url, 56.5, null, { stagger: 0.04, preset: 'snappy' });
-      const x0 = S.ux, x1 = S.ux + S.uw;
-      const sw = Motion.indicator(t, [[0, x0, x0], [bt(57.6), x0, x1]]);
+      rise(t, S.url, 53.5, null, { stagger: 0, preset: CAP });
+      const sw = Motion.indicator(t, [[0, S.ux, S.ux], [bt(55.5), S.ux, S.ux + S.uw]]);
       put(S.sweep, { o: sw.size > 1 ? 1 : 0, x: sw.start, css: { width: sw.size + 'px' } });
+      // interval card: rises on b54, band locks on b54.5, label on b55, marker taps on b59.5
+      const P = S.P, pc = pop(t, 54, 'default');
+      put(P.card, { o: snapIn(pc), y: 80 * (1 - pc), s: 0.94 + 0.06 * pc });
+      const pbnd = pop(t, 54.5, 'default'); put(P.band, { o: snapIn(pbnd), sx: pbnd });
+      const pm = pop(t, 54.25) * (1 + 0.4 * (sp(t, 59.5, 'snappy') - sp(t, 59.75, 'default')));
+      put(P.mark, { o: snapIn(pm), sy: pm });
+      const pl = pop(t, 55); put(P.l1, { o: snapIn(pl), y: 16 * (1 - pl) });
     },
   });
 
