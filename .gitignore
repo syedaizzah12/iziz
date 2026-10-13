@@ -1,0 +1,13 @@
+node_modules
+.venv/
+.env
+.env.*
+*.wav
+*.npy
+.DS_Store
+# Cloud sessions are deleted after inactivity, so finished films in videos/<slug>/renders are committed.
+# Test renders and heavy intermediates stay out of git.
+videos/_test-*/
+videos/*/renders/draft_*.mp4
+videos/*/renders/clip_*.mp4
+videos/*/review/
