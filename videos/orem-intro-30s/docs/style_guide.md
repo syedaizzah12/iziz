@@ -12,12 +12,14 @@ Source material: `assets/site/info.json` (:root tokens, headings, font families)
 | `--ink-2` | `#46525b` | `--ink2`, body copy |
 | `--fog` | `#7d8790` | `--fog`, axis labels and ranges |
 | `--line` | `#e1e7e4` | `--line`, tracks and dividers |
-| `--accent` | `#028090` | `--ov-accent`, the ONE accent (dashboard bars, "Analyze" button, active states) |
-| `--accent-soft` | `#e0f4f6` | `--ov-accent-soft`, highlight rows (getorem.com in sources) |
-| `--accent-bar` | `#20b8cd` | the Perplexity bar colour in the real cards (a lighter step of the accent ramp) |
-| `--gain` / `--gain-soft` | `#12805c` / `#e2f1ea` | real UI only: the "Real gain" verdict pill and "No claim flagged" |
+| `--accent` | `#0e5e63` | `--petrol`, Orem's brand colour: the step circles, progress bar and verdict banner in Orem's own demo recording (supplied by the user; measures #146460 after video compression). The ONE accent. |
+| `--accent-soft` | `#e3eeec` | `--petrol-soft`, highlight rows (getorem.com in sources) and the "+6 pts" tag |
+| `--accent-2` | `#34ad97` | the light end of the demo's progress-bar gradient (#186663 → #36af99); only as the second step of the petrol ramp |
+| `--gain` / `--gain-soft` | `#12805c` / `#e2f1ea` | real UI only: the "Real gain" verdict pill |
+Corrected after the user's note ("pick the color right"): the earlier teal #028090 and cyan #20b8cd are gone.
+Interval bands use the demo's petrol → sea-green gradient; the weekly chart alternates petrol and #34ad97.
 Accent colour on type goes on the key word only. The site's weekly chart uses black, cyan, blue and orange bars;
-here that becomes a tonal ramp: ink and the accent, alternating, as the site alternates them.
+here that becomes the petrol ramp (petrol and #34ad97, alternating).
 
 ## 2. Type
 - Display face: **Newsreader** 500 (`assets/fonts/newsreader.woff2`, variable), tracking −0.025em, as the site's H1

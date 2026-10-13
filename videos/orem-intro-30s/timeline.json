@@ -69,10 +69,10 @@
     "sample": 16,
     "band": 20,
     "card": 24,
-    "row1": 25,
-    "row2": 25.5,
-    "row3": 26,
-    "row4": 26.5,
+    "row1": 24,
+    "row2": 24.25,
+    "row3": 24.5,
+    "row4": 24.75,
     "card_line": 28,
     "verdict": 32,
     "v1": 33,
@@ -115,7 +115,7 @@
     },
     {
       "at": 4.5,
-      "to": 6.5,
+      "to": 6.0,
       "every": 0.25,
       "type": "tick",
       "gain": 0.3,
@@ -152,8 +152,8 @@
       "what": "push into the 0–100% track"
     },
     {
-      "at": 16.5,
-      "to": 19.75,
+      "at": 16,
+      "to": 19.25,
       "every": 0.25,
       "type": "tick",
       "gain": 0.28,
@@ -278,6 +278,12 @@
       "type": "pop",
       "gain": 0.65,
       "what": "CTA"
+    },
+    {
+      "at": 59,
+      "type": "tick",
+      "gain": 0.45,
+      "what": "CTA nudge"
     }
   ],
   "mix": {

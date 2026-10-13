@@ -12,7 +12,10 @@
     /* style guide tokens: ONE accent unless the brief says otherwise */
     /* measured from getorem.com :root (docs/style_guide.md). ONE accent: --ov-accent. */
     --bg: #f3f5f4; --ink: #141b21; --ink-2: #46525b; --fog: #7d8790; --line: #e1e7e4; --line2: #cbd4d0;
-    --accent: #028090; --accent-soft: #e0f4f6; --accent-bar: #20b8cd; --petrol: #0e5e63; --card: #ffffff;
+    /* accent = Orem's petrol (site token --petrol; the user's demo recording measures #146460 after compression).
+       --accent-2 is the light end of the demo's progress-bar gradient (#186663 → #36af99). */
+    --accent: #0e5e63; --accent-soft: #e3eeec; --accent-2: #34ad97; --accent-bar: linear-gradient(90deg, #0e5e63, #34ad97);
+    --petrol: #0e5e63; --card: #ffffff;
     --gain: #12805c; --gain-soft: #e2f1ea; --noise: #5e6a74; --noise-soft: #ebeeef; --row: #f1f3f2;
   }
   html, body { margin: 0; background: #000; overflow: hidden; }
