@@ -1,0 +1,328 @@
+{
+  "url": "https://getorem.com/",
+  "title": "Orem — Statistically honest AI-search visibility · GEO · AEO · AIEO",
+  "description": "Measure and improve how visible your brand is in AI search — ChatGPT, Perplexity, Google AI Overviews, Gemini & Claude — with confidence intervals you can trust.",
+  "font_families_by_use": [
+    [
+      "Inter, system-ui, sans-serif",
+      433
+    ],
+    [
+      "Inter, sans-serif",
+      48
+    ],
+    [
+      "Newsreader, serif",
+      16
+    ],
+    [
+      "Newsreader, Georgia, serif",
+      13
+    ],
+    [
+      "system-ui, -apple-system, sans-serif",
+      2
+    ]
+  ],
+  "font_faces": [],
+  "text_colors": [
+    [
+      "rgb(125, 135, 144)",
+      172
+    ],
+    [
+      "rgb(20, 27, 33)",
+      171
+    ],
+    [
+      "rgb(70, 82, 91)",
+      112
+    ],
+    [
+      "rgb(64, 64, 64)",
+      13
+    ],
+    [
+      "rgb(94, 106, 116)",
+      12
+    ],
+    [
+      "rgb(255, 255, 255)",
+      9
+    ],
+    [
+      "rgb(2, 108, 123)",
+      7
+    ],
+    [
+      "rgb(14, 94, 99)",
+      4
+    ],
+    [
+      "rgb(124, 74, 15)",
+      3
+    ],
+    [
+      "rgb(18, 128, 92)",
+      3
+    ],
+    [
+      "rgb(38, 38, 38)",
+      2
+    ],
+    [
+      "rgb(203, 212, 208)",
+      1
+    ],
+    [
+      "rgb(2, 128, 144)",
+      1
+    ],
+    [
+      "rgb(75, 90, 153)",
+      1
+    ],
+    [
+      "rgb(138, 90, 18)",
+      1
+    ]
+  ],
+  "bg_colors": [
+    [
+      "rgb(255, 255, 255)",
+      99
+    ],
+    [
+      "rgb(243, 245, 244)",
+      24
+    ],
+    [
+      "rgb(20, 27, 33)",
+      19
+    ],
+    [
+      "rgb(225, 231, 228)",
+      19
+    ],
+    [
+      "rgb(2, 128, 144)",
+      16
+    ],
+    [
+      "rgb(241, 249, 250)",
+      14
+    ],
+    [
+      "rgb(238, 241, 240)",
+      13
+    ],
+    [
+      "rgb(32, 184, 205)",
+      12
+    ],
+    [
+      "rgb(241, 243, 242)",
+      11
+    ],
+    [
+      "rgb(203, 212, 208)",
+      10
+    ],
+    [
+      "rgb(226, 241, 234)",
+      10
+    ],
+    [
+      "rgb(224, 244, 246)",
+      5
+    ],
+    [
+      "rgb(14, 94, 99)",
+      3
+    ],
+    [
+      "rgb(18, 128, 92)",
+      3
+    ],
+    [
+      "rgb(124, 74, 15)",
+      3
+    ],
+    [
+      "rgb(235, 238, 239)",
+      3
+    ],
+    [
+      "rgb(247, 248, 248)",
+      2
+    ],
+    [
+      "rgba(124, 74, 15, 0.05)",
+      2
+    ],
+    [
+      "rgba(14, 94, 99, 0.05)",
+      2
+    ],
+    [
+      "rgb(250, 251, 250)",
+      2
+    ]
+  ],
+  "css_vars": {
+    "--paper": "#f3f5f4",
+    "--card": "#fff",
+    "--ink": "#141b21",
+    "--ink2": "#46525b",
+    "--fog": "#7d8790",
+    "--line": "#e1e7e4",
+    "--line2": "#cbd4d0",
+    "--petrol": "#0e5e63",
+    "--petrol-soft": "#e3eeec",
+    "--petrol-ghost": "#f0f6f5",
+    "--gain": "#12805c",
+    "--gain-soft": "#e2f1ea",
+    "--drop": "#c43d5b",
+    "--drop-soft": "#f9e7eb",
+    "--noise": "#5e6a74",
+    "--noise-soft": "#ebeeef",
+    "--amber": "#a26a15",
+    "--amber-soft": "#f6eddc",
+    "--ov-accent": "#028090",
+    "--ov-accent-soft": "#e0f4f6",
+    "--ov-accent-ghost": "#f1f9fa",
+    "--ov-accent-deep": "#026c7b",
+    "--site-max": "1152px"
+  },
+  "headings": [
+    "A: Skip to main content  [Inter, system-ui, sans-serif 13px 700 ls normal rgb(255, 255, 255)]",
+    "A: Orem | GEO · AEO · AIEO  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "A: Home  [Inter, system-ui, sans-serif 13.5px 600 ls normal rgb(14, 94, 99)]",
+    "A: Features  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: Why Orem  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: Tutorial  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: Pricing  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: FAQ  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: Blog  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: Contact  [Inter, system-ui, sans-serif 13.5px 500 ls normal rgb(70, 82, 91)]",
+    "A: Sign in  [Inter, system-ui, sans-serif 12px 500 ls normal rgb(38, 38, 38)]",
+    "A: Start trial  [Inter, system-ui, sans-serif 12px 600 ls normal rgb(255, 255, 255)]",
+    "H1: Know if AI engines recommend your brand and whether the change is real.  [Newsreader, Georgia, serif 54px 500 ls -1.35px rgb(20, 27, 33)]",
+    "P: Orem samples every prompt many times and tells you, with a 95% confidence interval, whether your AI visibility really moved.  [Inter, system-ui, sans-serif 17px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: Analyze my product  [Inter, system-ui, sans-serif 14px 600 ls normal rgb(255, 255, 255)]",
+    "BUTTON: I don't have a website  [Inter, system-ui, sans-serif 12px 600 ls normal rgb(14, 94, 99)]",
+    "A: Start with $25 credit  [Inter, system-ui, sans-serif 14px 600 ls normal rgb(255, 255, 255)]",
+    "A: Sign in  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(38, 38, 38)]",
+    "P: Illustrative — representative brand types, shown as design placeholders, not endorsements.  [Inter, system-ui, sans-serif 10.5px 400 ls normal rgb(203, 212, 208)]",
+    "H2: Watch eight agents audit a brand  [Newsreader, Georgia, serif 40px 500 ls -0.8px rgb(20, 27, 33)]",
+    "H2: Orem makes it possible  [Newsreader, Georgia, serif 48px 500 ls -0.96px rgb(20, 27, 33)]",
+    "P: It measures what AI engines say about you, separates real change from noise, and turns it into work you approve.  [Inter, system-ui, sans-serif 18px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: 01 | AEO / GEO  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "H3: Tracks every buyer question on every engine, with honest error bars  [Inter, system-ui, sans-serif 15px 600 ls normal rgb(20, 27, 33)]",
+    "P: Samples each prompt many times on every engine you track, then reports mention and citation rates with a 95% confidence interval and a real-vs-noise verdict.  [Inter, system-ui, sans-serif 14.5px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: 02 | Citations  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: 03 | Content  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: 04 | Brand facts  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: 05 | Engines  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: 06 | Agencies  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(70, 82, 91)]",
+    "H3: Prompts · mention rate  [Inter, system-ui, sans-serif 16.5px 700 ls normal rgb(20, 27, 33)]",
+    "P: Four prompts put Orem in 42% or more of answers. The best is 75% on Perplexity.  [Inter, system-ui, sans-serif 11.5px 400 ls normal rgb(125, 135, 144)]",
+    "H2: See Orem at work  [Newsreader, Georgia, serif 40px 500 ls -0.8px rgb(20, 27, 33)]",
+    "P: Ask about your visibility in plain English. Orem answers from your own sampled data, with an error bar on every number.  [Inter, system-ui, sans-serif 17px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: Where we win  [Inter, system-ui, sans-serif 12.5px 500 ls normal rgb(20, 27, 33)]",
+    "BUTTON: Our citations  [Inter, system-ui, sans-serif 12.5px 400 ls normal rgb(70, 82, 91)]",
+    "BUTTON: No false alarms  [Inter, system-ui, sans-serif 12.5px 400 ls normal rgb(70, 82, 91)]",
+    "H3: Where AI engines name Orem  [Inter, system-ui, sans-serif 16.5px 700 ls normal rgb(20, 27, 33)]",
+    "P: Mention rate with its 95% CI, on a fixed 0–100% track.  [Inter, system-ui, sans-serif 11.5px 400 ls normal rgb(125, 135, 144)]",
+    "BUTTON: Where we win  [Inter, system-ui, sans-serif 13px 500 ls normal rgb(20, 27, 33)]",
+    "BUTTON: Our citations  [Inter, system-ui, sans-serif 13px 500 ls normal rgb(125, 135, 144)]",
+    "BUTTON: No false alarms  [Inter, system-ui, sans-serif 13px 500 ls normal rgb(125, 135, 144)]",
+    "P: Question: Which questions do AI engines already name us for?  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "H2: Underpinned by numbers you can trust  [Newsreader, Georgia, serif 48px 500 ls -0.96px rgb(20, 27, 33)]",
+    "P: Every answer is sampled many times, so each rate comes with an interval and a verdict.  [Inter, system-ui, sans-serif 18px 400 ls normal rgb(70, 82, 91)]",
+    "H3: Know what buyers ask AI  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: Group the questions buyers ask by topic, and see which ones moved for real.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See prompt tracking  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "P: Orem · week of Sep 14  [Inter, system-ui, sans-serif 15px 600 ls -0.075px rgb(20, 27, 33)]",
+    "P: Mention rate by engine  [Inter, system-ui, sans-serif 12.5px 400 ls normal rgb(70, 82, 91)]",
+    "H3: Understand what AI says back  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: See how each engine describes your category, with an error bar on every number.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See share of voice  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "H2: Reinforced by every new sample  [Newsreader, Georgia, serif 48px 500 ls -0.96px rgb(20, 27, 33)]",
+    "P: Every refresh re-measures your prompts, so you can see what worked and what was only noise.  [Inter, system-ui, sans-serif 18px 400 ls normal rgb(70, 82, 91)]",
+    "P: Dashboard chart: Orem's weekly mention rate from Jul 13 to Sep 14, between 32% and 39%, each week with its 95% interval.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: Brand mention rate · weekly · 95% CI  [Inter, system-ui, sans-serif 13px 500 ls normal rgb(70, 82, 91)]",
+    "H3: Track the trend, not the noise  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: Every weekly refresh re-samples your prompts, so each week's number comes with its own error bar.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See real-vs-noise verdicts  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "P: Dashboard pillar card: AEO mention rate 38%, likely between 28% and 48%.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "H3: Know which pillar carries you  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: AEO, AIEO and GEO each get their own rate and interval, the same cards as your Overview.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See prompt tracking  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "P: Dashboard engine breakdown: Perplexity 33% (24–41%), ChatGPT 30% (22–39%).  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: Engine breakdown · mention rate this week  [Inter, system-ui, sans-serif 13px 500 ls normal rgb(70, 82, 91)]",
+    "H3: Compare engines on one scale  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: Every engine on the same 0–100% track, so an overlap reads as a tie, not a win.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See share of voice  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "P: Most-cited sources across 240 answers: g2.com 117, wikipedia.org 105, reddit.com 103, searchengineland.com 89, getorem.com 39.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: Most-cited sources · 240 answers  [Inter, system-ui, sans-serif 13px 500 ls normal rgb(70, 82, 91)]",
+    "H3: See the sources AI trusts  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: Every domain behind the answers for your prompts, and where your own pages show up.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See citations  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "P: Hallucination check: no claim flagged about Orem in 240 answers on ChatGPT and Perplexity this week.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: Nothing wrong about Orem this week  [Inter, system-ui, sans-serif 15px 600 ls -0.075px rgb(20, 27, 33)]",
+    "P: Every answer is compared with your verified brand facts, and a live web check confirms each claim.  [Inter, system-ui, sans-serif 12.5px 400 ls normal rgb(70, 82, 91)]",
+    "H3: Verify what AI claims about you  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: Catch wrong or unverifiable claims before your customers repeat them.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See hallucination detection  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "H2: Built for agencies running many brands  [Newsreader, Georgia, serif 48px 500 ls -0.96px rgb(20, 27, 33)]",
+    "P: Client workspaces, pitch trials and reports that hold up in front of a client.  [Inter, system-ui, sans-serif 18px 400 ls normal rgb(70, 82, 91)]",
+    "H3: Run every client from one console  [Inter, system-ui, sans-serif 16px 600 ls normal rgb(20, 27, 33)]",
+    "P: Each brand’s visibility, verdicts and plan usage side by side, for agencies running many workspaces.  [Inter, system-ui, sans-serif 15.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: See client management  [Inter, system-ui, sans-serif 14px 500 ls normal rgb(20, 27, 33)]",
+    "P: Card 1 of 4: Workspaces  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: 3,888 engine samples across both workspaces over nine weekly refreshes; at 1,728 a month that is 11% of the Growth plan's 15,600.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: Orem's weekly mention rate from Jul 13 to Sep 14, between 32% and 39%; this week 32% with a 95% confidence interval of 25 to 38%.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "P: 18 open actions in the Orem workspace's playbook: 12 on-page fixes and 6 off-page mentions.  [Inter, system-ui, sans-serif 16px 400 ls normal rgb(20, 27, 33)]",
+    "H2: How Orem compares  [Newsreader, Georgia, serif 48px 500 ls -0.96px rgb(20, 27, 33)]",
+    "P: Every tool here tracks whether AI engines mention you. Only Orem tells you whether a change is real.  [Inter, system-ui, sans-serif 18px 400 ls normal rgb(70, 82, 91)]",
+    "P: Swipe to compare →  [Inter, system-ui, sans-serif 12px 600 ls normal rgb(2, 108, 123)]",
+    "P: Statistically honest AI-search visibility for marketing agencies and growth teams.  [Inter, system-ui, sans-serif 12.5px 400 ls normal rgb(70, 82, 91)]",
+    "A: The method  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Features  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Why Orem  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Tutorial  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Programmatic SEO  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Overview  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Prospect finder  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Fast dialer  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Campaigns  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Pipeline  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Templates  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Blog  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: FAQ  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Book a demo  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Pricing  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Contact us  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Careers  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Create account  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Sign in  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: Support · +1 (855) 302-8711  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: X (Twitter)  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]",
+    "A: LinkedIn  [Inter, system-ui, sans-serif 13px 400 ls normal rgb(70, 82, 91)]"
+  ],
+  "images": [],
+  "videos": [],
+  "favicons": [
+    "https://getorem.com/icon.svg?5f920424cdbf11a8"
+  ],
+  "header_svgs": [
+    "<svg width=\"30\" height=\"30\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" style=\"display:block\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"var(--ink)\" stroke-width=\"2.1\"></circle><circle cx=\"12\" cy=\"12\" r=\"2.9\" fill=\"var(--petrol)\"></circle></svg>",
+    "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-menu\"><line x1=\"4\" x2=\"20\" y1=\"12\" y2=\"12\"></line><line x1=\"4\" x2=\"20\" y1=\"6\" y2=\"6\"></line><line x1=\"4\" x2=\"20\" y1=\"18\" y2=\"18\"></line></svg>"
+  ],
+  "network_media": [
+    "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
+    "https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK4397yjA.woff2",
+    "https://fonts.gstatic.com/s/newsreader/v26/cY9CfjOCX1hbuyalUrK439vCjohC.woff2"
+  ]
+}
