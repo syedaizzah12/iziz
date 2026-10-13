@@ -64,15 +64,15 @@
     "ask": 4,
     "moved": 8,
     "moved_up": 10,
-    "real": 12,
-    "noise": 14,
+    "real": 10,
+    "noise": 12,
     "sample": 16,
     "band": 20,
     "card": 24,
     "row1": 24,
-    "row2": 24.5,
-    "row3": 25,
-    "row4": 25.5,
+    "row2": 24.25,
+    "row3": 24.5,
+    "row4": 24.75,
     "card_line": 28,
     "verdict": 32,
     "v1": 33,
@@ -85,7 +85,7 @@
     "tag": 48,
     "gap": 51.5,
     "logo": 52,
-    "cta": 53,
+    "cta": 52.5,
     "done": 60
   },
   "sfx": [
@@ -127,25 +127,27 @@
       "at": "moved",
       "type": "shutter",
       "gain": 0.6,
-      "what": "hard cut to the big number"
+      "what": "hard cut to the weekly mention rate"
     },
     {
       "at": "moved_up",
       "type": "click",
       "gain": 0.75,
-      "what": "32% → 38%, +6 pts pill"
-    },
-    {
-      "at": "real",
-      "type": "pop",
-      "gain": 0.55,
-      "what": "'Real change?'"
+      "what": "32% → 36%, +4 pts, 'Real change?'"
     },
     {
       "at": "noise",
       "type": "pop",
       "gain": 0.55,
       "what": "'Or just noise?'"
+    },
+    {
+      "at": 12.5,
+      "to": 15.5,
+      "every": 0.5,
+      "type": "tick",
+      "gain": 0.3,
+      "what": "week-by-week sweep"
     },
     {
       "at": "sample",
@@ -155,7 +157,7 @@
     },
     {
       "at": 16.5,
-      "to": 19.5,
+      "to": 19.0,
       "every": 0.5,
       "type": "tick",
       "gain": 0.3,
@@ -171,31 +173,31 @@
       "at": "card",
       "type": "whoosh",
       "gain": 0.65,
-      "what": "prompts card rises"
+      "what": "prompts card rises over the cut"
     },
     {
       "at": "row1",
       "type": "pop",
-      "gain": 0.45,
-      "what": "row 1"
+      "gain": 0.4,
+      "what": "row 1 interval"
     },
     {
       "at": "row2",
       "type": "pop",
-      "gain": 0.45,
-      "what": "row 2"
+      "gain": 0.4,
+      "what": "row 2 interval"
     },
     {
       "at": "row3",
       "type": "pop",
-      "gain": 0.45,
-      "what": "row 3"
+      "gain": 0.4,
+      "what": "row 3 interval"
     },
     {
       "at": "row4",
       "type": "pop",
-      "gain": 0.45,
-      "what": "row 4"
+      "gain": 0.4,
+      "what": "row 4 interval"
     },
     {
       "at": "card_line",
@@ -294,28 +296,34 @@
       "what": "CTA"
     },
     {
-      "at": 54,
+      "at": 53,
       "type": "pop",
       "gain": 0.4,
       "what": "interval card on the end card"
     },
     {
-      "at": 55.5,
+      "at": 55,
       "type": "tick",
       "gain": 0.3,
       "what": "URL underline"
     },
     {
-      "at": 57,
+      "at": 56.5,
       "type": "tick",
       "gain": 0.35,
       "what": "logo dot pulse"
     },
     {
-      "at": 58.5,
+      "at": 58,
       "type": "tick",
       "gain": 0.4,
       "what": "CTA nudge"
+    },
+    {
+      "at": 59,
+      "type": "tick",
+      "gain": 0.3,
+      "what": "marker tap"
     }
   ],
   "mix": {
