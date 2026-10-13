@@ -474,40 +474,40 @@
   });
 
   // ================================================================== 8. END CARD  b52–60
-  // The CTA is the largest UI text on the card. Outro (b59–60): one continuous hand-off to frame 0 for a seamless loop —
-  // the lockup, tags, URL and interval card lift out through their own masks, the CTA pill itself morphs (rect, fill,
-  // radius) into the opening's prompt pill while its label lifts out and "A BUYER ASKS AI / Which |" rises in, and
-  // "Does AI" rises into its frame-0 slot. Every outro spring lands by the last frame, which then equals frame 0.
-  const MORPH = { response: 0.3, damping: 0.95 };
+  // The CTA is the largest UI text on the card. Outro (b58.6–60): one ordered hand-off to frame 0 for a seamless loop.
+  // Every exit uses the film's own grammar — type lifts out through its line mask (hidden once past −0.9 em, so no
+  // slivers), the URL underline retracts before its text lifts, the interval card is pushed past the frame edge — then
+  // the CTA pill itself morphs (rect, radius, fill) into the opening's prompt pill: its label lifts out inside the pill,
+  // the prompt rises in as the fill lightens, and "Does AI" rises once the pill is clear of its slot.
   scene({
     name: 'end', from: 'logo', to: 'done',
     build(root, S) {
       const ms = pick(80, 80, 70), ws = pick(90, 90, 76), mx = PAD, top = pick(270, 270, 440);
       const my = top + (ws - ms) / 2 + 2;
-      // the real mark from the site header: ink ring + petrol dot (assets/brand/logo_0.svg)
-      S.ring = box(root, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
+      // the real mark from the site header (assets/brand/logo_0.svg), inside its own mask
+      S.mmask = box(root, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;overflow:hidden`);
+      S.ring = box(S.mmask, `left:0;top:0;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
         `<svg width="${ms}" height="${ms}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#141b21" stroke-width="2.1"/></svg>`);
-      S.dot = box(root, `left:${mx}px;top:${my}px;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
+      S.dot = box(S.mmask, `left:0;top:0;width:${ms}px;height:${ms}px;transform-origin:50% 50%`,
         `<svg width="${ms}" height="${ms}" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.9" fill="#0e5e63"/></svg>`);
       reg(S.ring, { o: 0 }); reg(S.dot, { o: 0 });
       S.ms = ms;
       const wx = mx + ms + pick(26, 26, 22);
       S.word = line(root, 'Orem', { x: wx, y: top - ws * 0.08, size: ws });
-      S.tags = box(root, `left:${wx + 3}px;top:${top + ws * 1.06}px;font:600 ${pick(26, 26, 24)}px UI;letter-spacing:.24em;color:var(--fog)`, 'GEO · AEO · AIEO');
-      reg(S.tags, { o: 0 });
+      S.tags = line(root, 'GEO · AEO · AIEO', { x: wx + 3, y: top + ws * 0.98, size: pick(26, 26, 24), cls: 'ui' });
+      Object.assign(S.tags.el.style, { letterSpacing: '.24em', color: 'var(--fog)', fontWeight: '600' });
       const by = top + pick(190, 190, 160), bf = pick(88, 88, 66);
       S.bf = bf;
       S.btn = box(root, `left:${mx}px;top:${by}px;padding:${bf * 0.42}px ${bf * 0.72}px;border-radius:${bf * 1.2}px;background:var(--ink);color:#fff;font:600 ${bf}px UI;letter-spacing:-.015em;transform-origin:20% 50%`,
         'Start with $25 credit');
       reg(S.btn, { o: 0 });
-      const uy = by + bf * 1.2 + bf * 0.84 + 30;
-      S.url = box(root, `left:${mx + 6}px;top:${uy}px;padding-bottom:26px;font:500 64px UI;color:var(--ink-2)`, '<span class="u">getorem.com</span>');
-      S.uspan = S.url.querySelector('.u');
-      reg(S.url, { o: 0 });
-      S.sweep = box(S.url, 'height:7px;border-radius:4px;background:var(--accent)'); reg(S.sweep, { o: 0 });
+      const uy = by + bf * 1.2 + bf * 0.84 + 22;
+      S.url = line(root, 'getorem.com', { x: mx + 4, y: uy, size: 64, cls: 'ui', color: 'var(--ink-2)' });
+      S.ul = box(root, 'height:7px;border-radius:4px;background:var(--accent)'); reg(S.ul, { o: 0 });
       S.P = TALL ? ciCard(root, TX, 940, TW, 420, { ip: 44, fs: 46, trackFromBottom: 170, lf: 40 })
                  : ciCard(root, 1330, 300, 520, 430, { ip: 36, fs: 42, trackFromBottom: 170, lf: 40, ends: false });
       reg(S.P.card, { o: 0 });
+      S.cardX = TALL ? TX : 1330;
       // frame 0, rebuilt for the loop hand-off; its pill doubles as the morphing CTA
       S.O = openingFrame(root);
       S.ctaTxt = box(S.O.pill, `left:${bf * 0.72}px;top:${bf * 0.42}px;font:600 ${bf}px UI;letter-spacing:-.015em;color:#fff`, 'Start with $25 credit');
@@ -515,49 +515,51 @@
       reg(S.O.pill, { o: 0 });
     },
     run(t, b, S) {
-      // a masked lift-out for boxes: slides up while clipped at its own top edge (same grammar as the type masks)
-      const liftOut = (e, p, h) => (p > 0.001 ? { y: -h * p, clip: `inset(${(100 * clamp(p)).toFixed(2)}% 0 -40px 0)`, hide: p >= 0.85 } : {});   // clip only while lifting; hide before a sliver
-      const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo'), lo = sp(t, 58.75, 'snappy');
-      put(S.ring, { o: snapIn(pr), s: 0.55 + 0.45 * pr, r: -40 * (1 - pr), ...liftOut(S.ring, lo, S.ms) });
-      const pulse = sp(t, 56.5, 'snappy') - sp(t, 56.9, 'default');
-      put(S.dot, { o: snapIn(pd), s: pd * (1 + 0.6 * pulse), ...liftOut(S.dot, lo, S.ms) });
-      rise(t, S.word, 51.75, 58.85, { stagger: 0.05, preset: CAP });
-      const ptag = pop(t, 52.25), to = sp(t, 58.8, 'snappy');
-      put(S.tags, { o: snapIn(ptag), ...liftOut(S.tags, to, 34), y: 16 * (1 - ptag) - 34 * to });
+      // logo mark: scales in on the drop; lifts out through its mask at b58.6
+      const pr = spHit(t, 51.85, 'heavy'), pd = pop(t, 'logo'), lo = sp(t, 58.6, 'snappy'), ly = -1.45 * S.ms * lo;
+      const pulse = sp(t, 56.5, 'snappy') - sp(t, 56.9, 'default'), lhide = ly <= -0.6 * S.ms;   // hidden before only an arc is left
+      put(S.ring, { o: snapIn(pr), s: 0.55 + 0.45 * pr, r: -40 * (1 - pr), y: ly, hide: lhide });
+      put(S.dot, { o: snapIn(pd), s: pd * (1 + 0.6 * pulse), y: ly, hide: lhide });
+      rise(t, S.word, 51.75, 58.7, { stagger: 0.05, preset: CAP });
+      rise(t, S.tags, 52.25, 58.8, { stagger: 0, preset: CAP });
       const pb = pop(t, 'cta');
       const nudge = sp(t, 57.5, 'snappy') - sp(t, 57.85, 'default');
-      put(S.btn, { o: snapIn(pb) * (b < 59.05 ? 1 : 0), y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.06 * nudge) });
-      const pu = pop(t, 52.75), uo = sp(t, 58.85, 'snappy');
-      put(S.url, { o: snapIn(pu), ...liftOut(S.url, uo, 116), y: 30 * (1 - pu) - 116 * uo });
-      const P = S.P, pc = pop(t, 53, 'default'), co = sp(t, 58.95, 'snappy');
-      put(P.card, { o: snapIn(pc), ...liftOut(P.card, co, 430), y: 70 * (1 - pc) - 430 * co, s: 0.94 + 0.06 * pc });
+      put(S.btn, { o: snapIn(pb) * (b < 59.0 ? 1 : 0), y: 50 * (1 - pb), s: (0.94 + 0.06 * pb) * (1 + 0.06 * nudge) });
+      rise(t, S.url, 52.75, 58.9, { stagger: 0, preset: CAP });
+      // interval card: rises on b53; pushed past the frame edge at b59.0 (as one object, shadow included)
+      const P = S.P, pc = pop(t, 53, 'default'), co = sp(t, 59.0, 'snappy');
+      put(P.card, { o: snapIn(pc) * (co < 0.98 ? 1 : 0), y: 70 * (1 - pc), x: (W - S.cardX + 60) * co, s: 0.94 + 0.06 * pc });
       const pbnd = pop(t, 53.5, 'default'); put(P.band, { o: snapIn(pbnd), sx: pbnd });
       const pm = pop(t, 53.25) * (1 + 0.5 * (sp(t, 58.5, 'snappy') - sp(t, 58.75, 'default')));
       put(P.mark, { o: snapIn(pm), sy: pm });
       const pl = pop(t, 54); put(P.l1, { o: snapIn(pl), y: 16 * (1 - pl) });
-      // frame 0 re-forms. "Does AI" follows the wordmark's exit (b59.15) and has fully landed by the last frame,
-      // exactly as at t = 0 (released 0.6 beat early there); the later headline lines stay below their masks.
-      const O = S.O;
+      // frame 0 re-forms. "Does AI" rises once the morphing pill is clear of its slot (16:9 b59.15, 9:16 b59.35) and
+      // has fully landed by the last frame, exactly as at t = 0. The later headline lines stay below their masks.
+      const O = S.O, hb = pick(59.15, 59.15, 59.35);
       O.head.slice(1).forEach((L) => rise(t, L, 999));
-      if (TALL) cap(t, [O.head[0]], 59.15);                 // after the lockup has cleared: never over it
-      else rise(t, O.head[0], [59.15, 59.15, 999], null, { preset: CAP });
-      // the pill's contents: the CTA label lifts out (b59.1, gone before the fill lightens), then the prompt rises in (b59.55)
-      const tOut = sp(t, 59.1, 'snappy'), tIn = sp(t, 59.55, CAP);
-      put(S.ctaTxt, { o: b >= 59.05 && tOut < 0.9 ? 1 : 0, y: -S.bf * 1.5 * tOut });
-      const showIn = b >= 59.55;
+      if (TALL) cap(t, [O.head[0]], hb);
+      else rise(t, O.head[0], [hb, hb, 999], null, { preset: CAP });
+      // pill contents: the CTA label lifts out inside the pill (b59.0), the prompt rises as the fill passes light (b59.33)
+      const tOut = sp(t, 59.0, 'snappy'), tIn = sp(t, 59.33, CAP);
+      put(S.ctaTxt, { o: b >= 59.0 && tOut < 0.9 ? 1 : 0, y: -S.bf * 1.5 * tOut });
+      const showIn = b >= 59.33;
       put(O.lab, { o: showIn ? 1 : 0, y: S.O.pillH * (1 - tIn) });
       put(O.q, { o: showIn ? 1 : 0, y: S.O.pillH * (1 - tIn) });
       O.words.forEach((w, i) => put(w, { o: i === 0 ? 1 : 0, css: { display: i === 0 ? 'inline' : 'none' } }));
       put(O.caret, { o: 1 });
     },
     after(t, b, S) {
-      const p = sp(t, 55, 'snappy');
-      put(S.sweep, { o: p > 0.01 ? 1 : 0, css: { left: S.uspan.offsetLeft + 'px', top: (S.uspan.offsetTop + S.uspan.offsetHeight + 6) + 'px', width: (S.uspan.offsetWidth * p) + 'px' } });
-      // the morph: from b59.3 the CTA's own rect/fill/radius spring to the prompt pill's (layout read here, in after())
-      if (b >= 59.05) {
-        const m = sp(t, 59.2, MORPH), fill = sp(t, 59.32, { response: 0.2, damping: 0.95 }), O = S.O, B = S.btn;
+      // URL underline: sweeps g → m on b55, retracts (left to right) on b58.6, gone before the URL lifts out
+      const wd = S.url.words[0], gx = S.url.el.offsetLeft + wd.offsetLeft, gw = wd.offsetWidth;
+      const grow = sp(t, 55, 'snappy'), back = sp(t, 58.6, 'snappy');
+      const x0 = gx + gw * back, x1 = gx + gw * grow, wdt = Math.max(0, x1 - x0);
+      put(S.ul, { o: wdt > 1 ? 1 : 0, css: { left: x0.toFixed(2) + 'px', top: (S.url.el.offsetTop + S.url.el.offsetHeight - 4) + 'px', width: wdt.toFixed(2) + 'px' } });
+      // the morph: from b59.0 the CTA's own rect/fill/radius become the prompt pill's (layout read here, in after())
+      if (b >= 59.0) {
+        const m = sp(t, 59.05, 'default'), fill = sp(t, 59.18, { response: 0.25, damping: 0.95 }), O = S.O, B = S.btn;
         const from = { x: B.offsetLeft, y: B.offsetTop, w: B.offsetWidth, h: B.offsetHeight, r: B.offsetHeight / 2 };
-        const yF = 30 * (1 - Motion.step(bt(C.beatAt(C.DUR - 1 / C.FPS)) - bt(C.beatAt(C.DUR - 1 / C.FPS) - 0.6), 'default'));
+        const bEnd = C.beatAt(C.DUR - 1 / C.FPS);
+        const yF = 30 * (1 - Motion.step(bt(bEnd) - bt(bEnd - 0.6), 'default'));
         const to = { x: PAD, y: O.py + yF, w: pick(1640, 1640, 860), h: O.pillH, r: 36 };
         const L = (a, z) => a + (z - a) * m;
         put(O.pill, { o: 1, css: {

@@ -688,15 +688,15 @@
    "what": "marker tap (before the outro)"
   },
   {
-   "t": 29.59079,
+   "t": 29.50015,
    "type": "whoosh",
    "gain": 0.4,
    "pitch": 1.015,
    "pan": 0.053,
-   "beat": 59.2,
+   "beat": 59.05,
    "mark": null,
-   "snapped_to_hit": false,
-   "snap_ms": 0,
+   "snapped_to_hit": true,
+   "snap_ms": -15.69,
    "what": "CTA morphs into the opening prompt pill (loop)"
   }
  ]
