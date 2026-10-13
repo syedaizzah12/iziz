@@ -351,3 +351,19 @@ Outro rebuilt so every exit uses the film's own grammar, ordered over b58.6–59
 3. **Softer morph, no empty pill.** The rect morph runs on the default spring from b59.05 (≈ 10 frames at 30 fps),
    the fill lightens from b59.18, and "A BUYER ASKS AI / Which |" rises from b59.33 while the fill passes light grey.
    Last frame vs frame 0: mean abs difference 0.05 (16:9) / 0.2 (9:16).
+
+### Changes made after Round 7 (by the builder)
+Outro rebuilt so every exit uses the film's own grammar, ordered over b58.6–59.0 (≥ 8 frames):
+1. **No 9:16 collision.** "Does AI" now rises only once the morphing pill is clear of its slot: b59.15 in 16:9 (no
+   overlap possible there) and b59.35 in 9:16 (the pill has moved well below the headline's mask by then). The CTA
+   label lifts out inside the pill (clipped by the pill's own rounded rect) from b59.0, before anything else moves
+   into that area.
+2. **Clean exits.** The logo mark lifts out through its own mask (hidden before only an arc remains); wordmark (b58.7),
+   tags (b58.8, now a masked line) and URL (b58.9, now a masked line) lift out through their line masks; masked exits
+   hide once only descender fragments would remain (−0.72 em, type.js). The URL underline retracts left → right on
+   b58.6, gone before its text lifts. The interval card no longer uses a clip-path: it is pushed past the frame edge
+   as one object, shadow included (b59.0).
+3. **Softer morph, no empty pill.** The rect morph runs on the default spring from b59.05 (≈ 10 frames at 30 fps),
+   the fill lightens from b59.18, and "A BUYER ASKS AI / Which |" rises from b59.33 while the fill passes light grey.
+   Last frame vs frame 0: mean abs difference 0.05 (16:9) / 0.2 (9:16).
+Client decision: ship without voiceover for now (voiceover to be added later).
