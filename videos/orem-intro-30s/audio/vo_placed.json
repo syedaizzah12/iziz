@@ -1,0 +1,93 @@
+[
+ {
+  "id": "p1",
+  "text": "Does AI recommend your brand?",
+  "at": 0.3,
+  "t0": 0.15,
+  "t1": 2.26
+ },
+ {
+  "id": "p2",
+  "text": "Your mention rate jumped four points.",
+  "at": 8,
+  "t0": 4.0,
+  "t1": 5.9
+ },
+ {
+  "id": "p3",
+  "text": "Real change, or just noise?",
+  "at": 11.9,
+  "t0": 5.95,
+  "t1": 7.909
+ },
+ {
+  "id": "p4a",
+  "text": "Orem samples every prompt many times,",
+  "at": 16,
+  "t0": 8.0,
+  "t1": 10.025
+ },
+ {
+  "id": "p4b",
+  "text": "Each rate gets a ninety-five percent confidence interval.",
+  "at": 20.05,
+  "t0": 10.025,
+  "t1": 12.357
+ },
+ {
+  "id": "p5",
+  "text": "An error bar on every number.",
+  "at": 24.75,
+  "t0": 12.375,
+  "t1": 14.095
+ },
+ {
+  "id": "p6",
+  "text": "Every change gets a verdict.",
+  "at": 32,
+  "t0": 16.0,
+  "t1": 17.56
+ },
+ {
+  "id": "p7",
+  "text": "No false alarms.",
+  "at": 37,
+  "t0": 18.497,
+  "t1": 19.827
+ },
+ {
+  "id": "p8a",
+  "text": "Track the trend, not the noise.",
+  "at": 40,
+  "t0": 20.0,
+  "t1": 22.008
+ },
+ {
+  "id": "p8b",
+  "text": "See the sources AI trusts.",
+  "at": 44.15,
+  "t0": 22.075,
+  "t1": 23.935
+ },
+ {
+  "id": "p9",
+  "text": "Statistically honest AI-search visibility.",
+  "at": 47.9,
+  "t0": 23.95,
+  "t1": 26.271
+ },
+ {
+  "id": "p10a",
+  "text": "Start with a twenty-five dollar credit.",
+  "at": 52.6,
+  "t0": 26.3,
+  "t1": 28.078
+ },
+ {
+  "id": "p10b",
+  "text": "getorem.com",
+  "at": 56.2,
+  "t0": 28.092,
+  "t1": 29.488
+ }
+]

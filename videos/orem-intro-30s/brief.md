@@ -12,7 +12,7 @@
 | Fonts | Newsreader (display, the site's H1/H2 face) · Inter (UI) — the site's own Google Fonts files (OFL) |
 | Reference film | none: rhythm from the house rules |
 | Music | synth |
-| Voiceover | none (Fish Audio is connected; offered at the shotlist OK) |
+| Voiceover | Fish Audio, voice "Ethan" (official professional narrator), added after the no-voiceover delivery — see vo.json |
 | CTA / end card | Start with $25 credit · getorem.com |
 | Must show | AI engines answering buyer prompts · sampling every prompt many times · error bars / 95% CI · real-vs-noise verdict |
 | Must avoid | competitor names (comparison table) · the illustrative third-party brand logos on the hero · claims the site doesn't make |

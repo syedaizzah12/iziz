@@ -56,7 +56,11 @@
       "logo"
     ]
   },
-  "voiceover": null,
+  "voiceover": {
+    "provider": "fish-audio",
+    "voice": "Ethan",
+    "file": "vo.json"
+  },
   "marks": {
     "hook": 0,
     "hook_w2": 1,
@@ -351,9 +355,9 @@
     }
   ],
   "mix": {
-    "music": 0,
-    "sfx": -6,
-    "vo": 0,
+    "music": -3,
+    "sfx": -7,
+    "vo": 1,
     "duck": true
   }
 }

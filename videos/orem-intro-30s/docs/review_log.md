@@ -396,3 +396,12 @@ Check of Round 7 fixes:
 - Knowingly left imperfect (the critic's optional round-9 notes): two 9:16 outro frames show only the morphing pill
   (29.60–29.63 s); one-frame exit fragments of the ring / tags / URL at 29.33–29.43 s; the pill's growth peaks at
   +24–26 % area per 30 fps frame (half that at 60 fps).
+
+## Voiceover added (client request, after delivery)
+- Fish Audio voice "Ethan" (536d3a5e…, Fish Audio official, professional narration). Chosen after testing the tightest
+  line on Slax (3.29 s, too slow), Ethan (2.35 s) and Energetic Male (2.33 s). Credits used: 777 of 8,000.
+- 13 phrases from 11 takes (`audio/vo/l1–l11.mp3`), placed on the beat grid by `vo.json` (`scripts/vo.py`); each phrase
+  matches its on-screen caption (l11 re-recorded so "Each rate gets a 95% confidence interval." matches the caption).
+  Tempo only on phrases that had to fit (1.05–1.2). No overlaps; last word ends 29.49 s, before the loop hand-off.
+- Mix: music −3 dB, SFX −7 dB, VO +1 dB, music side-chain-ducked under the voice: −14.0 LUFS integrated, −1.5 dBTP.
+- Picture unchanged; the new mix was muxed into both finals (`render.mjs --mux --all`).

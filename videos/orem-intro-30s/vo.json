@@ -1,0 +1,127 @@
+{
+  "voice": {
+    "provider": "fish-audio",
+    "id": "536d3a5e000945adb7038665781a4aca",
+    "name": "Ethan (Fish Audio official)"
+  },
+  "note": "One phrase per shot, placed on the measured beat grid. Tempo only on phrases that must fit (0.85–1.2). Ends before b58.6 so the outro stays clear.",
+  "phrases": [
+    {
+      "id": "p1",
+      "take": "l1",
+      "from": 0.03,
+      "to": 2.14,
+      "at": 0.3,
+      "tempo": 1.0,
+      "text": "Does AI recommend your brand?"
+    },
+    {
+      "id": "p2",
+      "take": "l2",
+      "from": 0.03,
+      "to": 1.93,
+      "at": 8,
+      "tempo": 1.0,
+      "text": "Your mention rate jumped four points."
+    },
+    {
+      "id": "p3",
+      "take": "l3",
+      "from": 0.03,
+      "to": 2.14,
+      "at": 11.9,
+      "tempo": 1.08,
+      "text": "Real change, or just noise?"
+    },
+    {
+      "id": "p4a",
+      "take": "l4",
+      "from": 0.04,
+      "to": 2.46,
+      "at": 16,
+      "tempo": 1.2,
+      "text": "Orem samples every prompt many times,"
+    },
+    {
+      "id": "p4b",
+      "take": "l11",
+      "from": 0.03,
+      "to": 2.83,
+      "at": 20.05,
+      "tempo": 1.2,
+      "text": "Each rate gets a ninety-five percent confidence interval."
+    },
+    {
+      "id": "p5",
+      "take": "l5",
+      "from": 0.03,
+      "to": 1.75,
+      "at": 24.75,
+      "tempo": 1.0,
+      "text": "An error bar on every number."
+    },
+    {
+      "id": "p6",
+      "take": "l6",
+      "from": 0.03,
+      "to": 1.59,
+      "at": 32,
+      "tempo": 1.0,
+      "text": "Every change gets a verdict."
+    },
+    {
+      "id": "p7",
+      "take": "l7",
+      "from": 0.03,
+      "to": 1.36,
+      "at": 37,
+      "tempo": 1.0,
+      "text": "No false alarms."
+    },
+    {
+      "id": "p8a",
+      "take": "l8",
+      "from": 0.04,
+      "to": 2.1,
+      "at": 40,
+      "tempo": 1.03,
+      "text": "Track the trend, not the noise."
+    },
+    {
+      "id": "p8b",
+      "take": "l8",
+      "from": 2.52,
+      "to": 4.38,
+      "at": 44.15,
+      "tempo": 1.0,
+      "text": "See the sources AI trusts."
+    },
+    {
+      "id": "p9",
+      "take": "l9",
+      "from": 0.03,
+      "to": 2.64,
+      "at": 47.9,
+      "tempo": 1.12,
+      "text": "Statistically honest AI-search visibility."
+    },
+    {
+      "id": "p10a",
+      "take": "l10",
+      "from": 0.03,
+      "to": 1.95,
+      "at": 52.6,
+      "tempo": 1.08,
+      "text": "Start with a twenty-five dollar credit."
+    },
+    {
+      "id": "p10b",
+      "take": "l10",
+      "from": 2.6,
+      "to": 4.13,
+      "at": 56.2,
+      "tempo": 1.1,
+      "text": "getorem.com"
+    }
+  ]
+}
