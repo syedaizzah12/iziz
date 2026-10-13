@@ -1,6 +1,6 @@
 # Shotlist: Orem introductory reel · 30 s · 120 BPM · 60 beats · formats 16x9, 9x16
 
-STATUS: DRAFT — waiting for the user's OK. Nothing gets built until this says APPROVED.
+STATUS: APPROVED (user, 2026-10-13: "i want a very good video" — no changes requested). Building.
 
 All copy is the site's own wording or numbers from its real dashboard cards (Orem workspace, week of Sep 14).
 Cards are rebuilt element by element from the 3x captures so bars and intervals can animate.

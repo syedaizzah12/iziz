@@ -1,67 +1,289 @@
 {
   "note": "Single source of truth for picture + sound, in BEATS on the measured grid. 120 BPM: 1 beat = 0.5 s, 1 bar = 2 s.",
   "title": "Orem — introductory reel",
-  "brand": { "product": "Orem", "hook": "Does AI recommend your brand?", "cta": "Start with $25 credit · getorem.com" },
+  "brand": {
+    "product": "Orem",
+    "hook": "Does AI recommend your brand?",
+    "cta": "Start with $25 credit · getorem.com"
+  },
   "duration": 30,
   "fps": 60,
   "bpm": 120,
-  "formats": ["16x9", "9x16"],
+  "formats": [
+    "16x9",
+    "9x16"
+  ],
   "music": {
     "source": "synth",
-    "chords": ["Dm", "Bb", "F", "C"],
+    "chords": [
+      "Dm",
+      "Bb",
+      "F",
+      "C"
+    ],
     "seed": 4242,
     "sections": [
-      { "at": "hook",   "kind": "intro" },
-      { "at": "sample", "kind": "full" },
-      { "at": "verdict","kind": "dark" },
-      { "at": "trend",  "kind": "full" },
-      { "at": "tag",    "kind": "build" },
-      { "at": "gap",    "kind": "gap" },
-      { "at": "logo",   "kind": "drop" }
+      {
+        "at": "hook",
+        "kind": "intro"
+      },
+      {
+        "at": "sample",
+        "kind": "full"
+      },
+      {
+        "at": "verdict",
+        "kind": "dark"
+      },
+      {
+        "at": "trend",
+        "kind": "full"
+      },
+      {
+        "at": "tag",
+        "kind": "build"
+      },
+      {
+        "at": "gap",
+        "kind": "gap"
+      },
+      {
+        "at": "logo",
+        "kind": "drop"
+      }
     ],
-    "accents": ["logo"]
+    "accents": [
+      "logo"
+    ]
   },
   "voiceover": null,
   "marks": {
-    "hook": 0, "hook_w2": 1, "hook_w3": 2, "ask": 4,
-    "moved": 8, "moved_up": 10, "real": 12, "noise": 14,
-    "sample": 16, "band": 20,
-    "card": 24, "row1": 25, "row2": 25.5, "row3": 26, "row4": 26.5, "card_line": 28,
-    "verdict": 32, "v1": 33, "v2": 33.5, "v3": 34, "v4": 34.5, "gain": 36,
-    "trend": 40, "sources": 44,
-    "tag": 48, "gap": 51.5, "logo": 52, "cta": 56, "done": 60
+    "hook": 0,
+    "hook_w2": 1,
+    "hook_w3": 2,
+    "ask": 4,
+    "moved": 8,
+    "moved_up": 10,
+    "real": 12,
+    "noise": 14,
+    "sample": 16,
+    "band": 20,
+    "card": 24,
+    "row1": 25,
+    "row2": 25.5,
+    "row3": 26,
+    "row4": 26.5,
+    "card_line": 28,
+    "verdict": 32,
+    "v1": 33,
+    "v2": 33.5,
+    "v3": 34,
+    "v4": 34.5,
+    "gain": 36,
+    "trend": 40,
+    "sources": 44,
+    "tag": 48,
+    "gap": 51.5,
+    "logo": 52,
+    "cta": 56,
+    "done": 60
   },
   "sfx": [
-    { "at": "hook",     "type": "pop",     "gain": 0.75, "what": "headline word 1 on frame 0" },
-    { "at": "hook_w2",  "type": "pop",     "gain": 0.5,  "what": "headline word 2" },
-    { "at": "hook_w3",  "type": "pop",     "gain": 0.6,  "what": "headline 'your brand?'" },
-    { "at": "ask",      "type": "pop",     "gain": 0.6,  "what": "buyer prompt pill appears" },
-    { "at": 4.5, "to": 6.5, "every": 0.25, "type": "tick", "gain": 0.3, "what": "prompt types" },
-    { "at": "moved",    "type": "shutter", "gain": 0.6,  "what": "hard cut to the big number" },
-    { "at": "moved_up", "type": "click",   "gain": 0.75, "what": "32% → 38%, +6 pts pill" },
-    { "at": "real",     "type": "pop",     "gain": 0.55, "what": "'Real change?'" },
-    { "at": "noise",    "type": "pop",     "gain": 0.55, "what": "'Or just noise?'" },
-    { "at": "sample",   "type": "whoosh",  "gain": 0.6,  "what": "push into the 0–100% track" },
-    { "at": 16.5, "to": 19.75, "every": 0.25, "type": "tick", "gain": 0.28, "what": "samples landing" },
-    { "at": "band",     "type": "thump",   "gain": 0.6,  "what": "interval band locks 24–41%" },
-    { "at": "card",     "type": "whoosh",  "gain": 0.65, "what": "prompts card rises" },
-    { "at": "row1",     "type": "pop",     "gain": 0.45, "what": "row 1" },
-    { "at": "row2",     "type": "pop",     "gain": 0.45, "what": "row 2" },
-    { "at": "row3",     "type": "pop",     "gain": 0.45, "what": "row 3" },
-    { "at": "row4",     "type": "pop",     "gain": 0.45, "what": "row 4" },
-    { "at": "card_line","type": "pop",     "gain": 0.55, "what": "caption swap" },
-    { "at": "verdict",  "type": "shutter", "gain": 0.6,  "what": "cut to the verdict table" },
-    { "at": "v1",       "type": "click",   "gain": 0.45, "what": "verdict 1" },
-    { "at": "v2",       "type": "click",   "gain": 0.45, "what": "verdict 2" },
-    { "at": "v3",       "type": "click",   "gain": 0.45, "what": "verdict 3" },
-    { "at": "v4",       "type": "click",   "gain": 0.45, "what": "verdict 4" },
-    { "at": "gain",     "type": "thump",   "gain": 0.7,  "what": "Real gain highlighted" },
-    { "at": "trend",    "type": "shutter", "gain": 0.55, "what": "cut to trend chart" },
-    { "at": "sources",  "type": "whoosh",  "gain": 0.55, "what": "sources card pushes in" },
-    { "at": "tag",      "type": "pop",     "gain": 0.6,  "what": "tagline lands" },
-    { "at": "logo",     "type": "riser",   "gain": 0.5,  "what": "riser through the gap, peaks on the logo" },
-    { "at": "logo",     "type": "thump",   "gain": 0.9,  "what": "logo lands" },
-    { "at": "cta",      "type": "pop",     "gain": 0.65, "what": "CTA" }
+    {
+      "at": "hook",
+      "type": "pop",
+      "gain": 0.75,
+      "what": "headline word 1 on frame 0"
+    },
+    {
+      "at": "hook_w2",
+      "type": "pop",
+      "gain": 0.5,
+      "what": "headline word 2"
+    },
+    {
+      "at": "hook_w3",
+      "type": "pop",
+      "gain": 0.6,
+      "what": "headline 'your brand?'"
+    },
+    {
+      "at": "ask",
+      "type": "pop",
+      "gain": 0.6,
+      "what": "buyer prompt pill appears"
+    },
+    {
+      "at": 4.5,
+      "to": 6.5,
+      "every": 0.25,
+      "type": "tick",
+      "gain": 0.3,
+      "what": "prompt types"
+    },
+    {
+      "at": "moved",
+      "type": "shutter",
+      "gain": 0.6,
+      "what": "hard cut to the big number"
+    },
+    {
+      "at": "moved_up",
+      "type": "click",
+      "gain": 0.75,
+      "what": "32% → 38%, +6 pts pill"
+    },
+    {
+      "at": "real",
+      "type": "pop",
+      "gain": 0.55,
+      "what": "'Real change?'"
+    },
+    {
+      "at": "noise",
+      "type": "pop",
+      "gain": 0.55,
+      "what": "'Or just noise?'"
+    },
+    {
+      "at": "sample",
+      "type": "whoosh",
+      "gain": 0.6,
+      "what": "push into the 0–100% track"
+    },
+    {
+      "at": 16.5,
+      "to": 19.75,
+      "every": 0.25,
+      "type": "tick",
+      "gain": 0.28,
+      "what": "samples landing"
+    },
+    {
+      "at": "band",
+      "type": "thump",
+      "gain": 0.6,
+      "what": "interval band locks 24–41%"
+    },
+    {
+      "at": "card",
+      "type": "whoosh",
+      "gain": 0.65,
+      "what": "prompts card rises"
+    },
+    {
+      "at": "row1",
+      "type": "pop",
+      "gain": 0.45,
+      "what": "row 1"
+    },
+    {
+      "at": "row2",
+      "type": "pop",
+      "gain": 0.45,
+      "what": "row 2"
+    },
+    {
+      "at": "row3",
+      "type": "pop",
+      "gain": 0.45,
+      "what": "row 3"
+    },
+    {
+      "at": "row4",
+      "type": "pop",
+      "gain": 0.45,
+      "what": "row 4"
+    },
+    {
+      "at": "card_line",
+      "type": "pop",
+      "gain": 0.55,
+      "what": "caption swap"
+    },
+    {
+      "at": "verdict",
+      "type": "shutter",
+      "gain": 0.6,
+      "what": "cut to the verdict table"
+    },
+    {
+      "at": "v1",
+      "type": "click",
+      "gain": 0.45,
+      "what": "verdict 1"
+    },
+    {
+      "at": "v2",
+      "type": "click",
+      "gain": 0.45,
+      "what": "verdict 2"
+    },
+    {
+      "at": "v3",
+      "type": "click",
+      "gain": 0.45,
+      "what": "verdict 3"
+    },
+    {
+      "at": "v4",
+      "type": "click",
+      "gain": 0.45,
+      "what": "verdict 4"
+    },
+    {
+      "at": "gain",
+      "type": "thump",
+      "gain": 0.7,
+      "what": "Real gain highlighted"
+    },
+    {
+      "at": "trend",
+      "type": "shutter",
+      "gain": 0.55,
+      "what": "cut to trend chart"
+    },
+    {
+      "at": "sources",
+      "type": "whoosh",
+      "gain": 0.55,
+      "what": "sources card pushes in"
+    },
+    {
+      "at": 46,
+      "type": "pop",
+      "gain": 0.5,
+      "what": "getorem.com row highlights"
+    },
+    {
+      "at": "tag",
+      "type": "pop",
+      "gain": 0.6,
+      "what": "tagline lands"
+    },
+    {
+      "at": "logo",
+      "type": "riser",
+      "gain": 0.5,
+      "what": "riser through the gap, peaks on the logo"
+    },
+    {
+      "at": "logo",
+      "type": "thump",
+      "gain": 0.9,
+      "what": "logo lands"
+    },
+    {
+      "at": "cta",
+      "type": "pop",
+      "gain": 0.65,
+      "what": "CTA"
+    }
   ],
-  "mix": { "music": 0, "sfx": -3, "vo": 0, "duck": true }
+  "mix": {
+    "music": 0,
+    "sfx": -6,
+    "vo": 0,
+    "duck": true
+  }
 }
