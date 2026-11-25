@@ -130,3 +130,50 @@ Round 2 fixes, checked. Caption word gaps are FIXED: strip_fast2 f356–367 "Urg
    - Verify: stills at f437, f444, f602–605, f160–162.
 
 **Verdict:** ANOTHER ROUND
+
+## Round 4: renders/draft_9x16.mp4 (30.0 s, 1080x1920, 30 fps), fresh critic pass on review/r4 + extra stills (f0–7, f52–63, f154–169, f304–313, f430–489, f472–477 full-res crop, f505–516, f550–615, f666–677, f708–715, f788–807) + end-card tblend frame diff
+
+Round 3 fixes, checked.
+- Answer-list sync: mostly FIXED. Competitor B is now one event: first tile f454, label + tiles f455, all three f456, against the 15.198 s cue (f455.9). That is a −33 ms spHit lead; the metric's −67 is the first tile. The gauge pop at 18.668 s is gone from the cues. NOT fixed: the "Your Business" chip is still not on the frame with C (see problem 1).
+- Hook fullness: FIXED in part. "Google" now spans x ≈ 110–890 at y ≈ 37–50 %. The squares are clustered in a band at y 23–68 %, and the f0 layout equals f1–f7 (loop_seam B f0–f5 identical). The paper above 22 % and below 75 % is still empty.
+- Handoffs: FIXED. The answer list cuts in at f437 (14.57 s) with "Here a…" typing, the Competitor A row and grey skeletons for rows 2–3, so y 35–72 % is never bare. The chart card rises at f602–606 and stops above the caption band ("where" at y ≈ 1400 is never covered). The SERP tabs row now clips with the card, f158–160 show no sliced text, and the bar carries on into the chat box (f161–169).
+
+| Criterion | Score | Evidence (timestamps, frame numbers, metric values) |
+|---|---|---|
+| Hook (first 2 s) | 8 | f0 reads at once: "Google" is ~780 px wide serif plus the "Google" caption, with no blank frames. "Google was enough." completes by 0.9 s (f27) and "(once)" by 1.3 s. The SERP card enters at f58 (1.93 s). The squares are denser and stable f0→f7. Still text-only for 1.9 s, with ~45 % empty paper (y 0–22 %, 75–100 %), so it reaches 8 but not 9. |
+| Readability at phone size | 8 | Every caption reads in phone_9x16 1–29 s, with word gaps open. `growlatics.us` (~52 px at 1080) and the wordmark (~110 px) are legible at 29 s and in loop_seam A. Checklist rows, competitor pills and the gauge % read. The only unreadable text is decorative: the gauge legend, chart legend and "Done" tags, ~6 px at 360. Safe zones are clear apart from the Act 3 card edges at x ≈ 980 (decorative). |
+| Motion quality | 7 | CAP: a visible jump. At f473 (15.77 s) the "Your Business" chip grows in at ~90 % INSIDE the row-3 skeleton (y ≈ 1080). At f475 it teleports ~300 px down under "Thinking…" while the skeleton tiles vanish in one frame. Good elsewhere: Competitor B's tiles stagger 1 frame (f454–456), the chip drop arcs and tilts out of frame (f511–516) with no fade, the heavy rises on "Your. Next. Customer." and the end-card words land through the mask (f793–807), and the chart card rises cleanly (f602–606). Weak: the gauge card at the Act 3 cut only settles ~10 px f556–559, then holds at 12 % to f588. |
+| Variety / pacing | 8 | max_gap_between_visual_events 2.57 s (23.83), longest_static 0.87 s (17.6), near_blank_frames none. The end card moves on every frame: tblend diff 0.07–1.59/255 from f793 to f899, with no zero run, building Be→the→name→AI says, then bars (28.33), wordmark, URL (29.1). Soft spots: the gauge holds at 12 % for 18.53–19.60 s, and the completed checklist holds for 25.5–26.43 s with only the caption changing. |
+| Brand accuracy | 8 | Palette exact: #F5F3F0 paper, #D2401A as the single accent, #0C0B0A dark. Newsreader display + Inter UI. The real bars logo and wordmark. One caption class throughout. No HubSpot wording, logo or colour. Nothing changed from Round 3. |
+| Sound sync | 6 | The Round 3 problem is still visible, so the score cannot rise. The 15.859 s cue (f475.8) "Your Business + Competitor C" still splits: the chip reads at f473 (−93 ms, no sound) and the relayout + C land at f475 (−27 ms). Everything else is now clean. hits_within_45ms 13/14, mean 23.6 ms. The only miss, Competitor B −67, is −33 on frames (label f455). Act cut f556 vs 18.502 = +33 ms on frames (the +100 is the whoosh, by design). The checklist fill at 23.79 starts f711 and is solid f713, so the +100 is the "Be found." caption bias. The end-card thump is 0 ms, logo bars +33. Loudness −14.0 LUFS, true peak −1.4 dBTP: OK. |
+| Composition (every format) | 7 | Round 3's empty answer list is fixed (skeleton rows from f437). But the question wall, noted last round, is unchanged: f308 (10.27 s) is one line at y ≈ 13 % on empty paper. It is 3 lines at f313, and at contact 10.5 s only y 20–35 % is filled, so ~65 % of the frame is empty for ~0.5 s. Also a bare search bar on empty paper f162–165 (5.40–5.50 s, short). Act 3 fills y 14–70 % with depth cards. The end card's lower 45 % is glow only (tolerated on an end card). |
+| Polish | 8 | No blank frames, no caret leaks, no double-exposed captions. All three Round 3 polish defects are fixed: the chart card no longer crosses the caption (f602–605), the SERP tabs are not sliced (f158–162), and the squares no longer re-scatter between f0 and f1. Minor: the chip overlaps the grey skeleton for 2 frames (f473–474) before the relayout, which is counted under motion. loop_seam_jump 216.4 is informational (one-shot ad). |
+
+**3 worst problems** (ranked by damage to the film, each with timestamp + cause)
+1. **Row 3 of the AI answer resolves with a split and a teleport (f473–475, 15.77–15.83 s).**
+   - The "Your Business" chip grows in at f473, 3 frames before its pop (15.859 s), on top of the row-3 skeleton.
+   - On f475 it jumps ~300 px to below "Thinking…" while the skeleton tiles vanish in one frame.
+   - This is the last unsynced cue (sync 6), and it is a visible jump in motion (cap 7).
+2. **The question wall opens on empty paper (f308–~320, 10.27–10.65 s).**
+   - The wall builds line by line from the top, so for ~0.5 s it is 1–5 lines at y 13–35 % with ~65 % empty paper.
+   - This was noted in Round 3 and is unchanged (composition 7).
+3. **Act 3 opens on a frozen gauge (f556–f588, 18.53–19.60 s).**
+   - The card arrives fully composed at the hard cut. It only settles ~10 px, and the needle holds at 12 % for 1.07 s while the VO starts "Growlatics shows you…".
+   - The biggest act change in the film lands on its most static second.
+
+**Fixes for round 5** (concrete, testable, one per problem: what changes, where, and how to verify it)
+1. **Make row 3 one event, in one place.**
+   - Delete the chip's early in-skeleton entrance.
+   - From f473, collapse the skeleton row (scaleY 1→0 on a snappy spring, ~3 frames) into the "Thinking…" line. It must not vanish in one frame.
+   - Drive the chip AND Competitor C from one `C.spHit` on 15.859 s, each growing 0.85→1 in its FINAL slot. The chip should be ≥ 90 % at f475, and C stagger ≤ 1 frame (f476).
+   - Verify: stills f470–478 show the chip in exactly one position and first visible at f474–475; metrics sync shows this cue within ±45 ms on frames.
+2. **Pre-fill the question wall at the cut.**
+   - At the 10.242 s shutter, start the wall pre-scrolled so ≥ 8 lines already fill y ≈ 15–70 % on f308.
+   - Keep the scroll and the beat dot pops, with new lines entering from the bottom mask.
+   - Verify: contact 10.0–10.5 s and stills f308, f312 and f318 each show ≤ 1/3 empty paper.
+3. **Give the Act 3 opener motion from frame one.**
+   - On the cut (f556), let the header and legend rise in (snappy, ~4 frames).
+   - Kick the needle 12→17 % with an spHit on b28.5 (18.83 s, the VO entry), then start the 17→78 % sweep at b29 (19.16 s).
+   - Verify: card-region tblend diff > 0.3/255 on every frame f556–f600, and the gauge reads ≥ 17 % by f566.
+
+**Verdict:** ANOTHER ROUND

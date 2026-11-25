@@ -24,7 +24,7 @@
   const BARS = (s, c = 'var(--accent)') => `<svg width="${19 * s}" height="${20 * s}" viewBox="0 0 19 20" style="overflow:visible">${
     [[0, 14, 6], [4, 10, 10], [8, 6, 14], [12, 3, 17], [16, 0, 20]].map(([x, y, h], i) =>
       `<rect data-bar="${i}" x="${x}" y="${y}" width="3" height="${h}" rx="0.857" fill="${c}" style="transform-box:fill-box;transform-origin:50% 100%"/>`).join('')}</svg>`;
-  const pop = (t, b, preset = 'snappy') => { const p = spHit(t, b, preset); return { o: p > 0.002 ? 1 : 0, s: 0.86 + 0.14 * p, p }; };
+  const pop = (t, b, preset = 'snappy') => { const p = spHit(t, b, preset); return { o: p > 0.22 ? 1 : 0, s: 0.86 + 0.14 * p, p }; };
 
   // ---------------------------------------------------------------- pixel squares (Act 1 texture, reference grammar)
   // Seeded squares that snap in/out on half-beats. Each half-beat slot spawns a few; each lives 1–3 slots.
@@ -237,9 +237,10 @@
       const scroll = ease.inOut(seg(t, 'wall', 'answer'));
       put(S.wall, { y: -560 * scroll });
       S.rows.forEach((r, i) => {
-        const q = spHit(t, 15.5 + i * 0.2, 'snappy');
+        const rb = i < 8 ? 15.3 + i * 0.03 : 15.6 + (i - 8) * 0.25;
+        const q = spHit(t, rb, 'snappy');
         put(r, { o: q > 0.002 ? 1 : 0, y: 26 * (1 - q) });
-        put(r._dot, { s: spHit(t, 15.5 + i * 0.2 + 0.25, 'snappy') });
+        put(r._dot, { s: spHit(t, Math.max(15.5, rb) + 0.25 + (i < 8 ? i * 0.12 : 0), 'snappy') });
       });
       // the wall drops behind the statement (blurred, dimmed: it is a background, not an exit)
       const dim = sp(t, 18.5, 'default');
@@ -281,7 +282,7 @@
       S.think = reg(el('div', { class: 'abs', style: 'left:56px;top:10px;font:400 30px UI;color:var(--ink-4)' }, it3, 'Thinking…'), { o: 0 });
       S.yb = reg(el('div', { class: 'abs', style: 'z-index:3;left:56px;top:70px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:var(--accent);color:#fff;transform-origin:30% 50%' }, it3, 'Your Business'), { o: 0 });
       S.c3 = reg(el('div', { class: 'abs', style: 'left:56px;top:146px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:#E4DED7;color:var(--ink);transform-origin:0 50%' }, it3, 'Competitor C'), { o: 0 });
-      S.sk3 = reg(skel(it3), { o: 1 });
+      S.sk3 = reg(skel(it3), { o: 1 }); S.sk3.style.transformOrigin = '0 0';
       S.t3 = tiles(it3, 77); S.t3row = S.t3[0].parentNode; S.t3row.style.top = '70px';
     },
     run(t, b, S) {
@@ -295,7 +296,8 @@
       // slot 3: Thinking… → two candidates → Your Business is dropped, Competitor C takes the slot
       const th = b >= 23.4 && b < 26.1; put(S.think, { o: th ? (Math.floor(b * 4) % 4 === 3 ? 0.55 : 1) : 0 });
       const yb = pop(t, 'pick3'), c3 = pop(t, 'pick3');
-      put(S.sk3, { o: yb.p > 0.5 ? 0 : 1 });
+      const fold = sp(t, beatOf('pick3') - 0.3, 'snappy');
+      put(S.sk3, { o: fold > 0.97 ? 0 : 1, sy: 1 - fold });
       const fall = sp(t, 'drop', 'default');
       put(S.yb, { o: yb.o, s: yb.s, y: 980 * fall, x: 40 * fall, r: 6 * fall, hide: fall > 0.995 });
       const up = sp(t, 26.1, 'snappy');
@@ -354,11 +356,11 @@
       put(S.bg, { css: { background: DARKBG(seg(t, 'act3', 'done')) } });
       const k = spHit(t, 'chart', 'default');
       const g0 = 0.6 + 0.4 * sp(t, 'act3', 'default');
-      put(S.g, { o: 1, y: 120 * (1 - g0), s: 0.94 + 0.06 * g0 });
+      put(S.g, { o: 1, y: 220 * (1 - g0), s: 0.92 + 0.08 * g0 });
       S.ghost.forEach((e, i) => put(e, { x: 26 * Math.sin(t * 0.7 + i * 2), y: 14 * Math.cos(t * 0.5 + i) }));
       put(S.cam, { s: 1 + 0.05 * seg(t, 'act3', 'check'), x: trk(t, [[0, 0], [30.5, -16, 'default'], [32.5, 12, 'default']]) });
       put(S.k, { o: k > 0.002 ? 1 : 0, y: 36 * (1 - k), s: 0.9 + 0.1 * k });
-      const v = trk(t, [[0, 12], [29.75, 31, 'heavy'], [31, 78, 'heavy']]);
+      const v = trk(t, [[0, 12], [28.5 - 0.15, 17, 'snappy'], [29, 44, 'heavy'], [30, 78, 'heavy']]);
       put(S.arc, { css: { strokeDasharray: `${Math.max(0.5, v).toFixed(2)} 200` } });
       put(S.numT, { text: String(Math.round(v)) });
       const rv = ease.inOut(seg(t, 31.4, 33.4));
