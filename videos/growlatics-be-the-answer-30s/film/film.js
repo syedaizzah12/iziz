@@ -53,13 +53,13 @@
     build(root, S) {
       S.ctx = canvas(root);
       S.cam = cam(root);
-      S.word = el('div', { class: 'abs ser', style: `left:${PAD + 24}px;top:820px;font-size:176px;line-height:1;color:var(--ink)` }, S.cam);
+      S.word = el('div', { class: 'abs ser', style: `left:${PAD + 6}px;top:760px;font-size:212px;line-height:1;color:var(--ink)` }, S.cam);
       S.txt = el('span', {}, S.word); S.dot = el('span', { style: 'color:var(--accent)' }, S.word, '.');
-      S.caret = el('span', { style: 'display:inline-block;width:6px;height:150px;margin-left:10px;vertical-align:-14px;background:var(--accent)' }, S.word);
+      S.caret = el('span', { style: 'display:inline-block;width:7px;height:180px;margin-left:12px;vertical-align:-16px;background:var(--accent)' }, S.word);
       reg(S.txt); reg(S.dot); reg(S.caret);
     },
     run(t, b, S) {
-      const g = S.ctx; g.clearRect(0, 0, W, H); pixels(g, t, [800, 1020]);
+      const g = S.ctx; g.clearRect(0, 0, W, H); pixels(g, t, [740, 1010], 14);
       push(t, S, 'hook', 'run1', 0.05);
       // word timings from the VO (window.CAPS chunk 0): Google 0.00 · was 0.21 · enough 0.59 · Once 1.32
       const w = window.CAPS[0].t, once = window.CAPS[1].t[0];
@@ -100,17 +100,19 @@
       reg(S.icoA, { o: 0 });
       S.q = el('div', { style: 'font:500 42px UI;color:var(--ink);white-space:nowrap' }, S.bar, 'plumber near me'); reg(S.q);
       // chat text (serif) inside the bar, absolutely placed so the bar can grow around it
-      S.chat = el('div', { class: 'abs ser', style: 'left:88px;top:0;height:100%;display:flex;align-items:center;font-size:52px;color:var(--ink)' }, S.bar);
+      S.chat = el('div', { class: 'abs ser', style: 'left:92px;top:0;height:100%;display:flex;align-items:center;font-size:64px;line-height:1.18;color:var(--ink)' }, S.bar);
       S.inner = el('span', { style: 'white-space:pre' }, S.chat);
       S.ct = el('span', {}, S.inner); reg(S.ct);
       S.mask = el('span', { style: 'display:inline-block;position:relative;overflow:hidden;vertical-align:bottom;height:1.25em;line-height:1.25em;padding:0 .02em' }, S.inner);
       S.tw = TRADES.map(([w]) => reg(el('span', { class: 'abs', style: 'left:0;top:0;font-weight:520;white-space:nowrap' }, S.mask, w), { o: 0 }));
-      S.postEl = el('span', {}, S.inner, Q1); reg(S.postEl);
-      S.ccaret = el('span', { style: 'display:inline-block;width:4px;height:56px;margin-left:6px;vertical-align:-8px;background:var(--accent)' }, S.inner); reg(S.ccaret, { o: 0 });
+      S.postEl = el('span', {}, S.inner, '\n' + Q1.trim()); reg(S.postEl);
+      S.ccaret = el('span', { style: 'display:inline-block;width:5px;height:66px;margin-left:6px;vertical-align:-8px;background:var(--accent)' }, S.inner); reg(S.ccaret, { o: 0 });
       reg(S.mask); reg(S.chat, { o: 0 });
       S.ask = el('div', { class: 'abs ui', style: 'left:104px;top:0;font:600 32px UI;color:var(--ink-3);letter-spacing:.01em;display:flex;align-items:center;gap:12px' }, S.cam,
         '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--accent)"></span>Ask AI anything');
       reg(S.ask, { o: 0 });
+      S.hist = ['Best family dentist open Saturday?', 'Who fixes leaks fast near me?'].map((q) =>
+        reg(el('div', { class: 'abs ui', style: 'left:auto;right:134px;top:0;padding:20px 28px;border-radius:28px 28px 8px 28px;background:#ECE4DD;color:var(--ink-3);font:500 30px UI;white-space:nowrap;transform-origin:100% 100%;opacity:.8' }, S.cam, q), { o: 0 }));
       S.sugg = ['Emergency plumber tonight?', 'Dentist open Saturday?', 'Most trusted roofer?', 'Salon with best reviews?'].map((q, i) =>
         reg(el('div', { class: 'abs ui', style: `left:${i % 2 ? 530 : 96}px;top:0;height:72px;padding:0 26px;border-radius:36px;background:#ECE7E1;color:var(--ink-2);font:500 29px/72px UI;white-space:nowrap;transform-origin:0 50%` }, S.cam, q), { o: 0 }));
       // tabs, meta, map pack, results
@@ -148,13 +150,13 @@
       // run lines: one per VO phrase, hard swap (outgoing fully gone first)
       rise(t, S.lines[0], 'run1', 4.5 - 0.2, { preset: 'snappy', stagger: 0.05, exit: 0.2 });
       rise(t, S.lines[1], 'run2', 6.25 - 0.2, { preset: 'snappy', stagger: 0.05, exit: 0.2 });
-      rise(t, S.lines[2], 'run3', 'chat', { preset: 'snappy', stagger: 0.05, exit: 0.25 });
+      rise(t, S.lines[2], 'run3', 7.75, { preset: 'snappy', stagger: 0.05, exit: 0.25 });
       if (b > 8.6) S.lines.forEach((L) => L.words.forEach((w) => put(w, { hide: true })));
       // card rises in on run1
       const cin = spHit(t, 'run1', 'default');
       // collapse (results fold into the bar) then move to the chat position
       const col = sp(t, 7.75, 'default');
-      const cy = trk(t, [[0, 370], [8.0, 600, 'default']]) + 560 * (1 - cin);
+      const cy = trk(t, [[0, 370], [8.0, 520, 'default']]) + 560 * (1 - cin);
       const folded = col > 0.985;
       put(S.card, folded ? { o: 1, y: cy, css: { background: 'transparent', boxShadow: 'none' } }
         : { o: cin > 0.002 ? 1 : 0, y: cy, clip: `inset(0 0 ${(980 - 188) * col}px 0 round 38px)`, r: -2 * (1 - cin) });
@@ -173,7 +175,7 @@
       const ws = pop(t, 'run3'); put(S.site, ws);
       // ---- chat mode
       const ch = sp(t, 'chat', 'default');                    // 0 → 1 as the bar becomes a chat box
-      const hgt = lerp(116, 236, ch), wid = lerp(888, 900, ch);
+      const hgt = lerp(116, 270, ch), wid = lerp(888, 840, ch);
       put(S.bar, { css: { height: hgt + 'px', width: wid + 'px', borderRadius: lerp(58, 36, ch) + 'px', borderColor: ch > 0.5 ? '#fff' : '',
         boxShadow: ch > 0.02 ? `0 30px 70px -24px rgba(12,11,10,${0.35 * ch})` : '' } });
       const qOut = sp(t, 8.0, 'snappy');
@@ -181,9 +183,10 @@
       put(S.icoS, { o: ch < 0.5 ? 1 : 0, s: 1 - 0.3 * ch });
       const ia = pop(t, 'chat'); put(S.icoA, ia);
       const askp = spHit(t, 8.5, 'snappy'); put(S.ask, { o: askp > 0.002 ? 1 : 0, y: cy - 64 + 16 * (1 - askp) });
-      S.sugg.forEach((e, i) => { const q = pop(t, 9.75 + i * 0.25); put(e, { o: q.o, s: q.s, y: cy + 330 + Math.floor(i / 2) * 96 }); });
+      S.hist.forEach((e, i) => { const q = pop(t, 8.5 + i * 0.35, 'default'); put(e, { o: q.o, s: q.s, y: cy - 300 + i * 112 - 30 * seg(t, 8.5, 15.5) }); });
+      S.sugg.forEach((e, i) => { const q = pop(t, 9.75 + i * 0.25); put(e, { o: q.o, s: q.s, y: cy + 360 + Math.floor(i / 2) * 96 }); });
       // question types (b8.75 → b11.75), then trade words swap through a mask
-      const full = Q0 + 'plumber' + Q1;
+      const full = Q0 + 'plumber\n' + Q1.trim();
       const t0 = bt(8.75), cps = full.length / (bt(11.75) - t0);
       const showChat = b >= 8.5;
       put(S.chat, { o: showChat ? 1 : 0 });
@@ -194,7 +197,7 @@
       } else {
         put(S.ct, { text: Q0 }); put(S.ccaret, { o: 0 });
         // mask width follows the current word (measured once fonts are in)
-        if (!S.wid) { const m = document.createElement('canvas').getContext('2d'); m.font = "520 52px Display"; S.wid = TRADES.map(([w]) => m.measureText(w).width + 4); }
+        if (!S.wid) { const m = document.createElement('canvas').getContext('2d'); m.font = "520 64px Display"; S.wid = TRADES.map(([w]) => m.measureText(w).width + 4); }
         const keys = [[0, S.wid[0]]].concat(TRADES.slice(1).map(([, m], i) => [beatOf(m) - 0.06, S.wid[i + 1], 'snappy']));
         put(S.mask, { css: { width: trk(t, keys).toFixed(1) + 'px' } });
         TRADES.forEach(([, m], i) => {
@@ -250,7 +253,7 @@
     name: 'answer', from: 'answer', to: 'act3',
     build(root, S) {
       S.cam = cam(root);
-      S.user = reg(el('div', { class: 'abs ui', style: 'left:auto;right:110px;top:300px;padding:22px 30px;border-radius:28px 28px 8px 28px;background:var(--accent-soft);font:500 32px UI;color:var(--ink);transform-origin:100% 100%' }, S.cam,
+      S.user = reg(el('div', { class: 'abs ui', style: 'left:auto;right:136px;top:300px;padding:22px 30px;border-radius:28px 28px 8px 28px;background:var(--accent-soft);font:500 32px UI;color:var(--ink);transform-origin:100% 100%' }, S.cam,
         "Who's the best plumber near me?"), { o: 0 });
       S.lead = el('div', { class: 'abs ui', style: 'left:96px;top:430px;font:500 30px UI;color:var(--ink-3);display:flex;align-items:center;gap:14px' }, S.cam);
       el('span', { style: 'display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--accent)' }, S.lead);
@@ -278,7 +281,7 @@
     run(t, b, S) {
       push(t, S, 'answer', 'act3', 0.04);
       const u = pop(t, 'answer'); put(S.user, u);
-      put(S.lead, { o: b >= 22.4 ? 1 : 0 }); put(S.leadT, { text: typed(t, 'Here are my top picks:', bt(22.4), 26) });
+      put(S.lead, { o: b >= 22.1 ? 1 : 0 }); put(S.leadT, { text: typed(t, 'Here are my top picks:', bt(22.1), 30) });
       S.items.forEach((it, i) => {
         const p = pop(t, beatOf('pick1') + i); put(it.pill, p);
         it.tiles.forEach((tl, k) => { const q = spHit(t, beatOf('pick1') + i + 0.25 + k * 0.12, 'default'); put(tl, { o: q > 0.002 ? 1 : 0, sx: 0.9 + 0.1 * q, y: 16 * (1 - q) }); });
@@ -364,23 +367,23 @@
     build(root, S) {
       S.bg = reg(el('div', { class: 'abs', style: `width:${W}px;height:${H}px` }, root));
       S.cam = cam(root);
-      S.back = reg(el('div', { class: 'abs ui', style: 'left:150px;top:250px;width:740px;height:300px;border-radius:26px;background:var(--card);filter:blur(4px);opacity:.28' }, S.cam,
+      S.back = reg(el('div', { class: 'abs ui', style: 'display:none;left:150px;top:250px;width:740px;height:300px;border-radius:26px;background:var(--card);filter:blur(4px);opacity:.28' }, S.cam,
         '<div style="position:absolute;left:40px;top:30px;font:700 34px UI;color:#0C0B0A">AI Visibility Score</div><div style="position:absolute;left:40px;top:90px;font:700 120px UI;color:#D2401A">78%</div>'));
-      S.card = card(S.cam, 80, 420, 870, 760);
+      S.card = card(S.cam, 80, 330, 870, 860);
       el('div', { class: 'abs', style: 'left:40px;top:40px;height:60px;padding:0 26px;border-radius:30px;background:var(--accent);color:#fff;font:700 30px/60px UI' }, S.card, 'Recommended fixes');
       el('div', { class: 'abs', style: 'left:auto;right:44px;top:54px;font:500 28px UI;color:var(--ink-3)' }, S.card, '4 actions');
       S.rows = FIX.map((f, i) => {
-        const r = el('div', { class: 'abs', style: `left:40px;top:${142 + i * 148}px;width:790px;height:128px;border-radius:24px;background:#F4F1EC` }, S.card);
-        const box = el('div', { class: 'abs', style: 'left:28px;top:34px;width:60px;height:60px;border-radius:16px;border:3px solid #CFC8C0;box-sizing:border-box;background:#fff' }, r);
-        const fill = reg(el('div', { class: 'abs', style: 'left:28px;top:34px;width:60px;height:60px;border-radius:16px;background:var(--accent)' }, r,
+        const r = el('div', { class: 'abs', style: `left:40px;top:${146 + i * 172}px;width:790px;height:150px;border-radius:24px;background:#F4F1EC` }, S.card);
+        const box = el('div', { class: 'abs', style: 'left:28px;top:44px;width:62px;height:62px;border-radius:16px;border:3px solid #CFC8C0;box-sizing:border-box;background:#fff' }, r);
+        const fill = reg(el('div', { class: 'abs', style: 'left:28px;top:44px;width:62px;height:62px;border-radius:16px;background:var(--accent)' }, r,
           '<svg width="60" height="60" viewBox="-4 -4 60 60"><path d="M14 27 l8 8 l16 -18" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/></svg>'), { o: 0 });
         fill._p = fill.querySelector('path'); reg(fill._p);
-        el('div', { class: 'abs', style: 'left:114px;top:36px;font:600 42px UI;color:var(--ink)' }, r, f);
-        const done = reg(el('div', { class: 'abs', style: 'left:auto;right:26px;top:40px;height:48px;padding:0 18px;border-radius:24px;background:var(--accent-soft);color:var(--accent);font:700 26px/48px UI' }, r, 'Done'), { o: 0 });
+        el('div', { class: 'abs', style: 'left:118px;top:48px;font:600 44px UI;color:var(--ink)' }, r, f);
+        const done = reg(el('div', { class: 'abs', style: 'left:auto;right:26px;top:51px;height:48px;padding:0 18px;border-radius:24px;background:var(--accent-soft);color:var(--accent);font:700 26px/48px UI' }, r, 'Done'), { o: 0 });
         return { r, fill, done };
       });
-      S.score = reg(el('div', { class: 'abs ui', style: 'left:80px;top:1218px;height:84px;padding:0 34px;border-radius:42px;background:rgba(253,252,250,.1);border:2px solid rgba(253,252,250,.22);color:#F5F3F0;font:600 32px/80px UI;transform-origin:0 50%' }, S.cam,
-        'AI Visibility <b style="color:#fff">12% → 78%</b>'), { o: 0 });
+      S.score = reg(el('div', { class: 'abs ui', style: 'left:80px;top:1226px;height:92px;padding:0 36px;border-radius:42px;background:rgba(253,252,250,.1);border:2px solid rgba(253,252,250,.22);color:#F5F3F0;font:600 32px/80px UI;transform-origin:0 50%' }, S.cam,
+        'AI Visibility <b style="color:#fff">12%</b>'), { o: 0 });
     },
     run(t, b, S) {
       put(S.bg, { css: { background: DARKBG(seg(t, 'act3', 'done')) } });
@@ -393,7 +396,9 @@
         put(r.fill._p, { css: { strokeDashoffset: (1 - clamp(C.sp(t, m - 0.05, 'default'))).toFixed(3) } });
         const d = pop(t, m + 0.35); put(r.done, d);
       });
-      const sc = pop(t, 38.75, 'default'); put(S.score, sc);
+      const sc = pop(t, 34.5, 'default');
+      const pct = Math.round(trk(t, [[0, 12], [35, 29, 'snappy'], [36, 45, 'snappy'], [37, 62, 'snappy'], [38, 78, 'snappy']]));
+      put(S.score, { ...sc, html: `AI Visibility <b style="color:#fff">${pct}%</b>${pct >= 78 ? ' <span style="color:#E39A82">▲ +66</span>' : ''}` });
     },
   });
 

@@ -316,39 +316,39 @@
    "what": "Customer."
   },
   {
-   "t": 15.19837,
+   "t": 14.86798,
    "type": "pop",
    "gain": 0.45,
    "pitch": 1.057,
    "pan": 0.05,
-   "beat": 23,
+   "beat": 22.5,
    "mark": "pick1",
    "snapped_to_hit": false,
    "snap_ms": 0,
    "what": "Competitor A"
   },
   {
-   "t": 15.85917,
+   "t": 15.52877,
    "type": "pop",
    "gain": 0.45,
    "pitch": 1.044,
    "pan": 0.134,
-   "beat": 24,
+   "beat": 23.5,
    "mark": "pick2",
-   "snapped_to_hit": true,
+   "snapped_to_hit": false,
    "snap_ms": 0,
    "what": "Competitor B"
   },
   {
-   "t": 16.51997,
+   "t": 16.17308,
    "type": "pop",
    "gain": 0.45,
    "pitch": 1.012,
    "pan": -0.019,
-   "beat": 25,
+   "beat": 24.5,
    "mark": "pick3",
-   "snapped_to_hit": false,
-   "snap_ms": 0,
+   "snapped_to_hit": true,
+   "snap_ms": -16.49,
    "what": "Competitor C"
   },
   {
