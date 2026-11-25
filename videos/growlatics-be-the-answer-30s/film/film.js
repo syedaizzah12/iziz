@@ -29,14 +29,14 @@
   // ---------------------------------------------------------------- pixel squares (Act 1 texture, reference grammar)
   // Seeded squares that snap in/out on half-beats. Each half-beat slot spawns a few; each lives 1–3 slots.
   const PIX = ['#D2401A', '#0C0B0A', '#C0B8B0', '#E4DED7', '#A83216', '#C0B8B0'];
-  function pixels(g, t, band, dens = 9) {
-    const hb = Math.floor(beatAt(t) * 2 + 1e-6);
+  function pixels(g, t, band, dens = 9, yr = [300, 1480]) {
+    const hb = Math.max(0, Math.floor(beatAt(t) * 2 + 1e-6));
     for (let j = hb - 3; j <= hb; j++) {
       const r = mulberry32(9001 + j * 131);
       const n = dens + Math.floor(r() * 4);
       for (let i = 0; i < n; i++) {
-        const life = 1 + Math.floor(r() * 3), x = 40 + r() * (W - 80), y = 300 + r() * 1180;
-        const sz = [6, 8, 12, 18, 26, 40][Math.floor(r() * 6)], tall = r() < 0.25 ? 2 : 1, wide = r() < 0.2 ? 2.4 : 1;
+        const life = 1 + Math.floor(r() * 3), x = 40 + r() * (W - 80), y = yr[0] + r() * (yr[1] - yr[0]);
+        const sz = [8, 12, 16, 22, 30, 44][Math.floor(r() * 6)], tall = r() < 0.25 ? 2 : 1, wide = r() < 0.2 ? 2.4 : 1;
         const col = PIX[Math.floor(r() * PIX.length)], dots = r() < 0.12;
         if (hb - j >= life) continue;
         if (y > band[0] - 40 && y < band[1] + 40) continue;
@@ -53,13 +53,13 @@
     build(root, S) {
       S.ctx = canvas(root);
       S.cam = cam(root);
-      S.word = el('div', { class: 'abs ser', style: `left:${PAD + 6}px;top:760px;font-size:212px;line-height:1;color:var(--ink)` }, S.cam);
+      S.word = el('div', { class: 'abs ser', style: `left:${PAD + 6}px;top:720px;font-size:258px;line-height:1;color:var(--ink)` }, S.cam);
       S.txt = el('span', {}, S.word); S.dot = el('span', { style: 'color:var(--accent)' }, S.word, '.');
-      S.caret = el('span', { style: 'display:inline-block;width:7px;height:180px;margin-left:12px;vertical-align:-16px;background:var(--accent)' }, S.word);
+      S.caret = el('span', { style: 'display:inline-block;width:8px;height:220px;margin-left:12px;vertical-align:-20px;background:var(--accent)' }, S.word);
       reg(S.txt); reg(S.dot); reg(S.caret);
     },
     run(t, b, S) {
-      const g = S.ctx; g.clearRect(0, 0, W, H); pixels(g, t, [740, 1010], 14);
+      const g = S.ctx; g.clearRect(0, 0, W, H); pixels(g, t, [700, 1010], 20, [430, 1300]);
       push(t, S, 'hook', 'run1', 0.05);
       // word timings from the VO (window.CAPS chunk 0): Google 0.00 · was 0.21 · enough 0.59 · Once 1.32
       const w = window.CAPS[0].t, once = window.CAPS[1].t[0];
@@ -118,10 +118,10 @@
       // tabs, meta, map pack, results
       S.body = el('div', { class: 'abs', style: 'left:0;top:0;width:960px;height:980px' }, C2); reg(S.body);
       const B2 = S.body;
-      el('div', { class: 'abs ui', style: 'left:58px;top:186px;display:flex;gap:46px;font:500 32px UI;color:var(--ink-3)' }, B2,
+      S.tabs = el('div', { class: 'abs ui', style: 'left:58px;top:186px;display:flex;gap:46px;font:500 32px UI;color:var(--ink-3)' }, B2,
         '<span style="color:var(--ink);font-weight:600;border-bottom:4px solid var(--accent);padding-bottom:10px">All</span><span>Maps</span><span>Reviews</span><span>Images</span><span>News</span>');
       el('div', { class: 'abs', style: 'left:36px;top:250px;width:888px;height:2px;background:var(--line)' }, B2);
-      el('div', { class: 'abs ui', style: 'left:58px;top:270px;font:400 24px UI;color:var(--ink-4)' }, B2, 'About 1,240,000 results (0.41 seconds)');
+      S.meta = el('div', { class: 'abs ui', style: 'left:58px;top:270px;font:400 24px UI;color:var(--ink-4)' }, B2, 'About 1,240,000 results (0.41 seconds)');
       S.map = el('div', { class: 'abs', style: `left:36px;top:314px;width:888px;height:170px;border-radius:22px;overflow:hidden;background:#EEEAE4;
         background-image:linear-gradient(28deg,transparent 46%,#fff 46%,#fff 50%,transparent 50%),linear-gradient(-62deg,transparent 30%,#fff 30%,#fff 33%,transparent 33%),linear-gradient(90deg,transparent 70%,#E2DDD5 70%,#E2DDD5 71%,transparent 71%),linear-gradient(0deg,transparent 40%,#E2DDD5 40%,#E2DDD5 41.5%,transparent 41.5%)` }, B2);
       S.pins = [[160, 52, 1], [450, 94, 0], [720, 44, 0]].map(([x, y, a]) => reg(el('div', { class: 'abs', style: `left:${x}px;top:${y}px;width:40px;height:40px;border-radius:50% 50% 50% 0;transform-origin:0 100%;background:${a ? 'var(--accent)' : 'var(--ink-3)'};border:4px solid #fff;box-sizing:border-box` }, S.map), { r: -45 }));
@@ -156,14 +156,16 @@
       const cin = spHit(t, 'run1', 'default');
       // collapse (results fold into the bar) then move to the chat position
       const col = sp(t, 7.75, 'default');
+      const edge = 980 - 792 * col;   // clip edge in card px
       const cy = trk(t, [[0, 370], [8.0, 520, 'default']]) + 560 * (1 - cin);
       const folded = col > 0.985;
       put(S.card, folded ? { o: 1, y: cy, css: { background: 'transparent', boxShadow: 'none' } }
         : { o: cin > 0.002 ? 1 : 0, y: cy, clip: `inset(0 0 ${(980 - 188) * col}px 0 round 38px)`, r: -2 * (1 - cin) });
       put(S.body, { o: folded ? 0 : 1 });
+      [[S.tabs, 262], [S.meta, 300], [S.map, 484]].forEach(([e, bot]) => put(e, { o: edge < bot + 4 ? 0 : 1 }));
       // map pins drop in one after another
       S.pins.forEach((p, i) => { const q = spHit(t, 3.25 + i * 0.25, 'snappy'); put(p, { o: q > 0.002 ? 1 : 0, r: -45, s: 0.5 + 0.5 * q }); });
-      S.res.forEach((r, i) => { const q = spHit(t, 3 + i * 0.25, 'default'); put(r, { y: 30 * (1 - q), o: q > 0.002 ? 1 : 0 }); });
+      S.res.forEach((r, i) => { const q = spHit(t, 3 + i * 0.25, 'default'); put(r, { y: 30 * (1 - q), o: q > 0.002 && edge >= 506 + i * 156 + 150 ? 1 : 0 }); });
       // Ranking → #1
       const hl = sp(t, 'run1', 'snappy'), bd = pop(t, 3.5);
       put(S.hl, { o: hl * 1 });
@@ -265,30 +267,35 @@
           return reg(el('div', { style: `width:238px;height:132px;border-radius:16px;background:linear-gradient(${Math.floor(r() * 180)}deg,hsl(${h1} 22% ${l1}%),hsl(${h1 + 8} 18% ${l2}%));transform-origin:0 50%` }, row), { o: 0 });
         });
       };
+      const skel = (parent) => el('div', { class: 'abs', style: 'left:56px;top:0;width:800px;height:210px' }, parent,
+        '<div style="position:absolute;left:0;top:6px;width:230px;height:46px;border-radius:23px;background:#E9E4DE"></div>' + [0, 1, 2].map((k) => `<div style="position:absolute;left:${k * 254}px;top:70px;width:238px;height:132px;border-radius:16px;background:#EDE9E4"></div>`).join(''));
       S.items = ['Competitor A', 'Competitor B'].map((n, i) => {
         const it = el('div', { class: 'abs ui', style: `left:96px;top:${500 + i * 250}px;width:900px;height:220px` }, S.cam);
         el('div', { class: 'abs', style: 'left:0;top:8px;font:500 32px UI;color:var(--ink-4)' }, it, `${i + 1}.`);
         const pill = reg(el('div', { class: 'abs', style: `left:56px;top:0;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;transform-origin:0 50%;${i ? 'background:#E4DED7;color:var(--ink)' : 'background:var(--ink);color:#fff'}` }, it, n), { o: 0 });
-        return { it, pill, tiles: tiles(it, 40 + i) };
+        const sk = reg(skel(it), { o: 1 });
+        return { it, pill, sk, tiles: tiles(it, 40 + i) };
       });
       const it3 = el('div', { class: 'abs ui', style: 'left:96px;top:1000px;width:900px;height:260px' }, S.cam);
       el('div', { class: 'abs', style: 'left:0;top:8px;font:500 32px UI;color:var(--ink-4)' }, it3, '3.');
       S.think = reg(el('div', { class: 'abs', style: 'left:56px;top:10px;font:400 30px UI;color:var(--ink-4)' }, it3, 'Thinking…'), { o: 0 });
       S.yb = reg(el('div', { class: 'abs', style: 'z-index:3;left:56px;top:70px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:var(--accent);color:#fff;transform-origin:30% 50%' }, it3, 'Your Business'), { o: 0 });
       S.c3 = reg(el('div', { class: 'abs', style: 'left:56px;top:146px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:#E4DED7;color:var(--ink);transform-origin:0 50%' }, it3, 'Competitor C'), { o: 0 });
+      S.sk3 = reg(skel(it3), { o: 1 });
       S.t3 = tiles(it3, 77); S.t3row = S.t3[0].parentNode; S.t3row.style.top = '70px';
     },
     run(t, b, S) {
       push(t, S, 'answer', 'act3', 0.04);
-      const u = pop(t, 'answer'); put(S.user, u);
-      put(S.lead, { o: b >= 22.1 ? 1 : 0 }); put(S.leadT, { text: typed(t, 'Here are my top picks:', bt(22.1), 30) });
+      const u = pop(t, 21.7); put(S.user, u);
+      put(S.lead, { o: 1 }); put(S.leadT, { text: typed(t, 'Here are my top picks:', bt(21.9), 34) });
       S.items.forEach((it, i) => {
-        const p = pop(t, beatOf('pick1') + i); put(it.pill, p);
-        it.tiles.forEach((tl, k) => { const q = spHit(t, beatOf('pick1') + i + 0.25 + k * 0.12, 'default'); put(tl, { o: q > 0.002 ? 1 : 0, sx: 0.9 + 0.1 * q, y: 16 * (1 - q) }); });
+        const m = beatOf('pick1') + i, p = pop(t, m); put(it.pill, p); put(it.sk, { o: p.p > 0.5 ? 0 : 1 });
+        it.tiles.forEach((tl, k) => { const q = spHit(t, m + k * 0.06, 'snappy'); put(tl, { o: q > 0.002 ? 1 : 0, sx: 0.9 + 0.1 * q, y: 16 * (1 - q) }); });
       });
       // slot 3: Thinking… → two candidates → Your Business is dropped, Competitor C takes the slot
-      const th = b >= 24.25 && b < 26.1; put(S.think, { o: th ? (Math.floor(b * 4) % 4 === 3 ? 0.55 : 1) : 0 });
-      const yb = pop(t, 'pick3'), c3 = pop(t, beatOf('pick3') + 0.25);
+      const th = b >= 23.4 && b < 26.1; put(S.think, { o: th ? (Math.floor(b * 4) % 4 === 3 ? 0.55 : 1) : 0 });
+      const yb = pop(t, 'pick3'), c3 = pop(t, 'pick3');
+      put(S.sk3, { o: yb.p > 0.5 ? 0 : 1 });
       const fall = sp(t, 'drop', 'default');
       put(S.yb, { o: yb.o, s: yb.s, y: 980 * fall, x: 40 * fall, r: 6 * fall, hide: fall > 0.995 });
       const up = sp(t, 26.1, 'snappy');
@@ -350,7 +357,7 @@
       put(S.g, { o: 1, y: 120 * (1 - g0), s: 0.94 + 0.06 * g0 });
       S.ghost.forEach((e, i) => put(e, { x: 26 * Math.sin(t * 0.7 + i * 2), y: 14 * Math.cos(t * 0.5 + i) }));
       put(S.cam, { s: 1 + 0.05 * seg(t, 'act3', 'check'), x: trk(t, [[0, 0], [30.5, -16, 'default'], [32.5, 12, 'default']]) });
-      put(S.k, { o: k > 0.002 ? 1 : 0, y: 120 * (1 - k), s: 0.94 + 0.06 * k });
+      put(S.k, { o: k > 0.002 ? 1 : 0, y: 36 * (1 - k), s: 0.9 + 0.1 * k });
       const v = trk(t, [[0, 12], [29.75, 31, 'heavy'], [31, 78, 'heavy']]);
       put(S.arc, { css: { strokeDasharray: `${Math.max(0.5, v).toFixed(2)} 200` } });
       put(S.numT, { text: String(Math.round(v)) });
