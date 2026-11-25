@@ -24,7 +24,7 @@
   const BARS = (s, c = 'var(--accent)') => `<svg width="${19 * s}" height="${20 * s}" viewBox="0 0 19 20" style="overflow:visible">${
     [[0, 14, 6], [4, 10, 10], [8, 6, 14], [12, 3, 17], [16, 0, 20]].map(([x, y, h], i) =>
       `<rect data-bar="${i}" x="${x}" y="${y}" width="3" height="${h}" rx="0.857" fill="${c}" style="transform-box:fill-box;transform-origin:50% 100%"/>`).join('')}</svg>`;
-  const pop = (t, b, preset = 'snappy') => { const p = spHit(t, b, preset); return { o: p > 0.22 ? 1 : 0, s: 0.86 + 0.14 * p, p }; };
+  const pop = (t, b, preset = 'snappy') => { const p = spHit(t, b, preset); return { o: p > 0.22 ? 1 : 0, s: Math.abs(1 - p) < 0.002 ? 1 : 0.86 + 0.14 * p, p }; };
 
   // ---------------------------------------------------------------- pixel squares (Act 1 texture, reference grammar)
   // Seeded squares that snap in/out on half-beats. Each half-beat slot spawns a few; each lives 1–3 slots.
@@ -66,8 +66,8 @@
       let s = '', dot = false;
       if (t < w[1] - 0.02) s = typed(t, 'Google', -0.16, 40);
       else if (t < w[2] - 0.02) s = typed(t, 'was', w[1] - 0.06, 40);
-      else if (t < once - 0.12) { s = typed(t, 'enough', w[2] - 0.06, 34, once - 0.42, 40); dot = s === 'enough'; }
-      else s = typed(t, '(once)', once - 0.06, 24);
+      else if (t < once - 0.21) { s = typed(t, 'enough', w[2] - 0.06, 34, once - 0.33, 40); dot = s === 'enough'; }
+      else s = typed(t, '(once)', once - 0.23, 24);
       put(S.txt, { text: s }); put(S.dot, { o: dot ? 1 : 0, css: { display: dot ? 'inline' : 'none' } });
       put(S.caret, { o: blink(t) || (s.length > 0 && s.length < 6) ? 1 : 0 });
     },
@@ -112,7 +112,7 @@
         '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--accent)"></span>Ask AI anything');
       reg(S.ask, { o: 0 });
       S.hist = ['Best family dentist open Saturday?', 'Who fixes leaks fast near me?'].map((q) =>
-        reg(el('div', { class: 'abs ui', style: 'left:auto;right:134px;top:0;padding:20px 28px;border-radius:28px 28px 8px 28px;background:#ECE4DD;color:var(--ink-3);font:500 30px UI;white-space:nowrap;transform-origin:100% 100%;opacity:.8' }, S.cam, q), { o: 0 }));
+        reg(el('div', { class: 'abs ui', style: 'left:auto;right:134px;top:0;padding:20px 28px;border-radius:28px 28px 8px 28px;background:#EFE9E3;color:#8F8983;font:500 30px UI;white-space:nowrap;transform-origin:100% 100%' }, S.cam, q), { o: 0 }));
       S.sugg = ['Emergency plumber tonight?', 'Dentist open Saturday?', 'Most trusted roofer?', 'Salon with best reviews?'].map((q, i) =>
         reg(el('div', { class: 'abs ui', style: `left:${i % 2 ? 530 : 96}px;top:0;height:72px;padding:0 26px;border-radius:36px;background:#ECE7E1;color:var(--ink-2);font:500 29px/72px UI;white-space:nowrap;transform-origin:0 50%` }, S.cam, q), { o: 0 }));
       // tabs, meta, map pack, results
@@ -146,7 +146,7 @@
     },
     run(t, b, S) {
       const g = S.ctx; g.clearRect(0, 0, W, H); if (b < 8.25) pixels(g, t, [230, 370], 6);
-      push(t, S, 'run1', 'wall', 0.035);
+      put(S.cam, { s: 1 + 0.035 * ease.inOut(seg(t, 'run1', 'chat')) });
       // run lines: one per VO phrase, hard swap (outgoing fully gone first)
       rise(t, S.lines[0], 'run1', 4.5 - 0.2, { preset: 'snappy', stagger: 0.05, exit: 0.2 });
       rise(t, S.lines[1], 'run2', 6.25 - 0.2, { preset: 'snappy', stagger: 0.05, exit: 0.2 });
@@ -185,7 +185,7 @@
       put(S.icoS, { o: ch < 0.5 ? 1 : 0, s: 1 - 0.3 * ch });
       const ia = pop(t, 'chat'); put(S.icoA, ia);
       const askp = spHit(t, 8.5, 'snappy'); put(S.ask, { o: askp > 0.002 ? 1 : 0, y: cy - 64 + 16 * (1 - askp) });
-      S.hist.forEach((e, i) => { const q = pop(t, 8.5 + i * 0.35, 'default'); put(e, { o: q.o, s: q.s, y: cy - 300 + i * 112 - 30 * seg(t, 8.5, 15.5) }); });
+      S.hist.forEach((e, i) => { const q = pop(t, 8.5 + i * 0.35, 'default'); put(e, { o: q.o, y: Math.round(cy - 300 + i * 112 - 30 * seg(t, 8.5, 15.5)) }); });
       S.sugg.forEach((e, i) => { const q = pop(t, 9.75 + i * 0.25); put(e, { o: q.o, s: q.s, y: cy + 360 + Math.floor(i / 2) * 96 }); });
       // question types (b8.75 → b11.75), then trade words swap through a mask
       const full = Q0 + 'plumber\n' + Q1.trim();
@@ -396,7 +396,7 @@
     },
     run(t, b, S) {
       put(S.bg, { css: { background: DARKBG(seg(t, 'act3', 'done')) } });
-      push(t, S, 'check', 'end', 0.035);
+      put(S.cam, { s: 1 + 0.05 * seg(t, 'check', 'end') });
       const c = spHit(t, 'check', 'default');
       put(S.card, { o: c > 0.002 ? 1 : 0, y: 140 * (1 - c), s: 0.94 + 0.06 * c });
       S.rows.forEach((r, i) => {
