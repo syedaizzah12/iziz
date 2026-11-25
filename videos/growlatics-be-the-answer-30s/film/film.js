@@ -85,76 +85,79 @@
     build(root, S) {
       S.ctx = canvas(root);
       S.cam = cam(root);
-      S.lines = RUN.map(([s]) => line(S.cam, s.split(' ').slice(0, -1).join(' ') + ' ' + s.split(' ').pop() + DOT, { x: PAD, y: 300, size: 78 }));
+      S.lines = RUN.map(([s]) => line(S.cam, s.split(' ').slice(0, -1).join(' ') + ' ' + s.split(' ').pop() + DOT, { x: PAD - 6, y: 272, size: 66 }));
       // card
-      S.card = el('div', { class: 'abs', style: `left:70px;top:0;width:940px;height:900px;background:var(--card);border-radius:36px;box-shadow:0 2px 6px rgba(12,11,10,.05),0 40px 90px -30px rgba(12,11,10,.35)` }, S.cam);
+      S.card = el('div', { class: 'abs', style: `left:60px;top:0;width:960px;height:980px;background:var(--card);border-radius:38px;box-shadow:0 2px 6px rgba(12,11,10,.05),0 40px 90px -30px rgba(12,11,10,.35)` }, S.cam);
       reg(S.card, { o: 0 });
       const C2 = S.card;
-      S.bar = el('div', { class: 'abs ui', style: 'left:40px;top:40px;width:860px;height:104px;border-radius:52px;border:2px solid var(--line);background:#fff;box-sizing:border-box;display:flex;align-items:center;padding:0 36px;gap:22px' }, C2);
+      S.bar = el('div', { class: 'abs ui', style: 'left:36px;top:36px;width:888px;height:116px;border-radius:58px;border:2px solid var(--line);background:#fff;box-sizing:border-box;display:flex;align-items:center;padding:0 34px;gap:22px' }, C2);
       reg(S.bar);
       S.icoS = el('div', { style: 'width:40px;height:40px;flex:none;position:relative' }, S.bar,
         `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6F6A64" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>`);
       reg(S.icoS);
-      S.icoA = el('div', { class: 'abs', style: 'left:36px;top:50%;margin-top:-22px;width:44px;height:44px' }, S.bar,
+      S.icoA = el('div', { class: 'abs', style: 'left:30px;top:50%;margin-top:-22px;width:44px;height:44px' }, S.bar,
         `<svg width="44" height="44" viewBox="0 0 24 24"><path d="M12 2.5c.5 4.6 2.9 7 7.5 7.5-4.6.5-7 2.9-7.5 7.5-.5-4.6-2.9-7-7.5-7.5 4.6-.5 7-2.9 7.5-7.5z" fill="#D2401A"/><path d="M19 15.5c.2 1.8 1.1 2.7 2.9 2.9-1.8.2-2.7 1.1-2.9 2.9-.2-1.8-1.1-2.7-2.9-2.9 1.8-.2 2.7-1.1 2.9-2.9z" fill="#D2401A"/></svg>`);
       reg(S.icoA, { o: 0 });
-      S.q = el('div', { style: 'font:500 38px UI;color:var(--ink);white-space:nowrap' }, S.bar, 'plumber near me'); reg(S.q);
+      S.q = el('div', { style: 'font:500 42px UI;color:var(--ink);white-space:nowrap' }, S.bar, 'plumber near me'); reg(S.q);
       // chat text (serif) inside the bar, absolutely placed so the bar can grow around it
-      S.chat = el('div', { class: 'abs ser', style: 'left:104px;top:0;height:100%;display:flex;align-items:center;font-size:48px;color:var(--ink)' }, S.bar);
+      S.chat = el('div', { class: 'abs ser', style: 'left:88px;top:0;height:100%;display:flex;align-items:center;font-size:52px;color:var(--ink)' }, S.bar);
       S.inner = el('span', { style: 'white-space:pre' }, S.chat);
       S.ct = el('span', {}, S.inner); reg(S.ct);
       S.mask = el('span', { style: 'display:inline-block;position:relative;overflow:hidden;vertical-align:bottom;height:1.25em;line-height:1.25em;padding:0 .02em' }, S.inner);
       S.tw = TRADES.map(([w]) => reg(el('span', { class: 'abs', style: 'left:0;top:0;font-weight:520;white-space:nowrap' }, S.mask, w), { o: 0 }));
       S.postEl = el('span', {}, S.inner, Q1); reg(S.postEl);
-      S.ccaret = el('span', { style: 'display:inline-block;width:4px;height:52px;margin-left:6px;vertical-align:-8px;background:var(--accent)' }, S.inner); reg(S.ccaret, { o: 0 });
+      S.ccaret = el('span', { style: 'display:inline-block;width:4px;height:56px;margin-left:6px;vertical-align:-8px;background:var(--accent)' }, S.inner); reg(S.ccaret, { o: 0 });
       reg(S.mask); reg(S.chat, { o: 0 });
-      S.ask = el('div', { class: 'abs ui', style: 'left:110px;top:0;font:600 30px UI;color:var(--ink-3);letter-spacing:.01em;display:flex;align-items:center;gap:12px' }, S.cam,
+      S.ask = el('div', { class: 'abs ui', style: 'left:104px;top:0;font:600 32px UI;color:var(--ink-3);letter-spacing:.01em;display:flex;align-items:center;gap:12px' }, S.cam,
         '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--accent)"></span>Ask AI anything');
       reg(S.ask, { o: 0 });
+      S.sugg = ['Emergency plumber tonight?', 'Dentist open Saturday?', 'Most trusted roofer?', 'Salon with best reviews?'].map((q, i) =>
+        reg(el('div', { class: 'abs ui', style: `left:${i % 2 ? 530 : 96}px;top:0;height:72px;padding:0 26px;border-radius:36px;background:#ECE7E1;color:var(--ink-2);font:500 29px/72px UI;white-space:nowrap;transform-origin:0 50%` }, S.cam, q), { o: 0 }));
       // tabs, meta, map pack, results
-      S.body = el('div', { class: 'abs', style: 'left:0;top:0;width:940px;height:900px' }, C2); reg(S.body);
+      S.body = el('div', { class: 'abs', style: 'left:0;top:0;width:960px;height:980px' }, C2); reg(S.body);
       const B2 = S.body;
-      el('div', { class: 'abs ui', style: 'left:56px;top:176px;display:flex;gap:44px;font:500 28px UI;color:var(--ink-3)' }, B2,
+      el('div', { class: 'abs ui', style: 'left:58px;top:186px;display:flex;gap:46px;font:500 32px UI;color:var(--ink-3)' }, B2,
         '<span style="color:var(--ink);font-weight:600;border-bottom:4px solid var(--accent);padding-bottom:10px">All</span><span>Maps</span><span>Reviews</span><span>Images</span><span>News</span>');
-      el('div', { class: 'abs', style: 'left:40px;top:232px;width:860px;height:2px;background:var(--line)' }, B2);
-      el('div', { class: 'abs ui', style: 'left:56px;top:254px;font:400 22px UI;color:var(--ink-4)' }, B2, 'About 1,240,000 results (0.41 seconds)');
-      S.map = el('div', { class: 'abs', style: `left:40px;top:298px;width:860px;height:150px;border-radius:20px;overflow:hidden;background:#EEEAE4;
+      el('div', { class: 'abs', style: 'left:36px;top:250px;width:888px;height:2px;background:var(--line)' }, B2);
+      el('div', { class: 'abs ui', style: 'left:58px;top:270px;font:400 24px UI;color:var(--ink-4)' }, B2, 'About 1,240,000 results (0.41 seconds)');
+      S.map = el('div', { class: 'abs', style: `left:36px;top:314px;width:888px;height:170px;border-radius:22px;overflow:hidden;background:#EEEAE4;
         background-image:linear-gradient(28deg,transparent 46%,#fff 46%,#fff 50%,transparent 50%),linear-gradient(-62deg,transparent 30%,#fff 30%,#fff 33%,transparent 33%),linear-gradient(90deg,transparent 70%,#E2DDD5 70%,#E2DDD5 71%,transparent 71%),linear-gradient(0deg,transparent 40%,#E2DDD5 40%,#E2DDD5 41.5%,transparent 41.5%)` }, B2);
-      S.pins = [[150, 44, 1], [430, 82, 0], [690, 38, 0]].map(([x, y, a]) => reg(el('div', { class: 'abs', style: `left:${x}px;top:${y}px;width:34px;height:34px;border-radius:50% 50% 50% 0;transform-origin:0 100%;background:${a ? 'var(--accent)' : 'var(--ink-3)'};border:4px solid #fff;box-sizing:border-box` }, S.map), { r: -45 }));
+      S.pins = [[160, 52, 1], [450, 94, 0], [720, 44, 0]].map(([x, y, a]) => reg(el('div', { class: 'abs', style: `left:${x}px;top:${y}px;width:40px;height:40px;border-radius:50% 50% 50% 0;transform-origin:0 100%;background:${a ? 'var(--accent)' : 'var(--ink-3)'};border:4px solid #fff;box-sizing:border-box` }, S.map), { r: -45 }));
       const RES = [['Your Business', 'yourbusiness.com', 'Plumbing & Drain Repair'], ['Competitor A', 'competitor-a.com', 'Plumbers · Free Quotes'], ['Competitor B', 'competitor-b.com', 'Emergency Plumbing Services']];
       S.res = RES.map(([n, u, ttl], i) => {
-        const r = el('div', { class: 'abs ui', style: `left:40px;top:${474 + i * 140}px;width:860px;height:124px;border-radius:20px` }, B2);
-        el('div', { class: 'abs', style: 'left:18px;top:16px;width:42px;height:42px;border-radius:50%;background:' + (i ? '#E4DED7' : 'var(--accent-soft)') }, r,
-          i ? '' : `<div style="position:absolute;left:11px;top:11px">${BARS(1)}</div>`);
-        el('div', { class: 'abs', style: 'left:74px;top:10px;font:600 28px UI;color:var(--ink)' }, r, n);
-        el('div', { class: 'abs', style: 'left:74px;top:44px;font:400 21px UI;color:var(--ink-4)' }, r, u);
-        el('div', { class: 'abs', style: 'left:18px;top:76px;font:500 32px UI;color:var(--ink-2);white-space:nowrap' }, r, ttl);
+        const r = el('div', { class: 'abs ui', style: `left:36px;top:${506 + i * 156}px;width:888px;height:146px;border-radius:22px` }, B2);
+        el('div', { class: 'abs', style: 'left:20px;top:16px;width:50px;height:50px;border-radius:50%;background:' + (i ? '#E4DED7' : 'var(--accent-soft)') }, r,
+          i ? '' : `<div style="position:absolute;left:13px;top:12px">${BARS(1.25)}</div>`);
+        el('div', { class: 'abs', style: 'left:84px;top:10px;font:600 32px UI;color:var(--ink)' }, r, n);
+        el('div', { class: 'abs', style: 'left:84px;top:50px;font:400 24px UI;color:var(--ink-4)' }, r, u);
+        el('div', { class: 'abs', style: 'left:20px;top:90px;font:500 36px UI;color:var(--ink-2);white-space:nowrap' }, r, ttl);
         return reg(r);
       });
       // result-1 highlights
       const r1 = S.res[0];
-      S.hl = reg(el('div', { class: 'abs', style: 'left:0;top:0;width:860px;height:124px;border-radius:20px;background:var(--accent-soft);z-index:-1' }, r1), { o: 0 });
+      S.hl = reg(el('div', { class: 'abs', style: 'left:0;top:0;width:888px;height:146px;border-radius:22px;background:var(--accent-soft);z-index:-1' }, r1), { o: 0 });
       r1.style.zIndex = 0;
-      S.badge = reg(el('div', { class: 'abs ui', style: 'left:auto;right:18px;top:14px;height:48px;padding:0 20px;border-radius:24px;background:var(--accent);color:#fff;font:700 26px/48px UI' }, r1, '#1 result'), { o: 0 });
-      S.stars = [0, 1, 2, 3, 4].map((i) => reg(el('div', { class: 'abs', style: `left:${560 + i * 32}px;top:80px;font:400 32px UI;color:var(--accent)` }, r1, '★'), { o: 0 }));
-      S.rate = reg(el('div', { class: 'abs ui', style: 'left:728px;top:84px;font:600 26px UI;color:var(--ink-2)' }, r1, '4.9 (212)'), { o: 0 });
-      S.site = reg(el('div', { class: 'abs ui', style: 'left:300px;top:22px;height:44px;padding:0 18px;border-radius:22px;border:3px solid var(--accent);color:var(--accent);font:700 24px/38px UI;box-sizing:border-box' }, r1, 'Website ↗'), { o: 0 });
+      S.badge = reg(el('div', { class: 'abs ui', style: 'left:auto;right:18px;top:14px;height:54px;padding:0 22px;border-radius:27px;background:var(--accent);color:#fff;font:700 30px/54px UI' }, r1, '#1 result'), { o: 0 });
+      S.stars = [0, 1, 2, 3, 4].map((i) => reg(el('div', { class: 'abs', style: `left:${506 + i * 38}px;top:90px;font:400 38px UI;color:var(--accent)` }, r1, '★'), { o: 0 }));
+      S.rate = reg(el('div', { class: 'abs ui', style: 'left:704px;top:96px;font:600 30px UI;color:var(--ink-2)' }, r1, '4.9 (212)'), { o: 0 });
+      S.site = reg(el('div', { class: 'abs ui', style: 'left:336px;top:16px;height:52px;padding:0 20px;border-radius:26px;border:3px solid var(--accent);color:var(--accent);font:700 28px/46px UI;box-sizing:border-box' }, r1, 'Website ↗'), { o: 0 });
     },
     run(t, b, S) {
-      const g = S.ctx; g.clearRect(0, 0, W, H); if (b < 8.25) pixels(g, t, [240, 420], 6);
+      const g = S.ctx; g.clearRect(0, 0, W, H); if (b < 8.25) pixels(g, t, [230, 370], 6);
       push(t, S, 'run1', 'wall', 0.035);
       // run lines: one per VO phrase, hard swap (outgoing fully gone first)
       rise(t, S.lines[0], 'run1', 4.5 - 0.2, { preset: 'snappy', stagger: 0.05, exit: 0.2 });
       rise(t, S.lines[1], 'run2', 6.25 - 0.2, { preset: 'snappy', stagger: 0.05, exit: 0.2 });
       rise(t, S.lines[2], 'run3', 'chat', { preset: 'snappy', stagger: 0.05, exit: 0.25 });
+      if (b > 8.6) S.lines.forEach((L) => L.words.forEach((w) => put(w, { hide: true })));
       // card rises in on run1
       const cin = spHit(t, 'run1', 'default');
       // collapse (results fold into the bar) then move to the chat position
       const col = sp(t, 7.75, 'default');
-      const cy = trk(t, [[0, 440], [8.0, 690, 'default']]) + 520 * (1 - cin);
+      const cy = trk(t, [[0, 370], [8.0, 600, 'default']]) + 560 * (1 - cin);
       const folded = col > 0.985;
       put(S.card, folded ? { o: 1, y: cy, css: { background: 'transparent', boxShadow: 'none' } }
-        : { o: cin > 0.002 ? 1 : 0, y: cy, clip: `inset(0 0 ${(900 - 184) * col}px 0 round 36px)`, r: -2 * (1 - cin) });
+        : { o: cin > 0.002 ? 1 : 0, y: cy, clip: `inset(0 0 ${(980 - 188) * col}px 0 round 38px)`, r: -2 * (1 - cin) });
       put(S.body, { o: folded ? 0 : 1 });
       // map pins drop in one after another
       S.pins.forEach((p, i) => { const q = spHit(t, 3.25 + i * 0.25, 'snappy'); put(p, { o: q > 0.002 ? 1 : 0, r: -45, s: 0.5 + 0.5 * q }); });
@@ -170,14 +173,15 @@
       const ws = pop(t, 'run3'); put(S.site, ws);
       // ---- chat mode
       const ch = sp(t, 'chat', 'default');                    // 0 → 1 as the bar becomes a chat box
-      const hgt = lerp(104, 196, ch), wid = 860;
-      put(S.bar, { css: { height: hgt + 'px', width: wid + 'px', borderRadius: lerp(52, 34, ch) + 'px', borderColor: ch > 0.5 ? '#fff' : '',
+      const hgt = lerp(116, 236, ch), wid = lerp(888, 900, ch);
+      put(S.bar, { css: { height: hgt + 'px', width: wid + 'px', borderRadius: lerp(58, 36, ch) + 'px', borderColor: ch > 0.5 ? '#fff' : '',
         boxShadow: ch > 0.02 ? `0 30px 70px -24px rgba(12,11,10,${0.35 * ch})` : '' } });
       const qOut = sp(t, 8.0, 'snappy');
       put(S.q, { y: -60 * qOut, o: qOut < 0.5 ? 1 : 0 });
       put(S.icoS, { o: ch < 0.5 ? 1 : 0, s: 1 - 0.3 * ch });
       const ia = pop(t, 'chat'); put(S.icoA, ia);
-      const askp = spHit(t, 8.5, 'snappy'); put(S.ask, { o: askp > 0.002 ? 1 : 0, y: cy - 66 + 16 * (1 - askp) });
+      const askp = spHit(t, 8.5, 'snappy'); put(S.ask, { o: askp > 0.002 ? 1 : 0, y: cy - 64 + 16 * (1 - askp) });
+      S.sugg.forEach((e, i) => { const q = pop(t, 9.75 + i * 0.25); put(e, { o: q.o, s: q.s, y: cy + 330 + Math.floor(i / 2) * 96 }); });
       // question types (b8.75 → b11.75), then trade words swap through a mask
       const full = Q0 + 'plumber' + Q1;
       const t0 = bt(8.75), cps = full.length / (bt(11.75) - t0);
@@ -190,7 +194,7 @@
       } else {
         put(S.ct, { text: Q0 }); put(S.ccaret, { o: 0 });
         // mask width follows the current word (measured once fonts are in)
-        if (!S.wid) { const m = document.createElement('canvas').getContext('2d'); m.font = "520 48px Display"; S.wid = TRADES.map(([w]) => m.measureText(w).width + 4); }
+        if (!S.wid) { const m = document.createElement('canvas').getContext('2d'); m.font = "520 52px Display"; S.wid = TRADES.map(([w]) => m.measureText(w).width + 4); }
         const keys = [[0, S.wid[0]]].concat(TRADES.slice(1).map(([, m], i) => [beatOf(m) - 0.06, S.wid[i + 1], 'snappy']));
         put(S.mask, { css: { width: trk(t, keys).toFixed(1) + 'px' } });
         TRADES.forEach(([, m], i) => {
@@ -215,7 +219,7 @@
       S.wall = reg(el('div', { class: 'abs', style: `left:0;top:0;width:${W}px;height:2000px` }, S.cam));
       S.rows = QS.map((q, i) => {
         const [a, c] = q.split(' | ');
-        const r = el('div', { class: 'abs ser', style: `left:0;top:${330 + i * 84}px;width:${W}px;text-align:center;font-size:52px;color:var(--ink)` }, S.wall,
+        const r = el('div', { class: 'abs ser', style: `left:-34px;top:${330 + i * 84}px;width:${W}px;text-align:center;font-size:47px;color:var(--ink)` }, S.wall,
           `${a} <span data-d style="display:inline-block;width:.56em;height:.56em;border-radius:50%;background:var(--accent);vertical-align:-.02em;margin:0 .06em"></span> ${c}`);
         reg(r, { o: 0 });
         r._dot = reg(r.querySelector('[data-d]'), { s: 0 });
@@ -236,8 +240,8 @@
       const dim = sp(t, 18.5, 'default');
       put(S.wall, { y: -560 * scroll, clip: `inset(0 0 ${(2000 - (1300 + 560 * scroll)).toFixed(1)}px 0)`, filter: dim > 0.01 ? `blur(${(9 * dim).toFixed(2)}px)` : '', o: 1 - 0.75 * dim });
       rise(t, S.stack[0], 'stack1', null, { stagger: 0 });
-      rise(t, S.stack[1], 'stack2', null, { stagger: 0 });
-      rise(t, S.stack[2], 'stack3', null, { stagger: 0 });
+      rise(t, S.stack[1], beatOf('stack2') - 0.1, null, { stagger: 0 });
+      rise(t, S.stack[2], beatOf('stack3') - 0.14, null, { stagger: 0 });
     },
   });
 
@@ -255,7 +259,7 @@
         const r = mulberry32(seed), row = el('div', { class: 'abs', style: 'left:56px;top:70px;display:flex;gap:16px' }, parent);
         return [0, 1, 2].map(() => {
           const h1 = 18 + r() * 14, l1 = 70 + r() * 10, l2 = 58 + r() * 12;
-          return reg(el('div', { style: `width:262px;height:132px;border-radius:16px;background:linear-gradient(${Math.floor(r() * 180)}deg,hsl(${h1} 22% ${l1}%),hsl(${h1 + 8} 18% ${l2}%));transform-origin:0 50%` }, row), { o: 0 });
+          return reg(el('div', { style: `width:238px;height:132px;border-radius:16px;background:linear-gradient(${Math.floor(r() * 180)}deg,hsl(${h1} 22% ${l1}%),hsl(${h1 + 8} 18% ${l2}%));transform-origin:0 50%` }, row), { o: 0 });
         });
       };
       S.items = ['Competitor A', 'Competitor B'].map((n, i) => {
@@ -267,7 +271,7 @@
       const it3 = el('div', { class: 'abs ui', style: 'left:96px;top:1000px;width:900px;height:260px' }, S.cam);
       el('div', { class: 'abs', style: 'left:0;top:8px;font:500 32px UI;color:var(--ink-4)' }, it3, '3.');
       S.think = reg(el('div', { class: 'abs', style: 'left:56px;top:10px;font:400 30px UI;color:var(--ink-4)' }, it3, 'Thinking…'), { o: 0 });
-      S.yb = reg(el('div', { class: 'abs', style: 'left:56px;top:70px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:var(--accent);color:#fff;transform-origin:30% 50%' }, it3, 'Your Business'), { o: 0 });
+      S.yb = reg(el('div', { class: 'abs', style: 'z-index:3;left:56px;top:70px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:var(--accent);color:#fff;transform-origin:30% 50%' }, it3, 'Your Business'), { o: 0 });
       S.c3 = reg(el('div', { class: 'abs', style: 'left:56px;top:146px;height:58px;padding:0 26px;border-radius:29px;font:600 30px/58px UI;background:#E4DED7;color:var(--ink);transform-origin:0 50%' }, it3, 'Competitor C'), { o: 0 });
       S.t3 = tiles(it3, 77); S.t3row = S.t3[0].parentNode; S.t3row.style.top = '70px';
     },
@@ -283,7 +287,7 @@
       const th = b >= 24.25 && b < 26.1; put(S.think, { o: th ? (Math.floor(b * 4) % 4 === 3 ? 0.55 : 1) : 0 });
       const yb = pop(t, 'pick3'), c3 = pop(t, beatOf('pick3') + 0.25);
       const fall = sp(t, 'drop', 'default');
-      put(S.yb, { o: yb.o * (1 - fall), s: yb.s, y: 300 * fall, r: 9 * fall });
+      put(S.yb, { o: yb.o, s: yb.s, y: 980 * fall, x: 40 * fall, r: 6 * fall, hide: fall > 0.995 });
       const up = sp(t, 26.1, 'snappy');
       put(S.c3, { o: c3.o, s: c3.s, y: -136 * up });
       S.t3.forEach((tl, k) => { const q = spHit(t, 26.5 + k * 0.12, 'default'); put(tl, { o: q > 0.002 ? 1 : 0, sx: 0.9 + 0.1 * q, y: 16 * (1 - q) }); });
@@ -298,42 +302,51 @@
     build(root, S) {
       S.bg = reg(el('div', { class: 'abs', style: `width:${W}px;height:${H}px` }, root));
       S.cam = cam(root);
+      // secondary dashboard cards behind (blurred, dimmed): depth like the reference's layered UI
+      S.ghost = [[330, 150, 620, 300, 'Share of voice'], [-160, 1180, 560, 330, 'Mentions by platform'], [620, 760, 520, 380, 'Citations']].map(([x, y, w, h, n]) => {
+        const e = reg(el('div', { class: 'abs ui', style: `left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:26px;background:#1F1A17;border:2px solid #2E2723;filter:blur(3px);opacity:.75` }, S.cam));
+        el('div', { class: 'abs', style: 'left:30px;top:26px;font:600 26px UI;color:#8A837B' }, e, n);
+        for (let i = 0; i < 4; i++) el('div', { class: 'abs', style: `left:30px;top:${80 + i * 52}px;width:${(0.4 + ((i * 37) % 50) / 100) * (w - 60)}px;height:18px;border-radius:9px;background:${i ? '#3A322D' : '#7a2410'}` }, e);
+        return e;
+      });
       // gauge card
-      S.g = card(S.cam, 90, 290, 900, 520);
-      el('div', { class: 'abs', style: 'left:44px;top:38px;font:700 34px UI;color:var(--ink)' }, S.g, 'AI Visibility Score');
-      el('div', { class: 'abs', style: 'left:44px;top:92px;display:flex;gap:26px;font:500 21px UI;color:var(--ink-3)' }, S.g,
+      S.g = card(S.cam, 80, 280, 870, 540);
+      el('div', { class: 'abs', style: 'left:44px;top:36px;font:700 40px UI;color:var(--ink)' }, S.g, 'AI Visibility Score');
+      el('div', { class: 'abs', style: 'left:44px;top:96px;display:flex;gap:24px;font:500 24px UI;color:var(--ink-3)' }, S.g,
         ['#E4DED7', '#E39A82', '#D2401A'].map((c, i) => `<span><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${c};margin-right:8px"></span>${['0–33 Low', '34–66 Medium', '67–100 High'][i]}</span>`).join(''));
-      const R = 210, cx = 450, cy = 440;
+      const R = 210, cx = 435, cy = 460;
       S.gsvg = el('div', { class: 'abs', style: 'left:0;top:0' }, S.g,
-        `<svg width="900" height="520" viewBox="0 0 900 520"><path d="M${cx - R} ${cy} A${R} ${R} 0 0 1 ${cx + R} ${cy}" stroke="#ECE7E1" stroke-width="46" fill="none" stroke-linecap="round"/>
+        `<svg width="870" height="540" viewBox="0 0 870 540"><path d="M${cx - R} ${cy} A${R} ${R} 0 0 1 ${cx + R} ${cy}" stroke="#ECE7E1" stroke-width="46" fill="none" stroke-linecap="round"/>
          <path id="garc" d="M${cx - R} ${cy} A${R} ${R} 0 0 1 ${cx + R} ${cy}" stroke="#D2401A" stroke-width="46" fill="none" stroke-linecap="round" pathLength="100" stroke-dasharray="0 200"/>
          <text x="${cx - R}" y="${cy + 56}" text-anchor="middle" font-family="UI" font-size="22" fill="#A39D96">0</text><text x="${cx + R}" y="${cy + 56}" text-anchor="middle" font-family="UI" font-size="22" fill="#A39D96">100</text></svg>`);
       S.arc = S.gsvg.querySelector('#garc'); reg(S.arc);
       S.num = el('div', { class: 'abs', style: `left:${cx - 200}px;top:${cy - 120}px;width:400px;text-align:center;font:700 104px UI;color:var(--ink);letter-spacing:-.03em` }, S.g);
       S.numT = el('span', {}, S.num); el('span', { style: 'font-size:52px;letter-spacing:0' }, S.num, '%'); reg(S.numT);
-      el('div', { class: 'abs', style: `left:${cx - 200}px;top:${cy + 4}px;width:400px;text-align:center;font:600 20px UI;letter-spacing:.14em;color:var(--ink-3)` }, S.g, 'SCORE');
+      el('div', { class: 'abs', style: `left:${cx - 200}px;top:${cy + 4}px;width:400px;text-align:center;font:600 24px UI;letter-spacing:.14em;color:var(--ink-3)` }, S.g, 'SCORE');
       // chart card
-      S.k = card(S.cam, 90, 850, 900, 470);
-      el('div', { class: 'abs', style: 'left:44px;top:36px;font:700 34px UI;color:var(--ink)' }, S.k, 'Who AI recommends');
-      el('div', { class: 'abs', style: 'left:44px;top:90px;display:flex;gap:24px;font:500 21px UI;color:var(--ink-3)' }, S.k,
+      S.k = card(S.cam, 80, 860, 870, 470);
+      el('div', { class: 'abs', style: 'left:44px;top:34px;font:700 40px UI;color:var(--ink)' }, S.k, 'Who AI recommends');
+      el('div', { class: 'abs', style: 'left:44px;top:92px;display:flex;flex-wrap:wrap;width:790px;gap:6px 22px;font:500 24px UI;color:var(--ink-3)' }, S.k,
         [['#D2401A', 'Your Business'], ['#6F6A64', 'Competitor A'], ['#A39D96', 'Competitor B'], ['#D3CCC4', 'Competitor C']].map(([c, n]) => `<span><span style="display:inline-block;width:22px;height:5px;border-radius:3px;background:${c};margin-right:8px;vertical-align:4px"></span>${n}</span>`).join(''));
-      const X = (i) => 70 + i * 152, Y = (v) => 420 - v * 2.5;
+      const X = (i) => 70 + i * 146, Y = (v) => 420 - v * 2.3;
       const L = { a: [62, 64, 60, 57, 52, 48], b: [48, 50, 47, 44, 41, 38], c: [36, 34, 35, 31, 29, 27], y: [14, 18, 30, 47, 66, 84] };
       const pl = (v) => v.map((y, i) => `${X(i)},${Y(y)}`).join(' ');
       S.ksvg = el('div', { class: 'abs', style: 'left:0;top:0' }, S.k,
-        `<svg width="900" height="470" viewBox="0 0 900 470">${[0, 25, 50, 75, 100].map((v) => `<line x1="70" x2="830" y1="${Y(v)}" y2="${Y(v)}" stroke="#EFEBE6" stroke-width="2"/>`).join('')}
-         ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m, i) => `<text x="${X(i)}" y="452" text-anchor="middle" font-family="UI" font-size="19" fill="#A39D96">${m}</text>`).join('')}
+        `<svg width="870" height="470" viewBox="0 0 870 470">${[0, 25, 50, 75, 100].map((v) => `<line x1="70" x2="800" y1="${Y(v)}" y2="${Y(v)}" stroke="#EFEBE6" stroke-width="2"/>`).join('')}
+         ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((m, i) => `<text x="${X(i)}" y="452" text-anchor="middle" font-family="UI" font-size="22" fill="#A39D96">${m}</text>`).join('')}
          <g id="klines"><polyline points="${pl(L.c)}" stroke="#D3CCC4" stroke-width="5" fill="none" stroke-linejoin="round"/><polyline points="${pl(L.b)}" stroke="#A39D96" stroke-width="5" fill="none" stroke-linejoin="round"/>
          <polyline points="${pl(L.a)}" stroke="#6F6A64" stroke-width="5" fill="none" stroke-linejoin="round"/><polyline points="${pl(L.y)}" stroke="#D2401A" stroke-width="8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
          ${L.y.map((v, i) => `<circle cx="${X(i)}" cy="${Y(v)}" r="9" fill="#fff" stroke="#D2401A" stroke-width="5"/>`).join('')}</g></svg>`);
       S.klines = S.ksvg.querySelector('#klines'); reg(S.klines);
-      S.ktag = reg(el('div', { class: 'abs', style: `left:${X(5) - 210}px;top:${Y(84) - 30}px;height:46px;padding:0 18px;border-radius:23px;background:var(--accent);color:#fff;font:700 22px/46px UI;transform-origin:100% 50%` }, S.k, 'Your Business ▲'), { o: 0 });
+      S.ktag = reg(el('div', { class: 'abs', style: `left:${X(5) - 262}px;top:${Y(84) - 34}px;height:52px;padding:0 20px;border-radius:26px;background:var(--accent);color:#fff;font:700 26px/52px UI;transform-origin:100% 50%` }, S.k, 'Your Business ▲'), { o: 0 });
     },
     run(t, b, S) {
       put(S.bg, { css: { background: DARKBG(seg(t, 'act3', 'done')) } });
-      push(t, S, 'act3', 'check', 0.035);
-      const g = spHit(t, 'gauge', 'default'), k = spHit(t, 'chart', 'default');
-      put(S.g, { o: g > 0.002 ? 1 : 0, y: 120 * (1 - g), s: 0.94 + 0.06 * g });
+      const k = spHit(t, 'chart', 'default');
+      const g0 = 0.6 + 0.4 * sp(t, 'act3', 'default');
+      put(S.g, { o: 1, y: 120 * (1 - g0), s: 0.94 + 0.06 * g0 });
+      S.ghost.forEach((e, i) => put(e, { x: 26 * Math.sin(t * 0.7 + i * 2), y: 14 * Math.cos(t * 0.5 + i) }));
+      put(S.cam, { s: 1 + 0.05 * seg(t, 'act3', 'check'), x: trk(t, [[0, 0], [30.5, -16, 'default'], [32.5, 12, 'default']]) });
       put(S.k, { o: k > 0.002 ? 1 : 0, y: 120 * (1 - k), s: 0.94 + 0.06 * k });
       const v = trk(t, [[0, 12], [29.75, 31, 'heavy'], [31, 78, 'heavy']]);
       put(S.arc, { css: { strokeDasharray: `${Math.max(0.5, v).toFixed(2)} 200` } });
@@ -351,20 +364,22 @@
     build(root, S) {
       S.bg = reg(el('div', { class: 'abs', style: `width:${W}px;height:${H}px` }, root));
       S.cam = cam(root);
-      S.card = card(S.cam, 90, 420, 900, 700);
-      el('div', { class: 'abs', style: 'left:44px;top:40px;height:54px;padding:0 24px;border-radius:27px;background:var(--accent);color:#fff;font:700 26px/54px UI' }, S.card, 'Recommended fixes');
-      el('div', { class: 'abs', style: 'left:auto;right:44px;top:52px;font:500 24px UI;color:var(--ink-3)' }, S.card, '4 actions');
+      S.back = reg(el('div', { class: 'abs ui', style: 'left:150px;top:250px;width:740px;height:300px;border-radius:26px;background:var(--card);filter:blur(4px);opacity:.28' }, S.cam,
+        '<div style="position:absolute;left:40px;top:30px;font:700 34px UI;color:#0C0B0A">AI Visibility Score</div><div style="position:absolute;left:40px;top:90px;font:700 120px UI;color:#D2401A">78%</div>'));
+      S.card = card(S.cam, 80, 420, 870, 760);
+      el('div', { class: 'abs', style: 'left:40px;top:40px;height:60px;padding:0 26px;border-radius:30px;background:var(--accent);color:#fff;font:700 30px/60px UI' }, S.card, 'Recommended fixes');
+      el('div', { class: 'abs', style: 'left:auto;right:44px;top:54px;font:500 28px UI;color:var(--ink-3)' }, S.card, '4 actions');
       S.rows = FIX.map((f, i) => {
-        const r = el('div', { class: 'abs', style: `left:44px;top:${140 + i * 130}px;width:812px;height:110px;border-radius:22px;background:#F4F1EC` }, S.card);
-        const box = el('div', { class: 'abs', style: 'left:30px;top:29px;width:52px;height:52px;border-radius:14px;border:3px solid #CFC8C0;box-sizing:border-box;background:#fff' }, r);
-        const fill = reg(el('div', { class: 'abs', style: 'left:30px;top:29px;width:52px;height:52px;border-radius:14px;background:var(--accent)' }, r,
-          '<svg width="52" height="52" viewBox="0 0 52 52"><path d="M14 27 l8 8 l16 -18" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/></svg>'), { o: 0 });
+        const r = el('div', { class: 'abs', style: `left:40px;top:${142 + i * 148}px;width:790px;height:128px;border-radius:24px;background:#F4F1EC` }, S.card);
+        const box = el('div', { class: 'abs', style: 'left:28px;top:34px;width:60px;height:60px;border-radius:16px;border:3px solid #CFC8C0;box-sizing:border-box;background:#fff' }, r);
+        const fill = reg(el('div', { class: 'abs', style: 'left:28px;top:34px;width:60px;height:60px;border-radius:16px;background:var(--accent)' }, r,
+          '<svg width="60" height="60" viewBox="-4 -4 60 60"><path d="M14 27 l8 8 l16 -18" stroke="#fff" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/></svg>'), { o: 0 });
         fill._p = fill.querySelector('path'); reg(fill._p);
-        el('div', { class: 'abs', style: 'left:110px;top:30px;font:600 38px UI;color:var(--ink)' }, r, f);
-        const done = reg(el('div', { class: 'abs', style: 'left:auto;right:30px;top:34px;height:42px;padding:0 16px;border-radius:21px;background:var(--accent-soft);color:var(--accent);font:700 21px/42px UI' }, r, 'Done'), { o: 0 });
+        el('div', { class: 'abs', style: 'left:114px;top:36px;font:600 42px UI;color:var(--ink)' }, r, f);
+        const done = reg(el('div', { class: 'abs', style: 'left:auto;right:26px;top:40px;height:48px;padding:0 18px;border-radius:24px;background:var(--accent-soft);color:var(--accent);font:700 26px/48px UI' }, r, 'Done'), { o: 0 });
         return { r, fill, done };
       });
-      S.score = reg(el('div', { class: 'abs ui', style: 'left:90px;top:1160px;height:84px;padding:0 34px;border-radius:42px;background:rgba(253,252,250,.1);border:2px solid rgba(253,252,250,.22);color:#F5F3F0;font:600 32px/80px UI;transform-origin:0 50%' }, S.cam,
+      S.score = reg(el('div', { class: 'abs ui', style: 'left:80px;top:1218px;height:84px;padding:0 34px;border-radius:42px;background:rgba(253,252,250,.1);border:2px solid rgba(253,252,250,.22);color:#F5F3F0;font:600 32px/80px UI;transform-origin:0 50%' }, S.cam,
         'AI Visibility <b style="color:#fff">12% → 78%</b>'), { o: 0 });
     },
     run(t, b, S) {
@@ -394,17 +409,17 @@
       S.mark = el('div', { style: 'width:84px;height:88px' }, S.logo, BARS(4.4));
       S.bars = [...S.mark.querySelectorAll('rect')].map((r) => reg(r, { sy: 0 }));
       S.wmMask = el('div', { style: 'overflow:hidden;padding:0 6px 8px 0;margin-bottom:-12px' }, S.logo);
-      S.wm = reg(el('div', { style: 'font:700 92px/1 UI;letter-spacing:-.035em;color:#F5F3F0' }, S.wmMask, 'Growlatics'));
-      S.url = line(S.cam, 'growlatics.us', { x: PAD + 22, y: 1170, size: 44, cls: 'ui', color: '#C0B8B0' });
-      S.url.el.style.fontWeight = 500;
+      S.wm = reg(el('div', { style: 'font:700 100px/1 UI;letter-spacing:-.035em;color:#F5F3F0' }, S.wmMask, 'Growlatics'));
+      S.url = line(S.cam, 'growlatics.us', { x: PAD + 22, y: 1180, size: 58, cls: 'ui', color: '#F5F3F0' });
+      S.url.el.style.fontWeight = 600;
     },
     run(t, b, S) {
       put(S.bg, { css: { background: DARKBG(seg(t, 'act3', 'done')) } });
-      push(t, S, 'end', 'done', 0.06);
+      put(S.cam, { s: 1 + 0.07 * seg(t, 'end', 'done'), y: -24 * seg(t, 'end', 'done') });
       // words land with the voice: Be 26.55 · the · name 26.77 · AI 27.05 · says 27.41
       const vw = window.CAPS.find((c) => c.words[0] === 'Be' && c.words[1] === 'the');
       const ai = window.CAPS.find((c) => c.words[0] === 'AI' && c.words[1] === 'says.');
-      const bw = [...vw.t, ...ai.t].map((x) => beatAt(x));
+      const bw = [...vw.t, ...ai.t].map((x) => beatAt(x)); bw[0] = 39.55; bw[1] = Math.max(bw[1], 39.85);
       rise(t, S.l1, bw.slice(0, 3), null, { preset: 'heavy' });
       rise(t, S.l2, bw.slice(3, 5), null, { preset: 'heavy' });
       // logo builds bar by bar on the spoken "Growlatics", wordmark rises, URL last
@@ -420,15 +435,16 @@
     build(root, S) {
       root.style.zIndex = 50;
       S.caps = window.CAPS.map((c) => {
-        const d = el('div', { class: 'cap', style: 'top:1372px' }, root);
+        const d = el('div', { class: 'cap', style: 'top:1398px' }, root);
         const ws = c.words.map((w, i) => { const s = reg(el('span', {}, d, w), { o: 0 }); if (i < c.words.length - 1) d.appendChild(document.createTextNode(' ')); return s; });
         return { c, d: reg(d, { o: 0 }), ws };
       });
+      S.caps.forEach((k, i) => { const nx = S.caps[i + 1]; k.stop = nx ? Math.min(k.c.end, nx.c.t[0] - 1 / 30) : k.c.end; });
     },
     run(t, b, S) {
       const L = 1 / 30;
       for (const k of S.caps) {
-        const on = t >= k.c.t[0] - L && t < k.c.end - 0.001;
+        const on = t >= k.c.t[0] - L && t < k.stop;
         put(k.d, { o: on ? 1 : 0 });
         if (on) k.ws.forEach((w, i) => put(w, { o: t >= k.c.t[i] - L ? 1 : 0 }));
       }
