@@ -1,0 +1,26 @@
+{ "voice": { "provider": "fish-audio", "id": "c5f56a6cc2ec4fa8920cb4c5889a3fb7", "name": "Slax", "model": "s2.1-pro" },
+  "phrases": [
+  { "id": "v01", "take": "a", "from": 0.03, "to": 1.08, "at": 0,     "tempo": 1.0,  "text": "Google was enough." },
+  { "id": "v02", "take": "a", "from": 2.02, "to": 2.55, "at": 2,     "tempo": 1.0,  "text": "Once." },
+  { "id": "v03", "take": "a", "from": 3.08, "to": 4.15, "at": 3,     "tempo": 1.15, "text": "Ranking was enough." },
+  { "id": "v04", "take": "a", "from": 4.74, "to": 5.93, "at": 4.5,   "tempo": 1.15, "text": "Reviews were enough." },
+  { "id": "v05", "take": "a", "from": 6.65, "to": 7.93, "at": 6.25,  "tempo": 1.15, "text": "A website was enough." },
+  { "id": "v06", "take": "a", "from": 8.59, "to": 10.21, "at": 8.25, "tempo": 1.05, "text": "Now customers ask AI." },
+  { "id": "v07", "take": "a", "from": 10.89, "to": 12.09, "at": 10.75, "tempo": 1.1, "text": "Who's the best plumber?" },
+  { "id": "v08", "take": "a", "from": 12.30, "to": 12.99, "at": 12.5, "tempo": 1.1,  "text": "Handyman?" },
+  { "id": "v09", "take": "a", "from": 13.33, "to": 13.95, "at": 13.5, "tempo": 1.1,  "text": "Dentist?" },
+  { "id": "v10", "take": "a", "from": 14.21, "to": 14.78, "at": 14.5, "tempo": 1.1,  "text": "Roofer?" },
+  { "id": "v11", "take": "a", "from": 15.07, "to": 15.93, "at": 15.5, "tempo": 1.05, "text": "Real questions." },
+  { "id": "v12", "take": "a", "from": 16.45, "to": 17.33, "at": 17,   "tempo": 1.05, "text": "Urgent questions." },
+  { "id": "v13", "take": "a", "from": 17.95, "to": 20.23, "at": 18.5, "tempo": 1.05, "text": "Questions your business was built to answer." },
+  { "id": "v14", "take": "b", "from": 0.03, "to": 2.51, "at": 22,     "tempo": 1.05, "text": "But if your business isn't in those answers…" },
+  { "id": "v15", "take": "b", "from": 3.11, "to": 4.47, "at": 25.75,  "tempo": 1.0,  "text": "…someone else's is." },
+  { "id": "v16", "take": "b", "from": 5.08, "to": 7.29, "at": 28.5,   "tempo": 1.0,  "text": "Growlatics shows you where you stand," },
+  { "id": "v17", "take": "b", "from": 7.69, "to": 8.89, "at": 32,     "tempo": 1.0,  "text": "who AI recommends," },
+  { "id": "v18", "take": "b", "from": 9.40, "to": 10.59, "at": 34,    "tempo": 1.0,  "text": "and fixes the gap." },
+  { "id": "v19", "take": "b", "from": 11.08, "to": 11.69, "at": 36,   "tempo": 1.0,  "text": "Be found." },
+  { "id": "v20", "take": "b", "from": 12.07, "to": 12.67, "at": 37.5, "tempo": 1.0,  "text": "Be trusted." },
+  { "id": "v21", "take": "b", "from": 13.20, "to": 14.95, "at": 40,   "tempo": 1.0,  "text": "Be the name AI says." },
+  { "id": "v22", "take": "b", "from": 15.41, "to": 16.27, "at": 43,   "tempo": 1.0,  "text": "Growlatics." }
+  ]
+}

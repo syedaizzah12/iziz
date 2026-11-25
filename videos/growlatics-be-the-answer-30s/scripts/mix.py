@@ -18,13 +18,37 @@ def ff(args, capture=False):
     return r.stderr
 
 
+# explicit duck envelope (timeline.mix.duck_db): music sits duck_db lower while each VO phrase plays (80 ms attack,
+# 250 ms release), is lifted by end_lift_db from the end mark, and ducks only half as deep under the end-card VO.
+MUSIC_SRC = 'music'
+if 'duck_db' in LV and os.path.exists('audio/vo_placed.json'):
+    import numpy as np, soundfile as sf
+    y, sr = sf.read('audio/music.wav', always_2d=True)
+    n = len(y); tt = np.arange(n) / sr
+    G = json.load(open('beats.json')); BB = G['beats']; per = G.get('beat', 60 / TL['bpm'])
+    bt = lambda b: BB[int(b)] + (b - int(b)) * per if int(b) < len(BB) else BB[-1] + (b - len(BB) + 1) * per
+    t_end = bt(TL['marks']['end'])
+    on = np.zeros(n)
+    for p in json.load(open('audio/vo_placed.json')):
+        on[(tt >= p['t0'] - 0.06) & (tt < p['t1'] + 0.12)] = 1
+    # smooth: one-pole attack/release on the gate
+    env = np.zeros(n); a_att, a_rel = 1 - np.exp(-1 / (0.08 * sr)), 1 - np.exp(-1 / (0.25 * sr)); z = 0.0
+    for i in range(n):
+        z += (a_att if on[i] > z else a_rel) * (on[i] - z); env[i] = z
+    depth = np.where(tt >= t_end, LV['duck_db'] * 0.5, LV['duck_db'])
+    lift = np.where(tt >= t_end, LV.get('end_lift_db', 0) * np.clip((tt - t_end) / 0.3, 0, 1), 0)
+    gain = 10 ** ((env * depth + lift) / 20)
+    sf.write('audio/music_duck.wav', y * gain[:, None], sr, subtype='FLOAT')
+    MUSIC_SRC = 'music_duck'; LV['duck'] = False
 inputs, chains, labels = [], [], []
 def inp(name, gain, mono_to_stereo=False):
     inputs.extend(['-i', f'audio/{name}.wav']); i = len(inputs) // 2 - 1
     up = ',pan=stereo|c0=c0|c1=c0' if mono_to_stereo else ',aformat=channel_layouts=stereo'
     chains.append(f'[{i}:a]aresample=48000{up},apad,atrim=0:{DUR},volume={gain}dB[{name}]')
-inp('music', LV['music'])
-chains[-1] = chains[-1].replace('[music]', f',afade=t=out:st={DUR - 0.3}:d=0.3[music]')
+inp(MUSIC_SRC, LV['music'])
+chains[-1] = chains[-1].replace(f'[{MUSIC_SRC}]', '[music]')
+FO = float(LV.get('fade_out', 0.3))
+chains[-1] = chains[-1].replace('[music]', f',afade=t=out:st={DUR - FO}:d={FO}[music]')
 if have['sfx']: inp('sfx', LV['sfx'])
 if have['vo']:
     inp('vo', LV['vo'], mono_to_stereo=True)

@@ -1,6 +1,6 @@
 # Shotlist: Growlatics "Be the name AI says" · 30.0 s · 90.8 BPM · 45.4 beats · 9x16 1080x1920 30 fps
 
-STATUS: DRAFT. Waiting for the user's OK. Nothing gets built until this says APPROVED.
+STATUS: APPROVED by the user (voice: Slax), 2026-11-25.
 
 Grid: 1 beat = 0.661 s, 1 bar = 2.643 s. The Act 3 switch (b28 = 18.50 s) and the end card (b40 = 26.43 s) both land on bar downbeats.
 Captions (every shot): Inter 800, 46 px, white with a 5 px dark outline, centred at y ≈ 1400 (73 %). 2–4 words per chunk, shown word by word on the measured VO word times.
